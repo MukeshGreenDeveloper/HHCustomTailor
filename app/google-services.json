@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "24625096842",
+    "project_id": "heritage-house-custom-tailors",
+    "storage_bucket": "heritage-house-custom-tailors.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24625096842:android:33b5fab36aa0b71df8a573",
+        "android_client_info": {
+          "package_name": "com.ms.hht"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24625096842-2jg2rcj706he42ils2rgg89vnqu259ke.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ms.hht",
+            "certificate_hash": "5afda20b88f1f2fba92d2293157f66c5008dc1ed"
+          }
+        },
+        {
+          "client_id": "24625096842-sb5r35tlfoi03r6i4rtrfdt5g6esk8b2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ms.hht",
+            "certificate_hash": "abb86676cdc60389a426d0c50b12c1225c1f93d1"
+          }
+        },
+        {
+          "client_id": "24625096842-uujcsd97iptdi3787k5d8li1o73cqa08.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDafY9OyEB_xPVsRvN653XFy5tjsGwm1NE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24625096842-uujcsd97iptdi3787k5d8li1o73cqa08.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "24625096842-d431cos1iebfi30l9edk4u47qkd6uh79.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ms.hhcustomtailor",
+                "app_store_id": "1642263055"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,6 +18,10 @@ public class SignUpResponse {
 
         @SerializedName("id")
         private int id;
+        @SerializedName("email")
+        private String email;
+        @SerializedName("password")
+        private String password;
 
         public int getId() {
             return id;
@@ -25,6 +29,14 @@ public class SignUpResponse {
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getPassword() {
+            return password;
         }
     }
 

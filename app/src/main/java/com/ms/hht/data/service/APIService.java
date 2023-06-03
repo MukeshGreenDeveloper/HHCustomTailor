@@ -60,11 +60,14 @@ import com.ms.hht.data.response.UpdateUserProfileResponse;
 import com.ms.hht.ui.payment.PlaceOrderRequestBody;
 import com.ms.hht.utils.Constants;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.POST;
@@ -79,6 +82,11 @@ public interface APIService {
 
     @POST(Constants.LOGIN)
     Call<SignUpResponse> userLogin(@Body SignupRequest signupRequest);
+
+    @POST(Constants.LOGIN_WITH_TOKEN)
+//    @FormUrlEncoded
+    Call<SignUpResponse> userLoginWithToken(@Query("token") String token);
+//    Call<SignUpResponse> userLoginWithToken(@Body HashMap<String, String> user);
 
     @DELETE(Constants.DELETE_ACCOUNT)
     Call<AddToCartResponse> deleteUserAccount();

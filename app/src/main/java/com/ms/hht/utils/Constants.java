@@ -24,6 +24,7 @@ public class Constants {
 
     public static final String SIGN_UP = "signup/";
     public static final String LOGIN = "signin/";
+    public static final String LOGIN_WITH_TOKEN = "signin_with_token/";
     public static final String FORGOT_PASSWORD = "forgot_password/";
     public static final String RESENT_OTP = "resend_otp/";
     public static final String GENERATE_PASSWORD = "generate_new_password/";
