@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/white_background_low_border">
+
+    <ImageView
+        android:id="@+id/successPop_Header_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:contentDescription="@string/ok"
+        android:src="@drawable/oopsimage"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/popup_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/successPop_Header_image"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:fontFamily="@font/lato_regular"
+        android:gravity="center"
+        android:text="Delete Account"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/popup_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/popup_heading"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:fontFamily="@font/lato_regular"
+        android:text="Are you sure you would like to delete your account? This will permanently remove your profile, including"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_11sdp"
+        android:textStyle="normal" />
+
+    <ImageView
+        android:id="@+id/Delete_image1"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@+id/popup_description"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:src="@drawable/red_checkbox" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@+id/popup_description"
+        android:layout_toEndOf="@+id/Delete_image1"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_11sdp"
+        android:textStyle="normal"
+        android:gravity="center_vertical"
+        android:text="Measurements"/>
+
+    <ImageView
+        android:id="@+id/Delete_image2"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@+id/Delete_image1"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/red_checkbox" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@+id/Delete_image1"
+        android:layout_toEndOf="@+id/Delete_image2"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_11sdp"
+        android:textStyle="normal"
+        android:gravity="center_vertical"
+        android:text="Order history"/>
+
+    <ImageView
+        android:id="@+id/Delete_image3"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@+id/Delete_image2"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/red_checkbox" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@+id/Delete_image2"
+        android:layout_toEndOf="@+id/Delete_image3"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_11sdp"
+        android:textStyle="normal"
+        android:gravity="center_vertical"
+        android:text="Personal details"/>
+
+    <ImageView
+        android:id="@+id/Delete_image4"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@+id/Delete_image3"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/red_checkbox" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@+id/Delete_image3"
+        android:layout_toEndOf="@+id/Delete_image4"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_12sdp"
+        android:gravity="center_vertical"
+        android:textStyle="normal"
+        android:text="Items saved in your cart"/>
+
+    <TextView
+        android:id="@+id/Delete_Note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Delete_image4"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_11sdp"
+        android:textStyle="normal"
+        android:text="Note: No refund will be provided on active orders."/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_below="@+id/Delete_Note"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_20sdp">
+        <Button
+            android:id="@+id/delete_popup_cancel_button"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="match_parent"
+            android:background="@drawable/delete_popup_button_background"
+            android:fontFamily="@font/lato_regular"
+            android:gravity="center"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+        <Button
+            android:id="@+id/delete_popup_delete_button"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="match_parent"
+            android:background="@drawable/delete_popup_button_background"
+            android:fontFamily="@font/lato_regular"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_12sdp" />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

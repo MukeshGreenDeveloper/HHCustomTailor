@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/FilterOptioncheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:buttonTint="@color/App_color_theme_blue"
+        android:fontFamily="@font/lato_regular"
+        android:textAllCaps="false"
+        android:textColor="@color/App_color_light_grey"
+        android:textSize="@dimen/_12sdp" />
+
+</RelativeLayout>

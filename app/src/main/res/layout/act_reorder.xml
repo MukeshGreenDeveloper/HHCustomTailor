@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.customization.Fabric_Select.order.SelectReorderItemAct">
+
+    <ImageView
+        android:id="@+id/hhtLogo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/hhtlogo" />
+
+
+    <ImageView
+        android:id="@+id/backImage2"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/left"/>
+
+    <TextView
+        android:id="@+id/orderTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/backImage2"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_toEndOf="@id/backImage2"
+        android:fontFamily="@font/lato_bold"
+        android:text="Select Items"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_24sdp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reorderRcy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ProceedBtn"
+        android:layout_below="@+id/orderTv"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp" />
+
+    <Button
+        android:id="@+id/ProceedBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="6dp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/black_round_background"
+        android:fontFamily="@font/lato_regular"
+        android:text="Proceed"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.EditProfile">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/hhtlogo" />
+
+    <ImageView
+        android:id="@+id/editProfileBackBtn"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/left"/>
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/_30sdp"
+    android:layout_above="@+id/EditProfileUpdateBtn"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:layout_below="@id/editProfileBackBtn">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/EditProfileHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/editProfile"
+            android:textColor="@color/App_color_dark_grey"
+            android:textSize="@dimen/_24sdp" />
+
+        <TextView
+            android:id="@+id/EditProfileSubHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/EditProfileHeading"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:fontFamily="@font/lato_regular"
+            android:text=""
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_12sdp"/>
+
+        <EditText
+            android:id="@+id/EditProfileUserFNameTF"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_below="@id/EditProfileSubHeading"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:background="@drawable/white_background"
+            android:elevation="@dimen/_5sdp"
+            android:fontFamily="@font/lato_regular"
+            android:hint="@string/Firstname"
+            android:inputType="textPersonName"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_12sdp" />
+
+        <EditText
+            android:id="@+id/EditProfileUserLNameTF"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_below="@id/EditProfileUserFNameTF"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:background="@drawable/white_background"
+            android:elevation="@dimen/_5sdp"
+            android:fontFamily="@font/lato_regular"
+            android:hint="@string/Lastname"
+            android:inputType="textPersonName"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_12sdp" />
+
+        <EditText
+            android:id="@+id/EditProfileUserEmailTF"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_below="@id/EditProfileUserLNameTF"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:background="@drawable/white_background"
+            android:elevation="@dimen/_5sdp"
+            android:fontFamily="@font/lato_regular"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_12sdp" />
+
+
+        <EditText
+            android:id="@+id/alternateEditProfileUserEmailTF"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_below="@id/EditProfileUserEmailTF"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:background="@drawable/white_background"
+            android:elevation="@dimen/_5sdp"
+            android:fontFamily="@font/lato_regular"
+            android:hint="@string/alternate_email"
+            android:inputType="textEmailAddress"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_12sdp" />
+
+        <LinearLayout
+            android:id="@+id/genderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_140sdp"
+            android:orientation="horizontal"
+            android:layout_below="@id/alternateEditProfileUserEmailTF"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_25sdp">
+
+            <RelativeLayout
+                android:id="@+id/maleLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:elevation="@dimen/_3sdp"
+                android:background="@drawable/white_background_low_border"
+                android:layout_margin="@dimen/_5sdp">
+
+                <ImageView
+                    android:id="@+id/EditProfileMaleImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:src="@drawable/male" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/femaleLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:elevation="@dimen/_3sdp"
+                android:background="@drawable/white_background_low_border"
+                android:layout_margin="@dimen/_5sdp">
+
+                <ImageView
+                    android:id="@+id/EditProfileFemaleImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:src="@drawable/girl" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>
+
+    <Button
+        android:id="@+id/EditProfileUpdateBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/editProfileBackBtn"
+        android:background="@drawable/black_backgroud_for_button"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/update"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp" />
+</RelativeLayout>

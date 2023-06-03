@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/baseView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/white_background_low_border">
+
+    <ImageView
+        android:id="@+id/successPop_Header_image"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_90sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:contentDescription="@string/ok"
+        android:src="@drawable/ok" />
+
+    <TextView
+        android:id="@+id/successPop_error_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/successPop_Header_image"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:fontFamily="@font/lato_regular"
+        android:gravity="center"
+        android:textColor="@color/App_color_light_grey"
+        android:textSize="@dimen/_12sdp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/successPop_error_description"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/successPop_done_button"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:text="@string/yes"
+            android:padding="@dimen/_5sdp"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            android:elevation="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/buttonbackground"
+            android:textColor="@color/white" />
+        <Button
+            android:id="@+id/pop_no_button"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:text="@string/no"
+            android:padding="@dimen/_5sdp"
+            android:gravity="center"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            android:elevation="@dimen/_2sdp"
+            android:background="@drawable/buttonbackground"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

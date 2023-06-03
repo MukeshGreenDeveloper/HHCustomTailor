@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.login.VerifyEmailActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/hhtlogo" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/hht_blue_logo" />
+
+    <TextView
+        android:id="@+id/verifyEmailTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/subHeadText"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:layout_marginEnd="@dimen/_70sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/verify_email"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_25sdp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/subHeadText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/emailText"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:fontFamily="@font/lato_regular"
+        android:text="@string/verify_text"
+        android:textColor="@color/App_color_light_grey"
+        android:textSize="@dimen/_10sdp" />
+
+    <TextView
+        android:id="@+id/emailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/verifyEditText"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/App_color_theme_blue"
+        android:textSize="@dimen/_9sdp" />
+
+    <EditText
+        android:id="@+id/verifyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:background="@drawable/white_background"
+        android:elevation="@dimen/_3sdp"
+        android:fontFamily="@font/lato_regular"
+        android:inputType="number"
+        android:gravity="center"
+        android:maxLines="1"
+        android:maxLength="4"
+        android:hint="OTP"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:textColor="@color/App_color_light_grey"
+        android:textSize="@dimen/_12sdp" />
+
+
+    <TextView
+        android:id="@+id/resendOTP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/verifyEditText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_26sdp"
+        android:fontFamily="@font/lato_regular"
+        android:text="@string/send_otp"
+        android:textColor="@color/App_color_theme_blue"
+        android:textSize="@dimen/_10sdp" />
+
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/_1sdp"
+        android:src="@drawable/left"/>
+
+    <Button
+        android:id="@+id/verify_Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toEndOf="@id/backButton"
+        android:background="@drawable/black_backgroud_for_button"
+        android:fontFamily="@font/lato_regular"
+        android:gravity="center"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14sdp" />
+
+
+</RelativeLayout>

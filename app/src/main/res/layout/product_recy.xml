@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/card_background_layout"
+    android:layout_height="@dimen/_140sdp"
+    android:layout_marginBottom="@dimen/_10sdp">
+
+    <ImageView
+        android:id="@+id/productImage2"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:scaleType="fitEnd" />
+
+    <TextView
+        android:id="@+id/productName2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_toStartOf="@+id/productImage2"
+        android:fontFamily="@font/lato_regular"
+        android:text=""
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_14sdp" />
+
+    <Button
+        android:id="@+id/buyNowBtn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/details_background"
+        android:fontFamily="@font/lato_regular"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:text="@string/buyNow"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp" />
+
+</RelativeLayout>

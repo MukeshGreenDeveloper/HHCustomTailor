@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.measure.MeasurementDetailListActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/hhtlogo" />
+
+    <ImageView
+        android:id="@+id/backBtn"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/left" />
+
+    <TextView
+        android:id="@+id/measuremntDetailHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/backBtn"
+        android:layout_toEndOf="@id/backBtn"
+        android:textColor="@color/App_color_dark_grey"
+        android:fontFamily="@font/lato_bold"
+        android:textSize="@dimen/_25sdp"
+        android:text="@string/measureDetails"
+        android:layout_marginTop="@dimen/_20sdp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/MeasurementDetailRecy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/retakeBtn"
+        android:layout_below="@id/measuremntDetailHeading"
+        android:layout_marginTop="@dimen/_10sdp" />
+
+    <Button
+        android:id="@+id/retakeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/black_backgroud_for_button"
+        android:layout_marginStart="@dimen/_40sdp"
+        android:text="@string/retake"
+        android:textAllCaps="false"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14sdp"
+        android:fontFamily="@font/lato_regular"
+        android:visibility="invisible" />
+
+</RelativeLayout>

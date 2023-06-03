@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.customization.Fabric_Select.order.OrderList">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/hhtlogo" />
+
+    <ImageView
+        android:id="@+id/backImage"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/left"/>
+
+    <TextView
+        android:id="@+id/orderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/backImage"
+        android:layout_toEndOf="@id/backImage"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/recentOrder"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_25sdp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myOrderRcy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderText"
+        android:layout_marginTop="@dimen/_10sdp" />
+
+</RelativeLayout>

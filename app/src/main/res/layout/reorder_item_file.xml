@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/recorderItemCard"
+    android:background="@color/light_grey">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/checkSelectItems"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/uncheck_box"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"/>
+        <RelativeLayout
+            android:id="@+id/SelectImage2"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_toEndOf="@id/checkSelectItems" />
+
+        <TextView
+            android:id="@+id/selectItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/SelectImage2"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/App_color_dark_grey"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/selectItemsData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selectItemName"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_toEndOf="@id/SelectImage2"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/selectItemsPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/SelectImage2"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textColor="@color/App_color_dark_grey"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="@dimen/_12sdp"
+            android:layout_below="@+id/selectItemsData"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textAlignment="textEnd" />
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+</RelativeLayout>

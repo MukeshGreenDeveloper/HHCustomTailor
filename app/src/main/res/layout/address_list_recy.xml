@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_100sdp"
+    android:background="@color/white"
+    android:id="@+id/AddListcard">
+
+    <ImageView
+        android:id="@+id/radioBtn"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/radio_blank" />
+
+    <TextView
+        android:id="@+id/addTV"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_toStartOf="@+id/editIMG"
+        android:layout_toEndOf="@+id/radioBtn"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/App_color_light_grey"
+        android:textSize="@dimen/_12sdp" />
+
+    <ImageView
+        android:id="@+id/editIMG"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toStartOf="@+id/deleteIMG"
+        android:background="@color/App_color_theme_blue"
+        android:padding="@dimen/_12sdp"
+        android:src="@drawable/draw" />
+
+    <ImageView
+        android:id="@+id/deleteIMG"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@color/App_color_light_grey"
+        android:padding="@dimen/_12sdp"
+        android:src="@drawable/bin"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/App_color_cart_background"/>
+
+</RelativeLayout>

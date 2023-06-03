@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.profile.AddressListAct">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/hhtlogo" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/left" />
+
+    <TextView
+        android:id="@+id/manageTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/back"
+        android:layout_toEndOf="@id/back"
+        android:fontFamily="@font/lato_bold"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/manage_address"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_25sdp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/addressListRcy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addAddressBtn"
+        android:layout_below="@id/manageTxt"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_2sdp" />
+
+
+    <Button
+        android:id="@+id/addAddressBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:background="@drawable/black_backgroud_for_button"
+        android:fontFamily="@font/lato_regular"
+        android:gravity="center"
+        android:text="@string/addAddress"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16sdp"/>
+
+    
+</RelativeLayout>

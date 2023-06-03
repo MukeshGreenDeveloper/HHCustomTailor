@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.customization.Fabric_Select.order.CartDetailsActivity"
+    >
+
+    <ImageView
+        android:id="@+id/backImage2"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/left" />
+
+    <TextView
+        android:id="@+id/orderTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/backImage2"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/orderCart"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_25sdp" />
+
+    <TextView
+        android:id="@+id/checkoutTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderTv"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:fontFamily="@font/lato_regular"
+        android:text="Checkout list"
+        android:textColor="@color/App_color_light_grey"
+        android:textSize="@dimen/_13sdp"
+        android:layout_marginBottom="@dimen/_10sdp"/>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/checkoutTv">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/applyCouponLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/couponHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="YOU HAVE US $0.0 IN YOUR ACCOUNT."
+                android:textColor="@color/App_color_dark_grey"
+                android:fontFamily="@font/lato_regular"
+                android:textSize="@dimen/_14sdp"/>
+
+            <TextView
+                android:id="@+id/couponsSubHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/couponHeading"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Enter amount(You can use maximum US$400 per order)"
+                android:textColor="@color/App_color_textBlue"
+                android:fontFamily="@font/lato_regular"
+                android:textSize="@dimen/_10sdp"/>
+
+
+            <EditText
+                android:id="@+id/couponTextField"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:layout_below="@+id/couponsSubHeading"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/selected_black_background"
+                android:paddingStart="@dimen/_10sdp" />
+
+
+            <Button
+                android:id="@+id/ApplyCouponBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_38sdp"
+                android:layout_below="@+id/couponTextField"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/black_background_10sdp"
+                android:fontFamily="@font/lato_regular"
+                android:padding="@dimen/_10sdp"
+                android:text="Apply Discount"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+        </RelativeLayout>
+        <View
+            android:id="@+id/viewCouponTOPAY"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5sdp"
+            android:background="@color/App_color_cart_view_background"
+            android:layout_below="@id/applyCouponLay"
+            />
+        <RelativeLayout
+            android:id="@+id/PriceLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewCouponTOPAY">
+
+            <TextView
+                android:id="@+id/subtotalHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/lato_regular"
+                android:text="Sub Total"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_12sdp"
+                />
+
+            <TextView
+                android:id="@+id/subtotalvalue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_toEndOf="@id/subtotalHeading"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_12sdp"
+                android:textAlignment="textEnd"/>
+
+            <TextView
+                android:id="@+id/shipChargeHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subtotalHeading"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/lato_regular"
+                android:text="Shipping Charges"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/shipChargeValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_toEndOf="@id/shipChargeHeading"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_12sdp"
+                android:layout_below="@+id/subtotalHeading"
+                android:textAlignment="textEnd" />
+
+            <TextView
+                android:id="@+id/discountHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shipChargeValue"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/lato_regular"
+                android:text="Discount"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/discountValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shipChargeValue"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_toEndOf="@id/discountHeading"
+                android:fontFamily="@font/lato_regular"
+                android:textAlignment="textEnd"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_12sdp" />
+
+            <View
+                android:id="@+id/priceSepView"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_below="@+id/discountValue"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@color/App_color_cart_background" />
+
+            <TextView
+                android:id="@+id/orderTotalHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/priceSepView"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:fontFamily="@font/lato_regular"
+                android:text="ORDER TOTAL"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/orderTotalValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/priceSepView"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_toEndOf="@id/orderTotalHeading"
+                android:fontFamily="@font/lato_regular"
+                android:textAlignment="textEnd"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/orderpymntText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/orderTotalValue"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:fontFamily="@font/lato_regular"
+                android:text="Free shipping on orders US$240 and above. Purchase below US$240 will incur a US$40 flat rate shipping fee."
+                android:textColor="@color/App_color_dark_blue"
+                android:textSize="@dimen/_10sdp" />
+        </RelativeLayout>
+        <View
+            android:id="@+id/viewTOPAYShip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5sdp"
+            android:background="@color/App_color_cart_view_background"
+            android:layout_below="@id/PriceLayout"
+            />
+
+        <RelativeLayout
+            android:id="@+id/ShippingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewTOPAYShip" >
+
+            <TextView
+                android:id="@+id/shipAddHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_toStartOf="@id/editShipAddress"
+                android:fontFamily="@font/lato_regular"
+                android:text="SHIPPING ADDRESS"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_13sdp" />
+
+            <TextView
+                android:id="@+id/ShipAddVAlue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shipAddHeading"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_toStartOf="@id/editShipAddress"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/App_color_light_grey"
+                android:textSize="@dimen/_12sdp" />
+
+            <View
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_alignParentEnd="true"
+                android:background="@color/App_color_light_grey"
+                android:layout_alignParentBottom="true"/>
+
+            <ImageView
+                android:id="@+id/editShipAddress"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:background="@color/App_color_light_grey"
+                android:padding="@dimen/_12sdp"
+                android:src="@drawable/draw" />
+        </RelativeLayout>
+        <View
+            android:id="@+id/viewShipNBill"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5sdp"
+            android:background="@color/App_color_cart_view_background"
+            android:layout_below="@id/ShippingLayout"
+            />
+        <RelativeLayout
+            android:id="@+id/BillAddLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewShipNBill"
+            android:minHeight="@dimen/_80sdp"
+            android:layout_marginBottom="@dimen/_55sdp">
+
+            <TextView
+                android:id="@+id/BillAddHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_toStartOf="@+id/editBillAdd"
+                android:fontFamily="@font/lato_regular"
+                android:text="BILLING ADDRESS"
+                android:textColor="@color/App_color_dark_grey"
+                android:textSize="@dimen/_13sdp" />
+
+            <TextView
+                android:id="@+id/BillAddValue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/BillAddHeading"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_toStartOf="@+id/editBillAdd"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/App_color_light_grey"
+                android:textSize="@dimen/_12sdp" />
+            <View
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_alignParentEnd="true"
+                android:background="@color/App_color_light_grey"
+                android:layout_alignParentBottom="true"/>
+
+            <ImageView
+                android:id="@+id/editBillAdd"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:background="@color/App_color_light_grey"
+                android:padding="@dimen/_12sdp"
+                android:src="@drawable/draw" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/conShopBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_weight=".5"
+            android:background="@drawable/round_corner_bg"
+            android:fontFamily="@font/lato_regular"
+            android:text="@string/continuetoshop"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+        <Button
+            android:id="@+id/NextPageButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_weight=".5"
+            android:background="@drawable/black_backgroud_for_button"
+            android:fontFamily="@font/lato_regular"
+            android:text="@string/next"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+    </LinearLayout>
+</RelativeLayout>

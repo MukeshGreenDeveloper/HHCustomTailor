@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/orderedItem_SelectedreorderItemCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_grey">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:background="@color/white">
+
+
+        <RelativeLayout
+            android:id="@+id/orderedItem_SelectImage2"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp" />
+
+        <TextView
+            android:id="@+id/orderedItem_selectItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_toEndOf="@+id/orderedItem_SelectImage2"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/App_color_dark_grey"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/orderedItem_selectItemsData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderedItem_selectItemName"
+            android:layout_toEndOf="@+id/orderedItem_SelectImage2"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_11sdp" />
+
+        <TextView
+            android:id="@+id/orderedItem_selectItemsPrice"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_below="@+id/orderedItem_selectItemsData"
+            android:layout_toEndOf="@+id/orderedItem_SelectImage2"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/App_color_dark_grey"
+            android:textSize="@dimen/_12sdp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

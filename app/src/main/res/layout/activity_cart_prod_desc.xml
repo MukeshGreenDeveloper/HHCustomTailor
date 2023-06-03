@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.customization.Fabric_Select.order.CartProdDesc">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/hhtlogo" />
+
+    <ImageView
+        android:id="@+id/backImage2"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/left"/>
+
+    <TextView
+        android:id="@+id/cartitemdetailsText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:text="@string/cart_item_details"
+        android:layout_below="@id/backImage2"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:fontFamily="@font/lato_bold"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_25sdp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reorderitemREcy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cartitemdetailsText"
+        android:layout_marginTop="@dimen/_20sdp" />
+</RelativeLayout>

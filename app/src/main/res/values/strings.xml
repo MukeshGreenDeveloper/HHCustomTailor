@@ -1,0 +1,432 @@
+<resources>
+    <string name="app_name">HH Custom Tailor</string>
+
+
+    <!--    Login Screen  -->
+
+    <string name="register">Register Now</string>
+    <string name="sign_in">Sign in</string>
+    <string name="explore">Explore</string>
+    <string name="join">Join</string>
+    <string name="email">Email</string>
+    <string name="alternate_email">Alternate email</string>
+    <string name="password">Password</string>
+    <string name="new_password">New password</string>
+    <string name="signIn_forgot_pass">Forgot Password?</string>
+    <string name="signin_text">Sign in with email and password.</string>
+    <string name="next">Next</string>
+    <string name="cnf_passowrd">Confirm password</string>
+    <string name="generate_cnf_passowrd">Confirm password</string>
+    <string name="change_pass_head">Change password</string>
+    <string name="change_pass_sub_head">Change your password</string>
+    <string name="we_are_here">We are here</string>
+    <string name="hht_fullname">Heritage House</string>
+    <string name="hht_address">64/18, Sukhumvit Soi 20,\nKlongtoey, Thailand</string>
+    <string name="cart_item_details">Cart Item Details</string>
+    <string name="selected_items">Selected Items</string>
+    <string name="ordered_item_details">Item Details</string>
+
+
+    <!--    Error Message-->
+
+    <string name="timeOut">Request timed out check your internet connection and try again</string>
+    <string name="serverError">Server is down for maintenance sorry for inconvenience.</string>
+    <string name="internet">No internet connection. Please check your connectivity and try again.</string>
+    <string name="try_again">Data not found. Please try again.</string>
+    <string name="state_error">State list not found. Please enter your state name.</string>
+    <string name="city_not_found_error">Selected country is not serviceable. Please select different country.</string>
+    <string name="delete_content">Are you sure want to delete?</string>
+
+    <string name="splash_text">Self Confidence.\nCustom Tailored.</string>
+
+
+    <!--Forgot Password-->
+
+    <string name="forgotPass">Forgot Password</string>
+    <string name="change_Pass_text">Please enter your registered email.</string>
+    <string name="emailTxt">Enter Email which was used to create HH Tailor Account.</string>
+
+    <!--    SignUp Screen-->
+    <string name="signup">Sign up</string>
+    <string name="sign_up_txt">Sign up with name, email and password.</string>
+    <string name="Firstname">First name</string>
+    <string name="Lastname">Last name</string>
+    <string name="name">Name</string>
+    <string name="invalid_userName">Please enter your name.</string>
+    <string name="signup_email_err">Please enter your email.</string>
+    <string name="invalid_email">Please enter your registered email.</string>
+    <string name="invalid_phoneno">Please enter valid phone no.</string>
+    <string name="invalid_password">Please enter valid password.</string>
+    <string name="invalid_cnfpassword">Please enter confirm password.</string>
+    <string name="cnf_passwrd">Entered passwords do not match.</string>
+    <string name="one">1</string>
+    <string name="two"><b>/2</b></string>
+
+
+    <!--    Verify OTP-->
+
+    <string name="verify_text">An OTP has been sent to your registered email.</string>
+    <string name="send_otp">Resend OTP</string>
+    <string name="verify_email">Verify Email</string>
+
+
+    <!--    Generate Password -->
+
+    <string name="create_new_pass">Create new \npassword</string>
+
+
+    <!--    Home Screen-->
+
+    <string name="toggle_text"><b>Toggle between</b>\nStyle Look &amp; Custom
+    </string>
+
+    <string name="add_to_cart">Add to cart</string>
+    <string name="add_to_wishlist">Add to wishlist</string>
+
+    <string name="skip">Skip</string>
+
+
+    <!--Product Description-->
+
+    <string name="dollar"><b>$</b></string>
+    <string name="price"><b>450</b></string>
+    <string name="usd">(USD)</string>
+    <string name="productHeading"><b>Effortlessly Stylish</b></string>
+
+    <string name="event"><b>Best For Event</b></string>
+    <string name="Wedding">Weeding   &#160; &#160; &#160;    Party   &#160;&#160;&#160;   Prom   &#160;&#160;&#160;   Ceremony</string>
+    <string name="customization">Customize</string>
+
+    <!--Address activity string-->
+    <string name="address">Add Address</string>
+    <string name="addAdres">Select address or add</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="defuaultAdd"> Set as default address.</string>
+    <string name="state">State</string>
+    <string name="statePro">State/Province</string>
+    <string name="postal">Zip/Postal code</string>
+    <string name="add1">Street Address</string>
+    <string name="add2">Address lane 2</string>
+    <string name="Phone">Phone number</string>
+    <string name="save">Save Details</string>
+    <string name="savetxt">Save</string>
+    <string name="select">Select address or add</string>
+
+
+    <!--Profile Setting navigation drawer-->
+
+    <string name="profile">Profile <b>Settings</b></string>
+    <string name="kin">Kin kaneki</string>
+    <string name="manageAdd">Manage <b>Address</b></string>
+    <string name="managePass">Manage <b>Password</b></string>
+    <string name="contactUs">Contact <b>Us</b></string>
+    <string name="logOut">Log <b>Out</b></string>
+    <string name="measur">My <b>Measurements</b></string>
+    <string name="refer">Referral <b>Points</b></string>
+
+    <string name="my_profile">My Profile</string>
+    <string name="recent_orders">Recent Orders</string>
+    <string name="my_measurements">My Measurements</string>
+    <string name="manage_address">Manage Address</string>
+    <string name="manage_password">Manage Password</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="faq">FAQ</string>
+    <string name="faqs">FAQs</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="whatsapp_text">WhatsApp: +66 81-311-1405</string>
+
+
+    <string name="logout_popup_msg">Are you sure, you want to logout?</string>
+
+
+    <!--Order History-->
+    <string name="history"><b>Order</b> History</string>
+    <string name="myOrders">My <b>Orders</b></string>
+    <string name="recentOrder">Recent Orders</string>
+    <string name="filter">Filter</string>
+    <string name="filters">Filters</string>
+    <string name="order">Order</string>
+    <string name="inpPro">In Process</string>
+    <string name="deliverd">Delivered</string>
+    <string name="orderId">#232376248</string>
+    <string name="date">20 August 2021</string>
+
+    <!--Error-->
+    <string name="nameError">Please enter your name.</string>
+    <string name="phoneError">Please enter your phone number.</string>
+    <string name="countryError">Please select your country.</string>
+    <string name="stateError">Please select your state.</string>
+    <string name="cityError">Please enter your city.</string>
+    <string name="postalError">Please enter your ZIP/Postal Code.</string>
+    <string name="addLaneError">Please enter your lane address.</string>
+
+    <!--Address List-->
+    <string name="manage">Manage <b>Address</b></string>
+    <string name="phn"><b>Phone no.</b></string>
+    <string name="add_address"><b>Add Address</b></string>
+    <string name="addAddress">Add Address</string>
+
+    <!--Change Password-->
+    <string name="newPass">Please enter your new password.</string>
+    <string name="proceed">Proceed</string>
+    <string name="passVal">A-z, 0-9, Special Characters are allowed</string>
+
+    <!--order item details-->
+    <string name="measu">Measurement</string>
+    <string name="delivery">Delivery</string>
+    <string name="total">Total</string>
+    <string name="discount">Discount</string>
+    <string name="tota"><b>TOTAL</b></string>
+    <string name="addre">Address</string>
+
+    <!--Payment order placed-->
+    <string name="payment">Payment Done</string>
+    <string name="orderpla"><b>Order Placed!</b></string>
+    <string name="conti">Continue to shop</string>
+    <!--Welcome Screen-->
+    <string name="welcome">Welcome</string>
+    <string name="onBoard"><b>ON-BOARD</b></string>
+    <string name="cartP">Proceed To Cart</string>
+
+    <!--Order cart Act-->
+    <string name="orderCart">Order Cart</string>
+    <string name="checkOut">Checkout</string>
+    <string name="re_order">Re Order</string>
+
+
+    <!--Order Cart-->
+
+    <string name="measure">Measure Now</string>
+    <string name="location">505, i-thum noida 201301</string>
+
+    <!--Measure Now-->
+
+    <string name="selectto">Select to Proceed</string>
+    <string name="needMeasure">We need your measurements to complete this order.Please select any option below.</string>
+    <string name="preMeasurement">Use Previous Measurements</string>
+    <string name="getStarted">Get Started</string>
+
+    <!--Enter Detail Activity-->
+    <string name="enter">Enter</string>
+    <string name="details">Details</string>
+    <string name="detailTxt">Please enter valid user information in the given fields to proceed.</string>
+    <string name="emailId">Email</string>
+    <string name="contact">Mobile number</string>
+        <string name="Not_registered_user">Please join us as a registered user.</string>
+
+    <string name="info">Information</string>
+    <string name="infotxt">Please enter accurate user information to get best results.</string>
+    <string name="kg">kg</string>
+    <string name="KG">Kg</string>
+    <string name="feet">feet</string>
+    <string name="meter">Meter</string>
+    <string name="inch">Inch</string>
+    <string name="In">in</string>
+    <string name="cm">cm</string>
+    <string name="lb">lbs</string>
+    <string name="m">M</string>
+    <string name="f">F</string>
+    <string name="height_wrong">Please enter your height.</string>
+    <string name="height_range_wrong">Height should be between 140 cm and 220 cm or between 4\' 7" feet and 7' 2" feet</string>
+    <string name="weight_wrong">Please enter your weight.</string>
+    <string name="weight_range_wrong">Weight should be between 30kg(66 lbs) to 150kg (333 lbs).</string>
+    <string name="age_error">Age should be between 13 to 90 years.</string>
+    <string name="gender_notSelect">Please select your gender.</string>
+
+    <!--PoseAct-->
+
+    <string name="Body">Body Scan</string>
+    <string name="guidline">Guidelines</string>
+    <string name="must">Must wear</string>
+    <string name="skin">skin tight</string>
+    <string name="outfit">outfit</string>
+    <string name="exmple">example- Spandex, Gym wear, Swim wear &amp; Skinny\'s </string>
+    <string name="tie">Tie</string>
+    <string name="your">your</string>
+    <string name="hair">hair</string>
+    <string name="be">Be</string>
+    <string name="bare">bare foot</string>
+
+    <!--    Camera screen-->
+
+    <string name="shellute">mainImage</string>
+    <string name="poseimage">posesmallpic</string>
+    <string name="mobilepose">mobileimage</string>
+    <string name="back">Back</string>
+    <string name="colorText">Color</string>
+    <string name="patternText">Pattern</string>
+    <string name="You_are_set">You are all set.</string>
+    <string name="back_btn">back button</string>
+    <!--    <string name="Incorrectangledescription">Your device is NOT at the correct position.</string>-->
+    <!--    <string name="Correct_angle_description">Your device is now at the CORRECT position.</string>-->
+    <string name="phonevertical">Set your device vertically straight between 86\u00B0–90\u00B0 angle. Please ensure that your device is not tilted to the left, right, forward or backward.</string>
+    <string name="front">Front</string>
+    <string name="side">Side</string>
+    <string name="ok">OK</string>
+    <string name="yes">YES</string>
+    <string name="scan_body">Scan body</string>
+    <string name="scan_finger">Scan finger</string>
+    <string name="no">NO</string>
+
+    <!-- PosePreview text-->
+
+    <string name="check_images">Check Images</string>
+    <string name="checkimgtext">Press yes if your image matches with the given example</string>
+    <string name="pose">Pose</string>
+
+    <!--Measurement Display Act-->
+
+    <string name="measurement">Measurements</string>
+    <string name="measurementtxt">My measurements according to given data and photos</string>
+    <string name="height">Height</string>
+    <string name="gender">Gender</string>
+    <string name="retake">Retake</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="measurements">Measurements</string>
+    <string name="body_txt">Body</string>
+    <string name="my">My</string>
+    <string name="mesrHistory">Measurement History</string>
+    <string name="measureDetails">Measurement Details</string>
+    <string name="got_measure">We Got Your Measurements</string>
+
+
+    <!--Thank you -->
+
+    <string name="thank">Thank You !</string>
+    <string name="thanktxt"><b>We Got Your Measurements</b></string>
+    <string name="con">Continue</string>
+
+    <!--Customer type-->
+
+    <string name="cutomerT">Select <b>Customer Type</b></string>
+    <string name="toproceed">To proceed buying this product</string>
+    <string name="pleaseSi">please <b>Sign In/ Sign Up.</b></string>
+    <string name="newCus"><b>New Customer</b></string>
+    <string name="retCus"><b>Returning Customer</b></string>
+
+    <!--Style Look-->
+    <!--    <string name="classic">Classic <b>Jackets</b></string>-->
+    <string name="jacketTxt">Description is the pattern of narrative development that aims to make vivid a place. objet, character,
+     or group.Description is one of four models </string>
+    <string name="Best">Best for Events</string>
+    <string name="sports">Sports Jacket</string>
+    <string name="buyNow">Buy now</string>
+
+    <!--Customization Act-->
+    <string name="jacket">Jacket</string>
+
+    <!--Reorder Activity-->
+    <string name="selectPro">Select <b>Product</b></string>
+    <string name="reorder">Reorder</string>
+    <string name="continuetoshop">Continue Shopping</string>
+    <string name="orderPre">Order <b>Preview</b></string>
+    <string name="style">Style</string>
+    <string name="fabric">Fabric</string>
+    <string name="fabrics">Fabrics</string>
+    <string name="vent">Vent</string>
+
+    <!--Measurement history-->
+    <string name="lastsc">Last Scanned</string>
+    <string name="scanwas">Last Scanned on 23rd March 2021</string>
+
+    <!--Wish List-->
+    <string name="wishList">WishList</string>
+
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
+    <!--    Edit Profile -->
+    <string name="editProfile">Edit Profile</string>
+    <string name="editYProfile">Edit your profile</string>
+    <string name="update">Update</string>
+
+    <string name="view_detail">View Detail</string>
+
+    <!--    Payment Activity-->
+
+    <string name="continue_with_paypal">Continue with PayPal</string>
+
+    <!--    Order Details  -->
+
+    <string name="paymentDetails">Payment Details</string>
+    <string name="subTotal">Sub Total</string>
+    <string name="discountHeading">Discount</string>
+    <string name="totalPaid">Total Paid</string>
+
+    <!--    privacy policy-->
+    <string name="privacy_policy_content1">Heritage House is committed to respecting the privacy rights of our customers and all visitors to our website. Any payment information you send us when submitting your "shop online" order is transmitted securely over the Internet from your computer to our bank\'s server.\nWhen you place an order, we need to know your name, email address, mailing address, credit card number, and expiration date. Your information will only be used to process, track and ship your order. This data (with the exception of your credit card information) will be retained with Heritage House for customer service purposes, and to inform customers of additional services and promotions that will be launched from time to time. Customer information will not be shared or sold to third parties. With respect to the customer\'s privacy, we have taken every consideration to protect your privacy, while providing you with a great online shopping experience.</string>
+    <string name="security_incaps">SECURITY</string>
+    <string name="privacy_policy_content2">The security of your personal information is important to us. When you enter sensitive information such as a credit card number while ordering with us, we encrypt the transmission of that information using secure socket layer technology (SSL).\nChanges To This Policy – We may update the privacy policy from time to time depending upon the feedback we receive from customers and market survey in the best interest of our business. We may update this privacy policy to reflect changes to our information practices. If any information changes we will notify you by email or by means of a short notice on this website prior to the changes become effective. Please do periodically review this page for the latest information on our privacy practices.</string>
+    <string name="additional_information">ADDITIONAL INFORMATION</string>
+    <string name="privacy_policy_content3">Testimonials or endorsements from our customers may be displayed on our website or on our social media platforms. We will contact you to receive approval if we are able to post your testimonial with your name.</string>
+    <string name="info_sharing_and_disclosure">INFORMATION SHARING AND DISCLOSURE</string>
+    <string name="privacy_policy_content4">Personal information collected through the use of our website is not shared with unaffiliated third parties. However, we must provide a certain extent of information to our employees, contractors, and agents such as our logistics provider, for them to complete necessary services.</string>
+    <string name="changing_or_deleting_your_info">CHANGING OR DELETING YOUR INFORMATION</string>
+    <string name="privacy_policy_content5">If you contact us by email through our website, we may keep a record of your contact information and correspondence in order to respond to you, as well as to send you periodic information about our products and services. Your information will not be shared with outside parties.\nIf you would like to change your personally identifiable information please feel free to email us at info@hhcustomtailor.com</string>
+
+    <!--    faq -->
+    <string name="faq_ques_one">Why do I need to register? Do I need to register?</string>
+    <string name="faq_ques_two">How do I define my own style?</string>
+    <string name="faq_ques_three">Can I change any stylistic features within a look offered in the Effortlessly Stylish section?</string>
+    <string name="faq_ques_four">How can I get the color I need which is not shown in the website?</string>
+    <string name="faq_ques_five">How can I be sure that my measurements are correct?</string>
+    <string name="faq_ques_six">Can I make any changes after I have placed the order?</string>
+    <string name="faq_ques_seven">How do you ship the order?</string>
+    <string name="faq_ques_eight">What is your return policy?</string>
+    <string name="faq_ques_nine">Can I cancel my order?</string>
+    <string name="faq_ques_ten">TI lost the Trousers to my last Three Piece Suit I ordered from you, can I reorder just the Trousers?</string>
+    <string name="faq_ques_eleven">How do I contact you?</string>
+
+    <string name="faq_ans_one">The registration process is a very simple one and was only created to ease the customer’s online shopping experience. In doing so, it will help the customer pull up, update and track their orders more efficiently. Apart from a customer’s credit card information, which is never stored on the server, information such as name, address, and measurements are stored for the customer to manage future orders. Please read the section titled “Privacy Policy” to determine how your personal information is handled.</string>
+    <string name="faq_ans_two">If you would like us to custom make garments to a style not displayed or available on our website, please email us an image to further discuss the possibility to create an item truly unique to you. You can reach us via email, phone or WhatsApp for more information and assistance you may need in regards to styles.</string>
+    <string name="faq_ans_three">This range of collections is exclusively designed based on our in-house research and accumulative experience. The fabric selections were also short listed via a combination of trends and a cohesiveness aspect to any fabric selected within a look. The fabrics can surely be selected as per your preference, but we had wished to maintain the design factors to complete the look. If perhaps you may like to change any design elements within a look, please send us an email or make a comment upon checking out, and we will surely accommodate the changes in the design elements accordingly.</string>
+    <string name="faq_ans_four">It may be possible that a particular color or fabric pattern is not included on our website. Please email us and give us an indication of which types or colors of fabric patterns you prefer, and we will gladly email you some samples for your further selection.</string>
+    <string name="faq_ans_five">Heritage House has created a simple, yet very effective and user friendly method which guides you through the sizing component of your shopping experience. The engine behind the important questions we ask and the correct answers we receive, is a formalized version of the large data set of information that we have accumulated over time and experience, and have created algorithmic full body measurement sets that is eventually unique to each person.</string>
+    <string name="faq_ans_six">In the case where a customer would like to make some changes to the styles, type of fabric or colors chosen, after placing an order, the status of the order will have to be checked by us (Heritage House) prior to confirming the changes. It would undoubtedly be a priority for us to try and incorporate any changes that are made post ordering to the best of our abilities. Please feel free to email us at info@hhcustomtailor.com asap if any changes may be required after an order is placed.</string>
+    <string name="faq_ans_seven">All orders are shipped using premium courier services such as DHL, FedEx, UPS, to name a few.</string>
+    <string name="faq_ans_eight">Heritage House will take great care in maintaining total customer satisfaction and retaining customer loyalty. Should there be an inadvertent error made on our part, please email us and we will do all the necessary adjustments and/or replacements and reship the order to the customer. Any claims to the order need to be informed to us within 30 days after receiving the items. Please email us your concerns and our customer service team will immediately get back to you with the next process.</string>
+    <string name="faq_ans_nine">An order having been placed cannot be cancelled. This is because once an order is placed, patterns are exclusively made and fabrics are cut as per the commissioned order for each individual as per the selected styles and measurements. For more specific answers to your questions about our return policy, please feel free to email us at info@hhcustomtailor.com.</string>
+    <string name="faq_ans_ten">Yes absolutely, from your account dashboard, you have the ability to view and reorder any item from your order history.</string>
+    <string name="faq_ans_eleven">If you have any questions, comments or feedback for us, please email us at info@hhcustomtailor.com or contact us at our Customer Service Department WhatsApp number (66) 81-311-1405 any time from Monday to Saturday between 9.30 am to 6.30pm (GMT/UTC+7 hours) or please email us your contact number and we will call you.\nYou can also reach us at:\nHeritage House/R&amp;R Apparel International Co. Ltd.\n64/18 Sukhumvit Road , Soi 20\nKlongtoei, Bangkok 10110\nThailand\nTel : (66) 260 7454</string>
+
+
+    <!--    Comment Popup   -->
+    <string name="comment_cust">Add comments to customization.</string>
+    <string name="submit">Submit</string>
+
+    <string name="enter_details">Enter Details</string>
+    <string name="enter_subText">Please enter correct details for more accurate measurements</string>
+    <string name="age">Age</string>
+    <string name="ft">ft</string>
+    <string name="weight">Weight</string>
+    <string name="shoe_size">Shoe Size</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="US">US</string>
+    <string name="EU">EU</string>
+    <string name="preferred_fit">Preferred Fit</string>
+    <string name="tapered">Tapered</string>
+    <string name="regular">Regular</string>
+    <string name="loose">Loose</string>
+
+
+    <string name="es1">Can\'t detect the human in the scene. Please try again</string>
+    <string name="es2">Please check that you\'re alone in the frame and try again.</string>
+    <string name="es3">Please check lighting is suitable enough and also make sure your full body is visible in the frame to avoid occlusion</string>
+    <string name="es4">Wrong front pose, please keep your arms at an approx angle of 45 degree and widen-up your legs</string>
+    <string name="es5">Wrong front pose, please keep your arms raised approx at 45 degree from sides</string>
+    <string name="es6">Wrong front pose, please keep your feet apart approx. by 1 ft.</string>
+    <string name="es7">Wrong side pose, please stand straight, look forward and make sure you\'re completely visible in the frame</string>
+    <string name="es8">Wrong side pose, please stand straight and look forward</string>
+    <string name="es9">Wrong side pose, please make sure you are completely visible in the frame</string>
+    <string name="es10">Please check your front/side pose, ensure that your full body is visible in the frame and try again.</string>
+    <string name="defaultmsg">The system couldn\'t process your request due to multiple noise in the scene. Please try again once more.</string>
+
+    <string name="app_status_text">The camera capture method is deprecated. To use this feature, please update the camera image capture method.</string>
+
+</resources>

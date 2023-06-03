@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".ui.SplashAct">
+
+    <VideoView
+        android:id="@+id/SplashVideoView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:layout_above="@+id/viewOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_25sdp"
+        android:fontFamily="@font/lato_bold"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="@string/splash_text"
+        android:elevation="@dimen/_7sdp"/>
+
+    <View
+        android:id="@+id/viewOne"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_centerInParent="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:elevation="@dimen/_1sdp">
+        <Button
+            android:id="@+id/splash_registerbtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".4"
+            android:background="@drawable/white_background"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textAlignment="center"
+            android:text="@string/join"
+            android:textAllCaps="false"
+            android:textColor="@color/App_color_dark_grey"
+            android:textSize="@dimen/_14sdp"
+            android:fontFamily="@font/lato_bold"
+            />
+        <Button
+            android:id="@+id/splash_loginbtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".4"
+            android:background="@drawable/splash_transparent_btn_bg"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textAlignment="center"
+            android:text="@string/explore"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp"
+            android:fontFamily="@font/lato_bold"
+            />
+    </LinearLayout>
+</RelativeLayout>

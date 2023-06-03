@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/baseView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/white_background">
+
+    <ImageView
+        android:id="@+id/successPop_Header_image"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:src="@drawable/ok"
+        android:contentDescription="@string/ok"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_centerHorizontal="true"
+        app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/successPop_error_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/textColor"
+            android:fontFamily="@font/lato_regular"
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_below="@+id/successPop_Header_image"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/successPop_done_button"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:text="Ok"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            android:elevation="@dimen/_2sdp"
+            android:background="@drawable/btn_blue_bg"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_below="@+id/successPop_error_description"
+            android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>

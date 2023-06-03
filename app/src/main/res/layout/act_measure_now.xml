@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.measure.MeasureNow">
+
+    <ImageView
+        android:id="@+id/backImage1"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_3sdp"
+        android:src="@drawable/left"  />
+
+    <ImageView
+        android:id="@+id/imageVie"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_alignParentEnd="true"
+        android:alpha=".1"
+        android:scaleType="fitXY"
+        android:src="@drawable/hhtlogo" />
+
+    <TextView
+        android:id="@+id/proTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageVie"
+        android:layout_marginStart="@dimen/_60sdp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/selectto"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_20sdp" />
+
+    <TextView
+        android:id="@+id/txtneed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/proTxt"
+        android:layout_marginStart="@dimen/_60sdp"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/textColor"
+        android:text="@string/needMeasure"
+        android:textSize="@dimen/_12sdp" />
+
+    <RelativeLayout
+        android:id="@+id/rel_lay1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_140sdp"
+        android:layout_below="@+id/txtneed"
+        android:layout_marginStart="@dimen/_60sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:background="@drawable/card_background_layout"
+        android:elevation="@dimen/_3sdp">
+
+        <ImageView
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:alpha=".1"
+            android:src="@drawable/mesu" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/textColor"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/measure"
+            android:textSize="@dimen/_16sdp" />
+
+        <Button
+            android:id="@+id/getStartBtn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/lato_bold"
+            android:background="@drawable/details_background"
+            android:text="@string/getStarted"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_140sdp"
+        android:layout_marginStart="@dimen/_60sdp"
+        android:layout_below="@+id/rel_lay1"
+        android:elevation="@dimen/_3sdp"
+        android:background="@drawable/card_background_layout"
+        android:layout_marginTop="@dimen/_15sdp">
+
+        <ImageView
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:alpha=".1"
+            android:src="@drawable/mesure" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/preMeasurement"
+            android:textColor="@color/textColor"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/_16sdp"/>
+        <Button
+            android:id="@+id/proceedBtn2"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/details_background"
+            android:text="@string/proceed"
+            android:fontFamily="@font/lato_bold"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+</RelativeLayout>

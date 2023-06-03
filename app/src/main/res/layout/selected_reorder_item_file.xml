@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/SelectedreorderItemCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_grey">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:background="@color/white">
+        <RelativeLayout
+            android:id="@+id/SelectImage"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="top"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp" />
+        <TextView
+            android:id="@+id/selectItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_toEndOf="@id/SelectImage"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/App_color_dark_grey"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/selectItemsData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selectItemName"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_toEndOf="@id/SelectImage"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_11sdp" />
+
+        <TextView
+            android:id="@+id/selectItemsPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_below="@+id/selectItemsData"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_toEndOf="@id/SelectImage"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/App_color_light_grey"
+            android:textSize="@dimen/_11sdp" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

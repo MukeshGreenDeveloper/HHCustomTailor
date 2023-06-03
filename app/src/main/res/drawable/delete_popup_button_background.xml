@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners
+                android:topLeftRadius="@dimen/_17sdp"
+                android:topRightRadius="@dimen/_17sdp"
+                android:bottomLeftRadius="@dimen/_17sdp"
+                android:bottomRightRadius="@dimen/_17sdp"/>
+            <solid android:color="@color/App_color_cart_background"/>
+        </shape>
+    </item>
+</selector>

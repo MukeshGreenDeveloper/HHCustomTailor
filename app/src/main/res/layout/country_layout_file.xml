@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_44sdp">
+
+    <TextView
+        android:id="@+id/countrylabel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:fontFamily="@font/lato_regular"
+        android:textSize="@dimen/_14sdp"
+        android:textColor="@color/App_color_dark_grey"
+        android:gravity="center"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/App_color_cart_background"
+        android:layout_below="@+id/countrylabel"
+        />
+
+</RelativeLayout>

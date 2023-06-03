@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_100sdp"
+    android:layout_marginBottom="@dimen/_100sdp"
+    android:background="@drawable/white_background_low_border"
+    android:padding="@dimen/_15sdp">
+
+    <EditText
+        android:id="@+id/searchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@drawable/white_background_low_border"
+        android:elevation="@dimen/_3sdp"
+        android:fontFamily="@font/lato_regular"
+        android:hint="Search"
+        android:paddingStart="@dimen/_10sdp"
+        android:textColor="@color/App_color_light_grey"
+        android:textSize="@dimen/_12sdp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/countryStateRecy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchLayout"
+        android:layout_marginTop="@dimen/_15sdp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</RelativeLayout>
