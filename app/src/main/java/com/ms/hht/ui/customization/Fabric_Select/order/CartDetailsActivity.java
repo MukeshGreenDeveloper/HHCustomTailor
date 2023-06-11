@@ -86,6 +86,10 @@ public class CartDetailsActivity extends AppCompatActivity implements View.OnCli
 //        PaymentAct.FINAL_AMOUNT_TO_BE_PAID = String.valueOf(CART_LIST.getGrandTotal());
         cartDetailsBinding.ShipAddVAlue.setText(Constants.shippingAddress_VALUE);
         cartDetailsBinding.BillAddValue.setText(Constants.billingAddress_VALUE);
+        if(MeasureNow.activityComingFrom == "cart"){
+//            CommFunc.ShowProgressbar(this);
+            CommFunc.DismissDialog();
+        }
 
 
 

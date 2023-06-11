@@ -26,6 +26,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.ms.hht.R;
 import com.ms.hht.data.SignUpResponse;
+import com.ms.hht.data.request.SignupRequest;
 import com.ms.hht.data.service.APICallList;
 import com.ms.hht.data.service.DisposableData;
 import com.ms.hht.databinding.ActMeasureNowBinding;
@@ -41,6 +42,7 @@ public class MeasureNow extends AppCompatActivity implements View.OnClickListene
     SessionManager sessionManager;
     SignUpResponse signUpResponse;
     ActMeasureNowBinding nowBinding;
+    String userToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,39 +66,41 @@ public class MeasureNow extends AppCompatActivity implements View.OnClickListene
         Intent appLinkIntent = getIntent();
         String appLinkAction = appLinkIntent.getAction();
         Uri appLinkData = appLinkIntent.getData();
-        Log.d("keyss..", "Received Data here==>activion=" + appLinkAction);
-        Log.d("keyss..", "Received Data here==>appLinkData=" + appLinkData);
-        try {
-            FirebaseApp.initializeApp(getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+        if(appLinkData!=null) { // Intent received from click on URL or scan URL
+            Log.d("keyss..", "Received Data here==>activion=" + appLinkAction);
+            Log.d("keyss..", "Received Data here==>appLinkData=" + appLinkData);
             try {
-                FirebaseDynamicLinks.getInstance()
-                        .getDynamicLink(appLinkIntent)
-                        .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                            @Override
-                            public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                                // Get deep link from result (may be null if no link is found)
-                                Uri deepLink = null;
-                                String token = null;
-                                if (pendingDynamicLinkData != null) {
-                                    deepLink = pendingDynamicLinkData.getLink();
-                                    token = deepLink.getQueryParameter("token");
-                                    userLogin(token);
-
-                                }
-                                Log.w("keysss....Success", "Receied Link data=>" + "__token==>" + token);
-                            }
-                        })
-                        .addOnFailureListener(this, new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("keysss....Error", "getDynamicLink:onFailure", e);
-                            }
-                        });
+                FirebaseApp.initializeApp(getApplicationContext());
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    FirebaseDynamicLinks.getInstance()
+                            .getDynamicLink(appLinkIntent)
+                            .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                                @Override
+                                public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                                    // Get deep link from result (may be null if no link is found)
+                                    Uri deepLink = null;
+                                    String token = null;
+                                    if (pendingDynamicLinkData != null) {
+                                        deepLink = pendingDynamicLinkData.getLink();
+                                        token = deepLink.getQueryParameter("token");
+                                        userLoginByToken(token);
+
+                                    }
+                                    Log.w("keysss....Success", "Receied Link data=>" + "__token==>" + token);
+                                }
+                            })
+                            .addOnFailureListener(this, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("keysss....Error", "getDynamicLink:onFailure", e);
+                                }
+                            });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -121,15 +125,31 @@ public class MeasureNow extends AppCompatActivity implements View.OnClickListene
                 break;
         }
     }
-    private void userLogin(String token) {
+    private void userLoginByToken(String token) {
         if (token != null && !TextUtils.isEmpty(token))
             if (InternetConnection.isConnected(MeasureNow.this)) {
                 CommFunc.ShowProgressbar(this);
                 Log.d("keyss...","Trying to login==>"+token);
+                this.userToken =  token;
                 APICallList.userLoginByToken(token, "user login", response, MeasureNow.this);
             } else {
                 CommFunc.ShowStatusPop(this, getResources().getString(R.string.internet), false);
             }
+    }
+    private void userLogin(String email, String password, String token) {
+        if (password != null && !TextUtils.isEmpty(password) && token != null && !TextUtils.isEmpty(token)) {
+            if (InternetConnection.isConnected(MeasureNow.this)) {
+                CommFunc.ShowProgressbar(this);
+                Log.d("keyss...", "Trying to login==>" + token);
+                SignupRequest signupRequest = new SignupRequest(email, password);
+                signupRequest.setToken(token);
+                APICallList.userLogin(signupRequest, "user login via passcode", response, MeasureNow.this);
+            } else {
+                CommFunc.ShowStatusPop(this, getResources().getString(R.string.internet), false);
+            }
+        }else {
+            CommFunc.ShowStatusPop(this, "Request could not be processed, require more information ", false);
+        }
     }
 
     private final DisposableData response = new DisposableData() {
@@ -140,12 +160,37 @@ public class MeasureNow extends AppCompatActivity implements View.OnClickListene
                 signUpResponse = (SignUpResponse) o;
                 if (signUpResponse != null) {
                     if(signUpResponse.getCode()==1) {
+//                        sessionManager = new SessionManager(MeasureNow.this);
+                        if(signUpResponse.getData().getEmail()!=null && signUpResponse.getData().getPassword()!=null) {
+                            sessionManager.logoutUser();
+                            sessionManager.setUserEmail(signUpResponse.getData().getEmail());
+                            sessionManager.setUserPassword(signUpResponse.getData().getPassword());
+                            sessionManager.setUserToken(userToken);
+                            userLogin(signUpResponse.getData().getEmail(), signUpResponse.getData().getPassword(), MeasureNow.this.userToken);
+                        }else{
+                            CommFunc.ShowStatusPop(MeasureNow.this, "Request could not be processed, requested information not found", false);
+                        }
+//                        sessionManager.setUserId("349");//For Testing need to be changed to signUpResponse.getData().getId());
+//                        sessionManager.setLoginSession("Logged in");
+//                        ShowPopUP("Logged in as "+signUpResponse.getData().getEmail(),true,signUpResponse);
+                    }
+                    else if (signUpResponse.getCode() == 2){
+                        ShowPopUP(signUpResponse.getMessage(),false,signUpResponse);
+                    }
+                    else {
+                        CommFunc.ShowStatusPop(MeasureNow.this,signUpResponse.getMessage(),false);
+                    }
+                }
+            }else if(url_type.equalsIgnoreCase("user login via passcode")){
+                CommFunc.DismissDialog();
+                signUpResponse = (SignUpResponse) o;
+                if (signUpResponse != null) {
+                    if(signUpResponse.getCode()==1) {
                         sessionManager = new SessionManager(MeasureNow.this);
-                        sessionManager.setUserEmail(signUpResponse.getData().getEmail());
-                        sessionManager.setUserPassword(signUpResponse.getData().getPassword());
-                        sessionManager.setUserId("349");//For Testing need to be changed to signUpResponse.getData().getId());
+                        Log.d("keyss....=>","id==>"+String.valueOf(signUpResponse.getData().getId()));
+                        sessionManager.setUserId(String.valueOf(signUpResponse.getData().getId()));
                         sessionManager.setLoginSession("Logged in");
-                        ShowPopUP("Logged in as "+signUpResponse.getData().getEmail(),true,signUpResponse);
+                        ShowPopUP("Logged in as "+sessionManager.getUserEmail(),true,signUpResponse);
                     }
                     else if (signUpResponse.getCode() == 2){
                         ShowPopUP(signUpResponse.getMessage(),false,signUpResponse);
