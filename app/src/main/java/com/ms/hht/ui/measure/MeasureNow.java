@@ -60,7 +60,7 @@ public class MeasureNow extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onBackPressed() {
-        if (!((HHTApplication) getApplication()).isHomeScreenPaused()) {
+        if (!((HHTApplication) getApplication()).isHomeScreenPaused()) {    
             Intent i1 = new Intent(MeasureNow.this, HomeScreen.class);
             startActivity(i1);
             finish();

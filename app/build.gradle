@@ -83,4 +83,10 @@ dependencies {
 
     //Paypal
     implementation 'com.paypal.checkout:android-sdk:0.8.6'
+//    implementation 'com.paypal.checkout:android-sdk:0.6.1'
+//    implementation 'com.paypal.checkout:android-sdk:0.112.2'
+    //MirrorSize
+    implementation 'com.github.MirrorSize:Mirrorsize_Android_SDK:2.3'
+    //Camera View source: https://github.com/RedApparat/Fotoapparat
+    implementation 'io.fotoapparat:fotoapparat:2.7.0'
 }

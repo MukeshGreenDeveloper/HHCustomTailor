@@ -97,6 +97,9 @@ public interface APIService {
     @POST(Constants.RESENT_OTP)
     Call<SignUpResponse> resendUserOTP(@Body SignupRequest signupRequest);
 
+    @POST("measurement/")
+    Call<SETmeasurementResponse> setUserMeasurement(@Body Map<String, Object> map);
+
     @POST(Constants.GENERATE_PASSWORD)
     Call<SignUpResponse> generateNewPassword(@Body GeneratePasswordRequest signupRequest);
 
@@ -174,6 +177,9 @@ public interface APIService {
 
     @GET(Constants.ORDER_LIST)
     Call<OrderListResponse> getOrderlist();
+
+    @POST("api/measurement/getmeasurement/")
+    Call<GETMSMeasurementResponse> getMSMeasurement(@Body GetMSMeasurementRequest getMSMeasurementRequest);
 
     @GET(Constants.ORDER_DETAIL)
     Call<OrderDetailResponse> getOrderData(@Path("order_id") int order_id);

@@ -70,6 +70,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Converter;
+import retrofit2.Response;
 
 public class APICallList {
 
@@ -1472,8 +1473,84 @@ public class APICallList {
 
 
     }
+    public static void getMSMeasurement(GetMSMeasurementRequest getMSMeasurementRequest, final String str,
+                                        final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClientUrl2(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getMSMeasurement(getMSMeasurementRequest).enqueue(new Callback<GETMSMeasurementResponse>() {
+            public void onResponse(Call<GETMSMeasurementResponse> call, Response<GETMSMeasurementResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(GETMSMeasurementResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
+            public void onFailure(Call<GETMSMeasurementResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+    public static void setUserMeasurement(Map<String, Object> map, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.setUserMeasurement(map).enqueue(new Callback<SETmeasurementResponse>() {
+            public void onResponse(Call<SETmeasurementResponse> call, Response<SETmeasurementResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit
+                                .responseBodyConverter(SETmeasurementResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
+            public void onFailure(Call<SETmeasurementResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     public static void ReorderAddToCart(ReorderCartRequest reorderCartRequest, final String item, final DisposableData res, Context context) {
 
         service = APIClient.getClient(context).create(APIService.class);

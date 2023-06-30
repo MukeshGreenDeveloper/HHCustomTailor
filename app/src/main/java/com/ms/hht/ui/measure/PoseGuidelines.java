@@ -1,12 +1,5 @@
 package com.ms.hht.ui.measure;
 
-import static com.ms.hht.utils.CommonFunc.hasPermissions;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,10 +8,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.ms.hht.R;
 import com.ms.hht.databinding.ActPoseGuidelinesBinding;
-import com.ms.hht.ui.SplashAct;
-import com.ms.hht.ui.login.LoginActivity;
 import com.ms.hht.utils.ComUserProfileData;
 import com.ms.hht.utils.CommonFunc;
 import com.ms.hht.utils.SessionManager;
@@ -42,13 +38,13 @@ public class PoseGuidelines extends AppCompatActivity {
 
 //        System.out.println("GENDER+++++++++++++"+sessionManager.getUserGender());
 
-        if (ComUserProfileData.getmeasurementGender().equalsIgnoreCase("female")){
+        if (ComUserProfileData.getmeasurementGender().equalsIgnoreCase("female")) {
 
             guidelinesBinding.poseOne.setImageResource(R.drawable.pose_img_1);
             guidelinesBinding.pose2.setImageResource(R.drawable.pose_img_2);
             guidelinesBinding.pose3.setImageResource(R.drawable.pose_img_3);
 
-        }else {
+        } else {
 
             guidelinesBinding.poseOne.setImageResource(R.drawable.male_intro1);
             guidelinesBinding.pose2.setImageResource(R.drawable.male_intro2);
@@ -61,33 +57,48 @@ public class PoseGuidelines extends AppCompatActivity {
                     finish();
                     startActivity(i1);
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-        }
+                }
         );
 
         guidelinesBinding.proceedbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (!hasPermissions(PoseGuidelines.this, PERMISSION)) {
-                    ActivityCompat.requestPermissions(PoseGuidelines.this, PERMISSION, REQUEST_CODE);
+                PoseGuidelines poseGuidelines = PoseGuidelines.this;
+                if (!CommonFunc.hasPermissions(poseGuidelines, poseGuidelines.PERMISSION)) {
+                    PoseGuidelines poseGuidelines2 = PoseGuidelines.this;
+                    ActivityCompat.requestPermissions(poseGuidelines2, poseGuidelines2.PERMISSION, REQUEST_CODE);
+                    return;
                 }
-                else {
-                }
+                nextCameraActivity();
+//                if (!hasPermissions(PoseGuidelines.this, PERMISSION)) {
+//                    ActivityCompat.requestPermissions(PoseGuidelines.this, PERMISSION, REQUEST_CODE);
+//                }
+//                else {
+//
+//                }
 
             }
         });
     }
 
-        @Override
-        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    CommonFunc.ShowStatusPop(PoseGuidelines.this, "this app requires camera permission to measure your health", false);
-                }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                nextCameraActivity();
+            } else {
+                CommonFunc.ShowStatusPop(PoseGuidelines.this, "this app requires camera permission to measure your health", false);
             }
         }
+    }
+
+    private void nextCameraActivity() {
+        Intent intent = new Intent(this, CameraAct.class);
+        finish();
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
 
     @Override
     public void onBackPressed() {
