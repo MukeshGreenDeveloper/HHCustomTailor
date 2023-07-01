@@ -145,6 +145,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.ms.hht.ui.measure.MeasurementResult"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.ms.hht.ui.measure.PosePreviewAct"
             android:exported="true"
             android:screenOrientation="portrait" />

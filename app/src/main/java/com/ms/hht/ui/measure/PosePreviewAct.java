@@ -224,12 +224,12 @@ public class PosePreviewAct extends AppCompatActivity {
     }
 
     private void switchNextActivity() {
-//        Intent intent = new Intent(this, MeasurementResult.class);
-//        MeasurementResult.MeasurementHistoryActivityComingFrom = "cart";
-//        MeasurementResult.MEASUREMENT = this.getMSMeasurementResponse.getData();
-//        finish();
-//        startActivity(intent);
-//        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        Intent intent = new Intent(this, MeasurementResult.class);
+        MeasurementResult.MeasurementHistoryActivityComingFrom = "cart";
+        MeasurementResult.MEASUREMENT = this.getMSMeasurementResponse.getData();
+        finish();
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     /* access modifiers changed from: private */
