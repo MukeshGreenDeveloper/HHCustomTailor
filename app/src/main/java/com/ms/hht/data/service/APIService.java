@@ -1,6 +1,5 @@
 package com.ms.hht.data.service;
 
-
 import com.ms.hht.data.SignUpResponse;
 import com.ms.hht.data.request.AddAndUpdateAddressRequest;
 import com.ms.hht.data.request.ChangePassRequestBody;
@@ -58,16 +57,10 @@ import com.ms.hht.data.response.UpdateCartQuantityResponse;
 import com.ms.hht.data.response.UpdateDefaultAddressResponse;
 import com.ms.hht.data.response.UpdateUserProfileResponse;
 import com.ms.hht.ui.payment.PlaceOrderRequestBody;
-import com.ms.hht.utils.Constants;
-
-import java.util.HashMap;
 import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.POST;
@@ -76,151 +69,147 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
+    @POST("cart/")
+    Call<AddToCartResponse> LiningAddToCart(@Body LiningAddToCartRequest liningAddToCartRequest);
 
-    @POST(Constants.SIGN_UP)
-    Call<SignUpResponse> userSignUp(@Body SignupRequest signupRequest);
+    @POST("reorder/")
+    Call<AddToCartResponse> ReORDERaddToCart(@Body ReorderCartRequest reorderCartRequest);
 
-    @POST(Constants.LOGIN)
-    Call<SignUpResponse> userLogin(@Body SignupRequest signupRequest);
+    @POST("address/")
+    Call<AddAddressResponse> addUserAddress(@Body AddAndUpdateAddressRequest addAndUpdateAddressRequest);
 
-    @POST(Constants.LOGIN_WITH_TOKEN)
-//    @FormUrlEncoded
-    Call<SignUpResponse> userLoginWithToken(@Query("token") String token);
-//    Call<SignUpResponse> userLoginWithToken(@Body HashMap<String, String> user);
+    @POST("change_password/")
+    Call<ChangePasswordResponse> changePasseord(@Body ChangePassRequestBody changePassRequestBody);
 
-    @DELETE(Constants.DELETE_ACCOUNT)
+    @POST("api/user/checkprocessid")
+    Call<CheckMeasureMe> checkProcessId(@Body MeasureMeRequest measureMeRequest);
+
+    @DELETE("address/{address_id}")
+    Call<DeleteAddressResponse> deleteAddress(@Path("address_id") int i);
+
+    @HTTP(hasBody = true, method = "DELETE", path = "cart/")
+    Call<DeleteCartResponse> deleteCart(@Body DeleteCartItemRequest deleteCartItemRequest);
+
+    @DELETE("delete_account/")
     Call<AddToCartResponse> deleteUserAccount();
 
-    @POST(Constants.FORGOT_PASSWORD)
+    @POST("forgot_password/")
     Call<SignUpResponse> forgotPassword(@Body SignupRequest signupRequest);
 
-    @POST(Constants.RESENT_OTP)
+    @POST("generate_new_password/")
+    Call<SignUpResponse> generateNewPassword(@Body GeneratePasswordRequest generatePasswordRequest);
+
+    @POST("api/ms_initialize_user")
+    Call<ProcessResponse> generateProcess(@Body ProcessIDRequest processIDRequest);
+
+    @GET("accent/{piece_id}/")
+    Call<AccentResponse> getAccentData(@Path("piece_id") int i);
+
+    @GET("address/")
+    Call<AddressListResponse> getAddList();
+
+    @GET("api/app-status")
+    Call<AppStatusResponse> getAppStatus(@Query("appName") String str, @Query("screenName") String str2, @Query("appOs") String str3);
+
+    @GET("cart/")
+    Call<CartListResponse> getCartList();
+
+    @GET("country/")
+    Call<GetCountryResponse> getCountry();
+
+    @GET("customer_info/")
+    Call<GetCustomerInfoResponse> getCustomerInfo();
+
+    @POST("lining_filters/{piece_id}/")
+    Call<LiningResponse> getDataToSetLiningFilter(@Body LiningFilterListRequest liningFilterListRequest, @Path("piece_id") int i);
+
+    @POST("filters/{subcategory_id}/")
+    Call<FabricFilterResponse> getFabricFilter(@Body FabricListRequest fabricListRequest, @Path("subcategory_id") int i);
+
+    @POST("feature_images/")
+    Call<GetFeatureImagesResponse> getFeatureIMAGES(@Body GetFeatureImagesRequest getFeatureImagesRequest);
+
+    @GET("filters/{subcategory_id}/")
+    Call<FabricFilterListResponse> getFilterList(@Path("subcategory_id") int i);
+
+    @GET("category/{type_id}/")
+    Call<StylelookDataResponse> getImages(@Path("type_id") int i);
+
+    @GET("lining_filters/{piece_id}/")
+    Call<LiningFilterOptionResponse> getLiningFilter(@Path("piece_id") int i);
+
+    @POST("api/measurement/getmeasurement/")
+    Call<GETMSMeasurementResponse> getMSMeasurement(@Body GetMSMeasurementRequest getMSMeasurementRequest);
+
+    @GET("order/{order_id}")
+    Call<OrderDetailResponse> getOrderData(@Path("order_id") int i);
+
+    @GET("recent_orders/")
+    Call<OrderListResponse> getOrderlist();
+
+    @GET("piece_types/{piece_id}/")
+    Call<FabricSelectionGetPieceTypesResponse> getPieceTYPE(@Path("piece_id") int i);
+
+    @GET("item_details/{item_id}/")
+    Call<ProductDescriptionRes> getProductDes(@Path("item_id") Integer num);
+
+    @GET("region/{country_id}/")
+    Call<GetStateResponse> getRegionList(@Path("country_id") String str);
+
+    @GET("piece/{subcategory_id}/")
+    Call<PieceSelectionResponse> getStylePiece(@Path("subcategory_id") Integer num);
+
+    @GET("style/{piece_id}/")
+    Call<StyleResponse> getStyledata(@Path("piece_id") int i);
+
+    @GET("subcategory/{parent_id}/")
+    Call<SubCategoryResponse> getSubCategoryData(@Path("parent_id") Integer num);
+
+    @GET("types/")
+    Call<TypeResponse> getTYPE();
+
+    @POST("piece_types/{piece_id}/")
+    Call<PieceResponse> getTabListData(@Path("piece_id") int i);
+
+    @GET("measurements/")
+    Call<MeasurementHistoryResponse> getmeasurementHistory();
+
+    @GET("customer_info/")
+    Call<GetUserProfileResponse> getuserProfile();
+
+    @POST("payment/")
+    Call<ChangePasswordResponse> paymentCAlling(@Body PlaceOrderRequestBody placeOrderRequestBody);
+
+    @POST("place_order/")
+    Call<ChangePasswordResponse> placeOrder(@Body PlaceOrderRequestBody placeOrderRequestBody);
+
+    @POST("resend_otp/")
     Call<SignUpResponse> resendUserOTP(@Body SignupRequest signupRequest);
 
     @POST("measurement/")
     Call<SETmeasurementResponse> setUserMeasurement(@Body Map<String, Object> map);
 
-    @POST(Constants.GENERATE_PASSWORD)
-    Call<SignUpResponse> generateNewPassword(@Body GeneratePasswordRequest signupRequest);
-
-    @POST(Constants.VERIFY_OTP)
-    Call<SignUpResponse> verifyUserOtp(@Body VerifyOtpRequest verifyOtpRequest);
-
-    @POST(Constants.VERIFY_OTP)
-    Call<SignUpResponse> verifyForgotUserOtp(@Body ForgotPassOTPRequestBody verifyOtpRequest);
-
-    @GET(Constants.CUSTOMER_INFO)
-    Call<GetCustomerInfoResponse> getCustomerInfo();
-
-    @GET(Constants.TYPE)
-    Call<TypeResponse> getTYPE();
-
-    @GET(Constants.CATEGORY)
-    Call<StylelookDataResponse> getImages(
-            @Path("type_id") int type_id);
-
-    @GET(Constants.SUB_CATEGORY_ID)
-    Call<SubCategoryResponse> getSubCategoryData(
-            @Path("parent_id") Integer category_id);
-
-    @GET(Constants.PRODUCT_DESCP)
-    Call<ProductDescriptionRes> getProductDes(
-            @Path("item_id") Integer item_id);
-
-    @GET(Constants.STYLE_PIECE)
-    Call<PieceSelectionResponse> getStylePiece(
-            @Path("subcategory_id") Integer subcategory_id);
-
-    @GET(Constants.MEASUREMRNT_HISTORY)
-    Call<MeasurementHistoryResponse> getmeasurementHistory();
-
-    @GET(Constants.USER_PROFILE)
-    Call<GetUserProfileResponse> getuserProfile();
-
-    @POST(Constants.UPDATE_PROFILE)
+    @POST("update_account_info/")
     Call<UpdateUserProfileResponse> upateUserProfile(@Body UpdateUserProfileRequest updateUserProfileRequest);
 
-    @GET(Constants.GET_COUNTRY)
-    Call<GetCountryResponse> getCountry();
-
-    @GET(Constants.GET_REGION)
-    Call<GetStateResponse> getRegionList(
-            @Path("country_id") String country_id);
-
-    @POST(Constants.ADD_ADDRESS)
-    Call<AddAddressResponse> addUserAddress(@Body AddAndUpdateAddressRequest addAndUpdateAddressRequest);
-
-    @POST(Constants.CHANGE_PASSWORD)
-    Call<ChangePasswordResponse> changePasseord(@Body ChangePassRequestBody changePassRequestBody);
-
-    @GET(Constants.ADD_ADDRESS)
-    Call<AddressListResponse> getAddList();
-
-    @PUT(Constants.UPDATE_ADDRESS)
-    Call<UpdateAddressResponse> updateUserAddress(@Body AddAndUpdateAddressRequest addAndUpdateAddressRequest,
-                                                  @Path("address_id") int address_id);
-
-    @PUT(Constants.UPDATE_DEFAULT_ADDRESS)
-    Call<UpdateDefaultAddressResponse> updateDefaultAddress(@Body UpdateDefaultAddressRequest updateDefaultAddressRequest);
-
-    @DELETE(Constants.UPDATE_ADDRESS)
-    Call<DeleteAddressResponse> deleteAddress(@Path("address_id") int address_id);
-
-    @POST(Constants.FABRIC_FILTER)
-    Call<FabricFilterResponse> getFabricFilter(@Body FabricListRequest fabricListRequest, @Path("subcategory_id") int subcategory_id);
-
-    @POST(Constants.TAB_LIST)
-    Call<PieceResponse> getTabListData(@Path("piece_id") int subcategory_id);
-
-    @GET(Constants.FABRIC_FILTER)
-    Call<FabricFilterListResponse> getFilterList(@Path("subcategory_id") int subcategory_id);
-
-    @GET(Constants.ORDER_LIST)
-    Call<OrderListResponse> getOrderlist();
-
-    @POST("api/measurement/getmeasurement/")
-    Call<GETMSMeasurementResponse> getMSMeasurement(@Body GetMSMeasurementRequest getMSMeasurementRequest);
-
-    @GET(Constants.ORDER_DETAIL)
-    Call<OrderDetailResponse> getOrderData(@Path("order_id") int order_id);
-
-    @GET(Constants.CART_LIST)
-    Call<CartListResponse> getCartList();
-
-    @POST(Constants.CHECK_PROCESS_ID)
-    Call<CheckMeasureMe> checkProcessId(@Body MeasureMeRequest req);
-
-    @HTTP(method = "DELETE", path = Constants.CART_LIST, hasBody = true)
-    Call<DeleteCartResponse> deleteCart(@Body DeleteCartItemRequest deleteCartItemRequest);
-
-    @POST(Constants.REORDER_LIST)
-    Call<AddToCartResponse> ReORDERaddToCart(@Body ReorderCartRequest reorderCartRequest);
-
-    @POST(Constants.CART_QUANTITY)
+    @POST("quantity/")
     Call<UpdateCartQuantityResponse> updateCart(@Body UpdateCartQuantityRequest updateCartQuantityRequest);
 
-    @GET(Constants.GET_PIECE_TYPE)
-    Call<FabricSelectionGetPieceTypesResponse> getPieceTYPE(@Path("piece_id") int piece_id);
+    @PUT("default_address/")
+    Call<UpdateDefaultAddressResponse> updateDefaultAddress(@Body UpdateDefaultAddressRequest updateDefaultAddressRequest);
 
-    @POST(Constants.GET_FEATURE_IMAGE)
-    Call<GetFeatureImagesResponse> getFeatureIMAGES(@Body GetFeatureImagesRequest getFeatureImagesRequest);
+    @PUT("address/{address_id}")
+    Call<UpdateAddressResponse> updateUserAddress(@Body AddAndUpdateAddressRequest addAndUpdateAddressRequest, @Path("address_id") int i);
 
-    @GET(Constants.GET_LINING)
-    Call<LiningFilterOptionResponse> getLiningFilter(@Path("piece_id") int piece_id);
+    @POST("signin/")
+    Call<SignUpResponse> userLogin(@Body SignupRequest signupRequest);
 
-    @POST(Constants.GET_LINING)
-    Call<LiningResponse> getDataToSetLiningFilter(@Body LiningFilterListRequest liningFilterListRequest, @Path("piece_id") int piece_id);
+    @POST("signup/")
+    Call<SignUpResponse> userSignUp(@Body SignupRequest signupRequest);
 
-    @GET(Constants.GET_STYLE)
-    Call<StyleResponse> getStyledata(@Path("piece_id") int piece_id);
+    @POST("verify_otp/")
+    Call<SignUpResponse> verifyForgotUserOtp(@Body ForgotPassOTPRequestBody forgotPassOTPRequestBody);
 
-    @GET(Constants.GET_ACCENT)
-    Call<AccentResponse> getAccentData(@Path("piece_id") int piece_id);
-
-    @POST(Constants.CART_LIST)
-    Call<AddToCartResponse> LiningAddToCart(@Body LiningAddToCartRequest liningAddToCartRequest);
-
-    @POST(Constants.PLACE_ORDER)
-    Call<ChangePasswordResponse> placeOrder(@Body PlaceOrderRequestBody paymentReqBody);
-
+    @POST("verify_otp/")
+    Call<SignUpResponse> verifyUserOtp(@Body VerifyOtpRequest verifyOtpRequest);
 }

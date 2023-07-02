@@ -1,8 +1,6 @@
 package com.ms.hht.data.service;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.ms.hht.data.SignUpResponse;
 import com.ms.hht.data.request.AddAndUpdateAddressRequest;
@@ -60,58 +58,586 @@ import com.ms.hht.data.response.UpdateCartQuantityResponse;
 import com.ms.hht.data.response.UpdateDefaultAddressResponse;
 import com.ms.hht.data.response.UpdateUserProfileResponse;
 import com.ms.hht.ui.payment.PlaceOrderRequestBody;
-
+import io.reactivex.disposables.CompositeDisposable;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Converter;
 import retrofit2.Response;
 
 public class APICallList {
-
     public static CompositeDisposable disposable = new CompositeDisposable();
     public static APIService service;
 
-    public static void getType(final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<TypeResponse> process_service = service.getTYPE();
-        process_service.enqueue(new Callback<TypeResponse>() {
-            @Override
-            public void onResponse(Call<TypeResponse> call, retrofit2.Response<TypeResponse> response) {
-
+    public static void getType(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getTYPE().enqueue(new Callback<TypeResponse>() {
+            public void onResponse(Call<TypeResponse> call, Response<TypeResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(TypeResponse.class, new Annotation[0]);
-                            TypeResponse errorBody = (TypeResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(TypeResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<TypeResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void getCustomerInfo(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getCustomerInfo().enqueue(new Callback<GetCustomerInfoResponse>() {
+            public void onResponse(Call<GetCustomerInfoResponse> call, Response<GetCustomerInfoResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>> of getCustomerInfo in api call list " + response.errorBody());
+                        System.out.println("response code ==>> of getCustomerInfo in api call list " + response.code());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(GetCustomerInfoResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<GetCustomerInfoResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void userSignUp(SignupRequest signupRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.userSignUp(signupRequest).enqueue(new Callback<SignUpResponse>() {
+            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<SignUpResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void userLogin(SignupRequest signupRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.userLogin(signupRequest).enqueue(new Callback<SignUpResponse>() {
+            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<SignUpResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void deleteAccount(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.deleteUserAccount().enqueue(new Callback<AddToCartResponse>() {
+            public void onResponse(Call<AddToCartResponse> call, Response<AddToCartResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(AddToCartResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<AddToCartResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void forgotPassword(SignupRequest signupRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.forgotPassword(signupRequest).enqueue(new Callback<SignUpResponse>() {
+            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<SignUpResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void resendOTP(SignupRequest signupRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.resendUserOTP(signupRequest).enqueue(new Callback<SignUpResponse>() {
+            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<SignUpResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void generatePassword(GeneratePasswordRequest generatePasswordRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.generateNewPassword(generatePasswordRequest).enqueue(new Callback<SignUpResponse>() {
+            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<SignUpResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void getCatImages(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getImages(i).enqueue(new Callback<StylelookDataResponse>() {
+            public void onResponse(Call<StylelookDataResponse> call, Response<StylelookDataResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(StylelookDataResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<StylelookDataResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void getCustImages(Integer num, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getSubCategoryData(num).enqueue(new Callback<SubCategoryResponse>() {
+            public void onResponse(Call<SubCategoryResponse> call, Response<SubCategoryResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SubCategoryResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<SubCategoryResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void getProductDescp(Integer num, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getProductDes(num).enqueue(new Callback<ProductDescriptionRes>() {
+            public void onResponse(Call<ProductDescriptionRes> call, Response<ProductDescriptionRes> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(ProductDescriptionRes.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<ProductDescriptionRes> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void getPiece(Integer num, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getStylePiece(num).enqueue(new Callback<PieceSelectionResponse>() {
+            public void onResponse(Call<PieceSelectionResponse> call, Response<PieceSelectionResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(PieceSelectionResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<PieceSelectionResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void verifyOTP(VerifyOtpRequest verifyOtpRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.verifyUserOtp(verifyOtpRequest).enqueue(new Callback<SignUpResponse>() {
+            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<SignUpResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void ForgotUserOTP(ForgotPassOTPRequestBody forgotPassOTPRequestBody, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.verifyForgotUserOtp(forgotPassOTPRequestBody).enqueue(new Callback<SignUpResponse>() {
+            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<SignUpResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void getMeasurementHistoryList(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getmeasurementHistory().enqueue(new Callback<MeasurementHistoryResponse>() {
+            public void onResponse(Call<MeasurementHistoryResponse> call, Response<MeasurementHistoryResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                     } else {
-                        res.onSuccess(item, response.body());
+                        disposableData.onSuccess(str, response.body());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<TypeResponse> call, Throwable t) {
+            public void onFailure(Call<MeasurementHistoryResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -119,42 +645,38 @@ public class APICallList {
         });
     }
 
-    public static void getCustomerInfo(final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<GetCustomerInfoResponse> process_service = service.getCustomerInfo();
-        process_service.enqueue(new Callback<GetCustomerInfoResponse>() {
-            @Override
-            public void onResponse(Call<GetCustomerInfoResponse> call, retrofit2.Response<GetCustomerInfoResponse> response) {
-
+    public static void getUserProfileData(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getuserProfile().enqueue(new Callback<GetUserProfileResponse>() {
+            public void onResponse(Call<GetUserProfileResponse> call, Response<GetUserProfileResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(GetCustomerInfoResponse.class, new Annotation[0]);
-                            GetCustomerInfoResponse errorBody = (GetCustomerInfoResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>> of getCustomerInfo in api call list " + response.errorBody());
-                            System.out.println("response code ==>> of getCustomerInfo in api call list " + response.code());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(GetUserProfileResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<GetCustomerInfoResponse> call, Throwable t) {
+            public void onFailure(Call<GetUserProfileResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -162,41 +684,38 @@ public class APICallList {
         });
     }
 
-    public static void userSignUp(SignupRequest signupRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SignUpResponse> process_service = service.userSignUp(signupRequest);
-        process_service.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
-
+    public static void updateUserProfile(UpdateUserProfileRequest updateUserProfileRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.upateUserProfile(updateUserProfileRequest).enqueue(new Callback<UpdateUserProfileResponse>() {
+            public void onResponse(Call<UpdateUserProfileResponse> call, Response<UpdateUserProfileResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
-                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(UpdateUserProfileResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+            public void onFailure(Call<UpdateUserProfileResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -204,44 +723,38 @@ public class APICallList {
         });
     }
 
-    public static void userLogin(SignupRequest signupRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SignUpResponse> login_service = service.userLogin(signupRequest);
-        login_service.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
-
+    public static void getCountry(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getCountry().enqueue(new Callback<GetCountryResponse>() {
+            public void onResponse(Call<GetCountryResponse> call, Response<GetCountryResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
-                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                        else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        }
-                        else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(GetCountryResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
-                    else {
-                        res.onSuccess(item, response.body());
-                    }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+            public void onFailure(Call<GetCountryResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -249,45 +762,38 @@ public class APICallList {
         });
     }
 
-    public static void userLoginByToken(String token, final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SignUpResponse> login_service = service.userLoginWithToken(token);
-        Log.d("keyss...","Trying to login2 token received in userLoginByToken()==>"+token);
-        login_service.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
-                Log.d("keyss...","Response received in onResponse==>"+token);
-
+    public static void getRegion(String str, final String str2, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getRegionList(str).enqueue(new Callback<GetStateResponse>() {
+            public void onResponse(Call<GetStateResponse> call, Response<GetStateResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
-                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                        else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        }
-                        else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str2, APIClient.retrofit.responseBodyConverter(GetStateResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
-                    else {
-                        res.onSuccess(item, response.body());
-                    }
+                    disposableData.onSuccess(str2, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+            public void onFailure(Call<GetStateResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -295,44 +801,38 @@ public class APICallList {
         });
     }
 
-    public static void deleteAccount(final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<AddToCartResponse> delete_service = service.deleteUserAccount();
-        delete_service.enqueue(new Callback<AddToCartResponse>() {
-            @Override
-            public void onResponse(Call<AddToCartResponse> call, retrofit2.Response<AddToCartResponse> response) {
-
+    public static void addAddress(AddAndUpdateAddressRequest addAndUpdateAddressRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.addUserAddress(addAndUpdateAddressRequest).enqueue(new Callback<AddAddressResponse>() {
+            public void onResponse(Call<AddAddressResponse> call, Response<AddAddressResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(AddToCartResponse.class, new Annotation[0]);
-                            AddToCartResponse errorBody = (AddToCartResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                        else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        }
-                        else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(AddAddressResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
-                    else {
-                        res.onSuccess(item, response.body());
-                    }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<AddToCartResponse> call, Throwable t) {
+            public void onFailure(Call<AddAddressResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -340,41 +840,38 @@ public class APICallList {
         });
     }
 
-    public static void forgotPassword(SignupRequest signupRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SignUpResponse> process_service = service.forgotPassword(signupRequest);
-        process_service.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
-
+    public static void getAddressList(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getAddList().enqueue(new Callback<AddressListResponse>() {
+            public void onResponse(Call<AddressListResponse> call, Response<AddressListResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
-                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(AddressListResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+            public void onFailure(Call<AddressListResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -382,41 +879,38 @@ public class APICallList {
         });
     }
 
-    public static void resendOTP(SignupRequest signupRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SignUpResponse> process_service = service.resendUserOTP(signupRequest);
-        process_service.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
-
+    public static void UpdateAddress(AddAndUpdateAddressRequest addAndUpdateAddressRequest, int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.updateUserAddress(addAndUpdateAddressRequest, i).enqueue(new Callback<UpdateAddressResponse>() {
+            public void onResponse(Call<UpdateAddressResponse> call, Response<UpdateAddressResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
-                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(UpdateAddressResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+            public void onFailure(Call<UpdateAddressResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -424,41 +918,38 @@ public class APICallList {
         });
     }
 
-    public static void generatePassword(GeneratePasswordRequest generatePasswordRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SignUpResponse> process_service = service.generateNewPassword(generatePasswordRequest);
-        process_service.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
-
+    public static void UpdateDefaultAddress(UpdateDefaultAddressRequest updateDefaultAddressRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.updateDefaultAddress(updateDefaultAddressRequest).enqueue(new Callback<UpdateDefaultAddressResponse>() {
+            public void onResponse(Call<UpdateDefaultAddressResponse> call, Response<UpdateDefaultAddressResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
-                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(UpdateDefaultAddressResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+            public void onFailure(Call<UpdateDefaultAddressResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -466,41 +957,38 @@ public class APICallList {
         });
     }
 
-    public static void getCatImages(int typeId, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<StylelookDataResponse> process_service = service.getImages(typeId);
-        process_service.enqueue(new Callback<StylelookDataResponse>() {
-            @Override
-            public void onResponse(Call<StylelookDataResponse> call, retrofit2.Response<StylelookDataResponse> response) {
-
+    public static void DeleteAddress(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.deleteAddress(i).enqueue(new Callback<DeleteAddressResponse>() {
+            public void onResponse(Call<DeleteAddressResponse> call, Response<DeleteAddressResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(StylelookDataResponse.class, new Annotation[0]);
-                            StylelookDataResponse errorBody = (StylelookDataResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(DeleteAddressResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<StylelookDataResponse> call, Throwable t) {
+            public void onFailure(Call<DeleteAddressResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -508,170 +996,155 @@ public class APICallList {
         });
     }
 
-    public static void getCustImages(Integer entityId, String item, DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SubCategoryResponse> process_service = service.getSubCategoryData(entityId);
-        process_service.enqueue(new Callback<SubCategoryResponse>() {
-            @Override
-            public void onResponse(Call<SubCategoryResponse> call, retrofit2.Response<SubCategoryResponse> response) {
-
+    public static void ChangePassword(ChangePassRequestBody changePassRequestBody, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.changePasseord(changePassRequestBody).enqueue(new Callback<ChangePasswordResponse>() {
+            public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SubCategoryResponse.class, new Annotation[0]);
-                            SubCategoryResponse errorBody = (SubCategoryResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(ChangePasswordResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SubCategoryResponse> call, Throwable t) {
+            public void onFailure(Call<ChangePasswordResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
-    public static void getProductDescp(Integer itemId, String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<ProductDescriptionRes> process_service = service.getProductDes(itemId);
-        process_service.enqueue(new Callback<ProductDescriptionRes>() {
-            @Override
-            public void onResponse(Call<ProductDescriptionRes> call, retrofit2.Response<ProductDescriptionRes> response) {
-
+    public static void getfabricList(FabricListRequest fabricListRequest, int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getFabricFilter(fabricListRequest, i).enqueue(new Callback<FabricFilterResponse>() {
+            public void onResponse(Call<FabricFilterResponse> call, Response<FabricFilterResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(ProductDescriptionRes.class, new Annotation[0]);
-                            ProductDescriptionRes errorBody = (ProductDescriptionRes) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(FabricFilterResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<ProductDescriptionRes> call, Throwable t) {
+            public void onFailure(Call<FabricFilterResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
-
     }
 
-    public static void getPiece(Integer subcategory_id, String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<PieceSelectionResponse> process_service = service.getStylePiece(subcategory_id);
-        process_service.enqueue(new Callback<PieceSelectionResponse>() {
-            @Override
-            public void onResponse(Call<PieceSelectionResponse> call, retrofit2.Response<PieceSelectionResponse> response) {
-
+    public static void getfilterList(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getFilterList(i).enqueue(new Callback<FabricFilterListResponse>() {
+            public void onResponse(Call<FabricFilterListResponse> call, Response<FabricFilterListResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(PieceSelectionResponse.class, new Annotation[0]);
-                            PieceSelectionResponse errorBody = (PieceSelectionResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(FabricFilterListResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<PieceSelectionResponse> call, Throwable t) {
+            public void onFailure(Call<FabricFilterListResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
-
     }
 
-    public static void verifyOTP(VerifyOtpRequest verifyOtpRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SignUpResponse> process_service = service.verifyUserOtp(verifyOtpRequest);
-        process_service.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
-
+    public static void getOrderLIST(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getOrderlist().enqueue(new Callback<OrderListResponse>() {
+            public void onResponse(Call<OrderListResponse> call, Response<OrderListResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
-                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(OrderListResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+            public void onFailure(Call<OrderListResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -679,41 +1152,38 @@ public class APICallList {
         });
     }
 
-    public static void ForgotUserOTP(ForgotPassOTPRequestBody ForgpotUserverifyOtpRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<SignUpResponse> process_service = service.verifyForgotUserOtp(ForgpotUserverifyOtpRequest);
-        process_service.enqueue(new Callback<SignUpResponse>() {
-            @Override
-            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
-
+    public static void getorderDETAIL(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getOrderData(i).enqueue(new Callback<OrderDetailResponse>() {
+            public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
-                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(OrderDetailResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+            public void onFailure(Call<OrderDetailResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -721,668 +1191,38 @@ public class APICallList {
         });
     }
 
-    public static void getMeasurementHistoryList(final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<MeasurementHistoryResponse> measureService = service.getmeasurementHistory();
-        measureService.enqueue(new Callback<MeasurementHistoryResponse>() {
-            @Override
-            public void onResponse(Call<MeasurementHistoryResponse> call, retrofit2.Response<MeasurementHistoryResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-//                        res.onError(response.errorBody().toString());
-                        res.onError("Server is down for maintenance sorry for inconvenience.");
-//                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-//                            Converter<ResponseBody, Object> errorConverter =
-//                                    APIClient.retrofit.responseBodyConverter(MeasurementHistoryResponse.class, new Annotation[0]);
-//                            MeasurementHistoryResponse errorBody = (MeasurementHistoryResponse) errorConverter.convert(response.errorBody());
-////                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-//                            System.out.println("error body2==>>" + response.errorBody());
-//                            res.onSuccess(item, response.errorBody());
-//                        } else if (response.code() >= 200 && response.code() < 301) {
-//                            MeasurementHistoryResponse errorBody = (MeasurementHistoryResponse) errorConverter.convert(response.errorBody());
-////                            System.out.println("ERROR: ==>>" + errorBody.getMessage())
-//                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MeasurementHistoryResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void getUserProfileData(final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<GetUserProfileResponse> process_service = service.getuserProfile();
-        process_service.enqueue(new Callback<GetUserProfileResponse>() {
-            @Override
-            public void onResponse(Call<GetUserProfileResponse> call, retrofit2.Response<GetUserProfileResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(GetUserProfileResponse.class, new Annotation[0]);
-                            GetUserProfileResponse errorBody = (GetUserProfileResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetUserProfileResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void updateUserProfile(UpdateUserProfileRequest updateUserProfileRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<UpdateUserProfileResponse> process_service = service.upateUserProfile(updateUserProfileRequest);
-        process_service.enqueue(new Callback<UpdateUserProfileResponse>() {
-            @Override
-            public void onResponse(Call<UpdateUserProfileResponse> call, retrofit2.Response<UpdateUserProfileResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(UpdateUserProfileResponse.class, new Annotation[0]);
-                            UpdateUserProfileResponse errorBody = (UpdateUserProfileResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UpdateUserProfileResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void getCountry(final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<GetCountryResponse> process_service = service.getCountry();
-        process_service.enqueue(new Callback<GetCountryResponse>() {
-            @Override
-            public void onResponse(Call<GetCountryResponse> call, retrofit2.Response<GetCountryResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(GetCountryResponse.class, new Annotation[0]);
-                            GetCountryResponse errorBody = (GetCountryResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetCountryResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void getRegion(String countryId, String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<GetStateResponse> process_service = service.getRegionList(countryId);
-        process_service.enqueue(new Callback<GetStateResponse>() {
-            @Override
-            public void onResponse(Call<GetStateResponse> call, retrofit2.Response<GetStateResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(GetStateResponse.class, new Annotation[0]);
-                            GetStateResponse errorBody = (GetStateResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetStateResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-    }
-
-    public static void addAddress(AddAndUpdateAddressRequest addAndUpdateAddressRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<AddAddressResponse> process_service = service.addUserAddress(addAndUpdateAddressRequest);
-        process_service.enqueue(new Callback<AddAddressResponse>() {
-            @Override
-            public void onResponse(Call<AddAddressResponse> call, retrofit2.Response<AddAddressResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(AddAddressResponse.class, new Annotation[0]);
-                            AddAddressResponse errorBody = (AddAddressResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddAddressResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void getAddressList(String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<AddressListResponse> process_service = service.getAddList();
-        process_service.enqueue(new Callback<AddressListResponse>() {
-            @Override
-            public void onResponse(Call<AddressListResponse> call, retrofit2.Response<AddressListResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(AddressListResponse.class, new Annotation[0]);
-                            AddressListResponse errorBody = (AddressListResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddressListResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-    }
-
-    public static void UpdateAddress(AddAndUpdateAddressRequest addAndUpdateAddressRequest, final int addressId, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<UpdateAddressResponse> process_service = service.updateUserAddress(addAndUpdateAddressRequest, addressId);
-        process_service.enqueue(new Callback<UpdateAddressResponse>() {
-            @Override
-            public void onResponse(Call<UpdateAddressResponse> call, retrofit2.Response<UpdateAddressResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(UpdateAddressResponse.class, new Annotation[0]);
-                            UpdateAddressResponse errorBody = (UpdateAddressResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UpdateAddressResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void UpdateDefaultAddress(UpdateDefaultAddressRequest defaultAddressRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<UpdateDefaultAddressResponse> process_service = service.updateDefaultAddress(defaultAddressRequest);
-        process_service.enqueue(new Callback<UpdateDefaultAddressResponse>() {
-            @Override
-            public void onResponse(Call<UpdateDefaultAddressResponse> call, retrofit2.Response<UpdateDefaultAddressResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(UpdateDefaultAddressResponse.class, new Annotation[0]);
-                            UpdateDefaultAddressResponse errorBody = (UpdateDefaultAddressResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UpdateDefaultAddressResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void DeleteAddress(final int address_id, final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<DeleteAddressResponse> process_service = service.deleteAddress(address_id);
-        process_service.enqueue(new Callback<DeleteAddressResponse>() {
-            @Override
-            public void onResponse(Call<DeleteAddressResponse> call, retrofit2.Response<DeleteAddressResponse> response) {
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(DeleteAddressResponse.class, new Annotation[0]);
-                            DeleteAddressResponse errorBody = (DeleteAddressResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DeleteAddressResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void ChangePassword(ChangePassRequestBody changePassRequestBody, final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<ChangePasswordResponse> process_service = service.changePasseord(changePassRequestBody);
-        process_service.enqueue(new Callback<ChangePasswordResponse>() {
-            @Override
-            public void onResponse(Call<ChangePasswordResponse> call, retrofit2.Response<ChangePasswordResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(ChangePasswordResponse.class, new Annotation[0]);
-                            ChangePasswordResponse errorBody = (ChangePasswordResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void getfabricList(FabricListRequest fabricListRequest, int subCategoryID, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<FabricFilterResponse> fabric_service = service.getFabricFilter(fabricListRequest, subCategoryID);
-        fabric_service.enqueue(new Callback<FabricFilterResponse>() {
-            @Override
-            public void onResponse(Call<FabricFilterResponse> call, retrofit2.Response<FabricFilterResponse> response) {
-
-                try {
-
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(FabricFilterResponse.class, new Annotation[0]);
-                            FabricFilterResponse errorBody = (FabricFilterResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FabricFilterResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void getfilterList(int subCategoryID, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<FabricFilterListResponse> process_service = service.getFilterList(subCategoryID);
-        process_service.enqueue(new Callback<FabricFilterListResponse>() {
-            @Override
-            public void onResponse(Call<FabricFilterListResponse> call,
-                                   retrofit2.Response<FabricFilterListResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(FabricFilterListResponse.class, new Annotation[0]);
-                            FabricFilterListResponse errorBody = (FabricFilterListResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FabricFilterListResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void getOrderLIST(String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<OrderListResponse> process_service = service.getOrderlist();
-        process_service.enqueue(new Callback<OrderListResponse>() {
-            @Override
-            public void onResponse(Call<OrderListResponse> call, retrofit2.Response<OrderListResponse> response) {
-
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(OrderListResponse.class, new Annotation[0]);
-                            OrderListResponse errorBody = (OrderListResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<OrderListResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-    }
-
-    public static void getorderDETAIL(int orderid, String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<OrderDetailResponse> process_service = service.getOrderData(orderid);
-        process_service.enqueue(new Callback<OrderDetailResponse>() {
-            @Override
-            public void onResponse(Call<OrderDetailResponse> call, retrofit2.Response<OrderDetailResponse> response) {
-                try {
-                    if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(OrderDetailResponse.class, new Annotation[0]);
-                            OrderDetailResponse errorBody = (OrderDetailResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
-                        }
-                    } else {
-                        res.onSuccess(item, response.body());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onFailure(Call<OrderDetailResponse> call, Throwable t) {
-                try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void getcartList(String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
+    public static void getcartList(final String str, final DisposableData disposableData, Context context) {
+        service = (APIService) APIClient.getClient(context).create(APIService.class);
         System.out.println("service inside getcartList in Api call list " + service);
-        Call<CartListResponse> process_service = service.getCartList();
-        process_service.enqueue(new Callback<CartListResponse>() {
-            @Override
-            public void onResponse(Call<CartListResponse> call, retrofit2.Response<CartListResponse> response) {
+        service.getCartList().enqueue(new Callback<CartListResponse>() {
+            public void onResponse(Call<CartListResponse> call, Response<CartListResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(CartListResponse.class, new Annotation[0]);
-                            CartListResponse errorBody = (CartListResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(CartListResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<CartListResponse> call, Throwable t) {
+            public void onFailure(Call<CartListResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1390,40 +1230,38 @@ public class APICallList {
         });
     }
 
-    public static void checkProcessId(MeasureMeRequest measureMeRequest, String item, DisposableData res, Context context) {
-        service = APIClient.getClientUrl2(context).create(APIService.class);
+    public static void checkProcessId(MeasureMeRequest measureMeRequest, final String str, final DisposableData disposableData, Context context) {
+        service = (APIService) APIClient.getClientUrl2(context).create(APIService.class);
         System.out.println("service inside getcartList in Api call list " + service);
-        Call<CheckMeasureMe> process_service = service.checkProcessId(measureMeRequest);
-        process_service.enqueue(new Callback<CheckMeasureMe>() {
-            @Override
-            public void onResponse(Call<CheckMeasureMe> call, retrofit2.Response<CheckMeasureMe> response) {
+        service.checkProcessId(measureMeRequest).enqueue(new Callback<CheckMeasureMe>() {
+            public void onResponse(Call<CheckMeasureMe> call, Response<CheckMeasureMe> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(CheckMeasureMe.class, new Annotation[0]);
-                            CheckMeasureMe errorBody = (CheckMeasureMe) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(CheckMeasureMe.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<CheckMeasureMe> call, Throwable t) {
+            public void onFailure(Call<CheckMeasureMe> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1431,50 +1269,46 @@ public class APICallList {
         });
     }
 
-    public static void deleteCartList(DeleteCartItemRequest deleteCartItemRequest, String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<DeleteCartResponse> process_service = service.deleteCart(deleteCartItemRequest);
-        process_service.enqueue(new Callback<DeleteCartResponse>() {
-            @Override
-            public void onResponse(Call<DeleteCartResponse> call, retrofit2.Response<DeleteCartResponse> response) {
-
+    public static void deleteCartList(DeleteCartItemRequest deleteCartItemRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.deleteCart(deleteCartItemRequest).enqueue(new Callback<DeleteCartResponse>() {
+            public void onResponse(Call<DeleteCartResponse> call, Response<DeleteCartResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(DeleteCartResponse.class, new Annotation[0]);
-                            DeleteCartResponse errorBody = (DeleteCartResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(DeleteCartResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<DeleteCartResponse> call, Throwable t) {
+            public void onFailure(Call<DeleteCartResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
-
     }
-    public static void getMSMeasurement(GetMSMeasurementRequest getMSMeasurementRequest, final String str,
-                                        final DisposableData disposableData, Context context) {
+
+    public static void getMSMeasurement(GetMSMeasurementRequest getMSMeasurementRequest, final String str, final DisposableData disposableData, Context context) {
         APIService aPIService = (APIService) APIClient.getClientUrl2(context).create(APIService.class);
         service = aPIService;
         aPIService.getMSMeasurement(getMSMeasurementRequest).enqueue(new Callback<GETMSMeasurementResponse>() {
@@ -1512,6 +1346,7 @@ public class APICallList {
             }
         });
     }
+
     public static void setUserMeasurement(Map<String, Object> map, final String str, final DisposableData disposableData, Context context) {
         APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
         service = aPIService;
@@ -1531,8 +1366,7 @@ public class APICallList {
                             }
                         }
                         System.out.println("error body2==>>" + response.errorBody());
-                        disposableData.onSuccess(str, APIClient.retrofit
-                                .responseBodyConverter(SETmeasurementResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SETmeasurementResponse.class, new Annotation[0]).convert(response.errorBody()));
                         return;
                     }
                     disposableData.onSuccess(str, response.body());
@@ -1551,42 +1385,39 @@ public class APICallList {
             }
         });
     }
-    public static void ReorderAddToCart(ReorderCartRequest reorderCartRequest, final String item, final DisposableData res, Context context) {
 
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<AddToCartResponse> process_service = service.ReORDERaddToCart(reorderCartRequest);
-        process_service.enqueue(new Callback<AddToCartResponse>() {
-            @Override
-            public void onResponse(Call<AddToCartResponse> call, retrofit2.Response<AddToCartResponse> response) {
-
+    public static void ReorderAddToCart(ReorderCartRequest reorderCartRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.ReORDERaddToCart(reorderCartRequest).enqueue(new Callback<AddToCartResponse>() {
+            public void onResponse(Call<AddToCartResponse> call, Response<AddToCartResponse> response) {
                 try {
-
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(AddToCartResponse.class, new Annotation[0]);
-                            AddToCartResponse errorBody = (AddToCartResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(AddToCartResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<AddToCartResponse> call, Throwable t) {
+            public void onFailure(Call<AddToCartResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1594,39 +1425,38 @@ public class APICallList {
         });
     }
 
-    public static void updateCartQuantity(UpdateCartQuantityRequest updateCartQuantityRequest, String item, DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<UpdateCartQuantityResponse> process_service = service.updateCart(updateCartQuantityRequest);
-        process_service.enqueue(new Callback<UpdateCartQuantityResponse>() {
-            @Override
-            public void onResponse(Call<UpdateCartQuantityResponse> call, retrofit2.Response<UpdateCartQuantityResponse> response) {
-
+    public static void updateCartQuantity(UpdateCartQuantityRequest updateCartQuantityRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.updateCart(updateCartQuantityRequest).enqueue(new Callback<UpdateCartQuantityResponse>() {
+            public void onResponse(Call<UpdateCartQuantityResponse> call, Response<UpdateCartQuantityResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(UpdateCartQuantityResponse.class, new Annotation[0]);
-                            UpdateCartQuantityResponse errorBody = (UpdateCartQuantityResponse) errorConverter.convert(response.errorBody());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(UpdateCartQuantityResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<UpdateCartQuantityResponse> call, Throwable t) {
+            public void onFailure(Call<UpdateCartQuantityResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1634,38 +1464,37 @@ public class APICallList {
         });
     }
 
-    public static void getPIECETYPE(int piece_id, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<FabricSelectionGetPieceTypesResponse> process_service = service.getPieceTYPE(piece_id);
-
-        process_service.enqueue(new Callback<FabricSelectionGetPieceTypesResponse>() {
-            @Override
-            public void onResponse(Call<FabricSelectionGetPieceTypesResponse> call,
-                                   retrofit2.Response<FabricSelectionGetPieceTypesResponse> response) {
-
+    public static void getPIECETYPE(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getPieceTYPE(i).enqueue(new Callback<FabricSelectionGetPieceTypesResponse>() {
+            public void onResponse(Call<FabricSelectionGetPieceTypesResponse> call, Response<FabricSelectionGetPieceTypesResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            res.onError("Server Error");
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        disposableData.onError("Server Error");
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<FabricSelectionGetPieceTypesResponse> call, Throwable t) {
+            public void onFailure(Call<FabricSelectionGetPieceTypesResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1673,43 +1502,38 @@ public class APICallList {
         });
     }
 
-    public static void getFabricImages(GetFeatureImagesRequest getFeatureImagesRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<GetFeatureImagesResponse> process_service = service.getFeatureIMAGES(getFeatureImagesRequest);
-
-        process_service.enqueue(new Callback<GetFeatureImagesResponse>() {
-            @Override
-            public void onResponse(Call<GetFeatureImagesResponse> call,
-                                   retrofit2.Response<GetFeatureImagesResponse> response) {
-
+    public static void getFabricImages(GetFeatureImagesRequest getFeatureImagesRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getFeatureIMAGES(getFeatureImagesRequest).enqueue(new Callback<GetFeatureImagesResponse>() {
+            public void onResponse(Call<GetFeatureImagesResponse> call, Response<GetFeatureImagesResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(GetFeatureImagesResponse.class, new Annotation[0]);
-                            GetFeatureImagesResponse errorBody = (GetFeatureImagesResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(GetFeatureImagesResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<GetFeatureImagesResponse> call, Throwable t) {
+            public void onFailure(Call<GetFeatureImagesResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1717,41 +1541,38 @@ public class APICallList {
         });
     }
 
-    public static void getLiningFilter(int piece_id, final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<LiningFilterOptionResponse> process_service = service.getLiningFilter(piece_id);
-        process_service.enqueue(new Callback<LiningFilterOptionResponse>() {
-            @Override
-            public void onResponse(Call<LiningFilterOptionResponse> call,
-                                   retrofit2.Response<LiningFilterOptionResponse> response) {
-
+    public static void getLiningFilter(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getLiningFilter(i).enqueue(new Callback<LiningFilterOptionResponse>() {
+            public void onResponse(Call<LiningFilterOptionResponse> call, Response<LiningFilterOptionResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(LiningFilterOptionResponse.class, new Annotation[0]);
-                            LiningFilterOptionResponse errorBody = (LiningFilterOptionResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(LiningFilterOptionResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<LiningFilterOptionResponse> call, Throwable t) {
+            public void onFailure(Call<LiningFilterOptionResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1759,42 +1580,38 @@ public class APICallList {
         });
     }
 
-    public static void getDataOfLiningFilter(LiningFilterListRequest liningFilterListRequest, int piece_id, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<LiningResponse> fabric_service = service.getDataToSetLiningFilter(liningFilterListRequest, piece_id);
-        fabric_service.enqueue(new Callback<LiningResponse>() {
-            @Override
-            public void onResponse(Call<LiningResponse> call, retrofit2.Response<LiningResponse> response) {
-
+    public static void getDataOfLiningFilter(LiningFilterListRequest liningFilterListRequest, int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getDataToSetLiningFilter(liningFilterListRequest, i).enqueue(new Callback<LiningResponse>() {
+            public void onResponse(Call<LiningResponse> call, Response<LiningResponse> response) {
                 try {
-
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(LiningResponse.class, new Annotation[0]);
-                            LiningResponse errorBody = (LiningResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(LiningResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<LiningResponse> call, Throwable t) {
+            public void onFailure(Call<LiningResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1802,41 +1619,38 @@ public class APICallList {
         });
     }
 
-    public static void getStyleData(int piece_id, final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<StyleResponse> process_service = service.getStyledata(piece_id);
-        process_service.enqueue(new Callback<StyleResponse>() {
-            @Override
-            public void onResponse(Call<StyleResponse> call,
-                                   retrofit2.Response<StyleResponse> response) {
-
+    public static void getStyleData(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getStyledata(i).enqueue(new Callback<StyleResponse>() {
+            public void onResponse(Call<StyleResponse> call, Response<StyleResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(StyleResponse.class, new Annotation[0]);
-                            StyleResponse errorBody = (StyleResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(StyleResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<StyleResponse> call, Throwable t) {
+            public void onFailure(Call<StyleResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1844,41 +1658,38 @@ public class APICallList {
         });
     }
 
-    public static void getAccentData(int piece_id, final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<AccentResponse> process_service = service.getAccentData(piece_id);
-        process_service.enqueue(new Callback<AccentResponse>() {
-            @Override
-            public void onResponse(Call<AccentResponse> call,
-                                   retrofit2.Response<AccentResponse> response) {
-
+    public static void getAccentData(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getAccentData(i).enqueue(new Callback<AccentResponse>() {
+            public void onResponse(Call<AccentResponse> call, Response<AccentResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(AccentResponse.class, new Annotation[0]);
-                            AccentResponse errorBody = (AccentResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(AccentResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<AccentResponse> call, Throwable t) {
+            public void onFailure(Call<AccentResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1886,40 +1697,38 @@ public class APICallList {
         });
     }
 
-    public static void getFabricData(int piece_id, final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<AccentResponse> process_service = service.getAccentData(piece_id);
-        process_service.enqueue(new Callback<AccentResponse>() {
-            @Override
-            public void onResponse(Call<AccentResponse> call,
-                                   retrofit2.Response<AccentResponse> response) {
-
+    public static void getFabricData(int i, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getAccentData(i).enqueue(new Callback<AccentResponse>() {
+            public void onResponse(Call<AccentResponse> call, Response<AccentResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(AccentResponse.class, new Annotation[0]);
-                            AccentResponse errorBody = (AccentResponse) errorConverter.convert(response.errorBody());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(AccentResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<AccentResponse> call, Throwable t) {
+            public void onFailure(Call<AccentResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1927,39 +1736,45 @@ public class APICallList {
         });
     }
 
-    public static void LiningProductAddToCart(LiningAddToCartRequest liningAddToCartRequest, final String item, final DisposableData res, Context context) {
-
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<AddToCartResponse> process_service = service.LiningAddToCart(liningAddToCartRequest);
-        System.out.println("service of addd to cart of add to cart in api calll list "+ process_service);
-        process_service.enqueue(new Callback<AddToCartResponse>() {
-            @Override
-            public void onResponse(Call<AddToCartResponse> call, retrofit2.Response<AddToCartResponse> response) {
+    public static void LiningProductAddToCart(LiningAddToCartRequest liningAddToCartRequest, final String str, final DisposableData disposableData, Context context) {
+        service = (APIService) APIClient.getClient(context).create(APIService.class);
+        System.out.println("Request body of add to cart in api calll list " + new Gson().toJson((Object) liningAddToCartRequest));
+        System.out.println("service of addd to cart of add to cart in api calll list " + service);
+        Call<AddToCartResponse> LiningAddToCart = service.LiningAddToCart(liningAddToCartRequest);
+        System.out.println("service of addd to cart of add to cart in api calll list " + LiningAddToCart);
+        LiningAddToCart.enqueue(new Callback<AddToCartResponse>() {
+            public void onResponse(Call<AddToCartResponse> call, Response<AddToCartResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(AddToCartResponse.class, new Annotation[0]);
-                            AddToCartResponse errorBody = (AddToCartResponse) errorConverter.convert(response.errorBody());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    System.out.println("code 408 response )__________________________________________________________________________");
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                }
+                                System.out.println("code below 408 response )__________________________________________________________________________");
+                                disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                return;
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(AddToCartResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
                     }
+                    System.out.println("success response )__________________________________________________________________________");
+                    System.out.println("success response )__________________________________________________________________________" + response.body());
+                    System.out.println("success response )__________________________________________________________________________" + new Gson().toJson((Object) response.body()));
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<AddToCartResponse> call, Throwable t) {
+            public void onFailure(Call<AddToCartResponse> call, Throwable th) {
                 try {
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1967,40 +1782,39 @@ public class APICallList {
         });
     }
 
-    public static void placeOrderAPi(PlaceOrderRequestBody paymentRequestObject, final String item, final DisposableData res, Context context) {
-        service = APIClient.getClient(context).create(APIService.class);
-        Call<ChangePasswordResponse> process_service = service.placeOrder(paymentRequestObject);
-        process_service.enqueue(new Callback<ChangePasswordResponse>() {
-            @Override
-            public void onResponse(Call<ChangePasswordResponse> call, retrofit2.Response<ChangePasswordResponse> response) {
-
+    public static void processID(ProcessIDRequest processIDRequest, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClientUrl2(context).create(APIService.class);
+        service = aPIService;
+        aPIService.generateProcess(processIDRequest).enqueue(new Callback<ProcessResponse>() {
+            public void onResponse(Call<ProcessResponse> call, Response<ProcessResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
-                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
-                            Converter<ResponseBody, Object> errorConverter =
-                                    APIClient.retrofit.responseBodyConverter(ChangePasswordResponse.class, new Annotation[0]);
-                            ChangePasswordResponse errorBody = (ChangePasswordResponse) errorConverter.convert(response.errorBody());
-//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
-                            System.out.println("error body2==>>" + response.errorBody());
-                            res.onSuccess(item, errorBody);
-                        } else if (response.code() == 408) {
-                            res.onError("Request timed out check your internet connection and try again");
-                        } else {
-                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
                         }
-                    } else {
-                        res.onSuccess(item, response.body());
+                        ProcessResponse convert = (ProcessResponse) APIClient.retrofit.responseBodyConverter(ProcessResponse.class, new Annotation[0]).convert(response.errorBody());
+                        System.out.println("ERROR: ==>>" + convert.getMessage());
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, convert);
+                        return;
                     }
+                    disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+            public void onFailure(Call<ProcessResponse> call, Throwable th) {
                 try {
-                    System.out.println("ERRORRRRR*****" + t.toString());
-                    res.onError("Server is down for maintenance sorry for inconvenience.");
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -2008,5 +1822,120 @@ public class APICallList {
         });
     }
 
+    public static void getPaymentStatusAPi(PlaceOrderRequestBody placeOrderRequestBody, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.paymentCAlling(placeOrderRequestBody).enqueue(new Callback<ChangePasswordResponse>() {
+            public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(ChangePasswordResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
+            public void onFailure(Call<ChangePasswordResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void placeOrderAPi(PlaceOrderRequestBody placeOrderRequestBody, final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
+        service = aPIService;
+        aPIService.placeOrder(placeOrderRequestBody).enqueue(new Callback<ChangePasswordResponse>() {
+            public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(ChangePasswordResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<ChangePasswordResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void appStatus(final String str, final DisposableData disposableData, Context context) {
+        APIService aPIService = (APIService) APIClient.getClientUrl3(context).create(APIService.class);
+        service = aPIService;
+        aPIService.getAppStatus("HH_TAILOR", "MEASUREMENT", "ANDROID").enqueue(new Callback<AppStatusResponse>() {
+            public void onResponse(Call<AppStatusResponse> call, Response<AppStatusResponse> response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        if (!(response.code() == 400 || response.code() == 401)) {
+                            if (response.code() != 500) {
+                                if (response.code() == 408) {
+                                    disposableData.onError("Request timed out check your internet connection and try again");
+                                    return;
+                                } else {
+                                    disposableData.onError("Server is down for maintenance sorry for the inconvenience.");
+                                    return;
+                                }
+                            }
+                        }
+                        System.out.println("error body2==>>" + response.errorBody());
+                        disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]).convert(response.errorBody()));
+                        return;
+                    }
+                    disposableData.onSuccess(str, response.body());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Call<AppStatusResponse> call, Throwable th) {
+                try {
+                    System.out.println("ERRORRRRR*****" + th.toString());
+                    disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
