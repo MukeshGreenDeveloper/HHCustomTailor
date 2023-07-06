@@ -396,8 +396,8 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         Bitmap bitmap = bitmapPhoto.bitmap;
 
         //@TODO For Developer Debug purpose added this below line @Developertest
-//        bitmap = BitmapFactory.decodeResource(getResources(),
-//                (CameraAct.this.imageName == "side" ? R.drawable.img_side : R.drawable.img_front));
+        bitmap = BitmapFactory.decodeResource(getResources(),
+                (CameraAct.this.imageName == "side" ? R.drawable.img_side : R.drawable.img_front));
         Matrix matrix = new Matrix();
         matrix.postRotate((float) (-bitmapPhoto.rotationDegrees));
         Bitmap createBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
