@@ -1,6 +1,9 @@
 package com.ms.hht.data.response;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.google.gson.annotations.SerializedName;
 
 public class GETMSMeasurementResponse {
@@ -11,11 +14,19 @@ public class GETMSMeasurementResponse {
 	@SerializedName("data")
 	private List<DataItem> data;
 
+	public String getUserId() {
+		return userId;
+	}
+
 	@SerializedName("message")
 	private String message;
+	@SerializedName("userId")
+	private String userId;
 
 	@SerializedName("measurements")
 	private Measurements measurements;
+	@SerializedName("measurementData")
+	private HashMap<String,String> measurementData;
 
 	public void setCode(Integer code){
 		this.code = code;
@@ -23,6 +34,10 @@ public class GETMSMeasurementResponse {
 
 	public Integer getCode(){
 		return code;
+	}
+
+	public HashMap<String, String> getMeasurementData() {
+		return measurementData;
 	}
 
 	public void setData(List<DataItem> data){

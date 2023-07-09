@@ -13,6 +13,7 @@ import com.ms.hht.data.service.DisposableData;
 import com.ms.hht.databinding.ActEnterDetailsBinding;
 import com.ms.hht.utils.ComUserProfileData;
 import com.ms.hht.utils.CommFunc;
+import com.ms.hht.utils.Constants;
 import com.ms.hht.utils.InternetConnection;
 import com.ms.hht.utils.SessionManager;
 import com.paypal.pyplcheckout.userprofile.model.UserStateKt;
@@ -241,7 +242,9 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
     private void getProcessID() {
         if (InternetConnection.isConnected(this)) {
             CommFunc.ShowProgressbar(this);
-            APICallList.processID(new ProcessIDRequest("ss2TzNQKF2mNNsbpqH681BvXqAmSGNcZVd1NXfJZgWxarxqTuyK44JComhqspy90", this.sessionManager.getMerchantEmail(), this.sessionManager.getProductName(), this.genderForMeas), "GET_PROCESS_ID", this.res, this);
+            APICallList.processID(new ProcessIDRequest(Constants.MIRROR_ID,
+                    this.sessionManager.getMerchantEmail(), this.sessionManager.getProductName(), this.genderForMeas),
+                    "GET_PROCESS_ID", this.res, this);
             return;
         }
         CommFunc.ShowStatusPop(this, getResources().getString(R.string.internet), false);

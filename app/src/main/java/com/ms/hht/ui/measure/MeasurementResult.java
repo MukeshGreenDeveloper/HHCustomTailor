@@ -11,10 +11,12 @@ import com.ms.hht.data.adapter.SpaceItemDecoration;
 import com.ms.hht.data.response.GETMSMeasurementResponse;
 import com.ms.hht.databinding.ActMeasurementResultBinding;
 import com.ms.hht.utils.SessionManager;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class MeasurementResult extends AppCompatActivity implements View.OnClickListener {
-    public static List<GETMSMeasurementResponse.DataItem> MEASUREMENT;
+    public static HashMap<String,String> MEASUREMENT;
     public static String MeasurementHistoryActivityComingFrom;
     GridLayoutManager layoutManager;
     ActMeasurementResultBinding resultBinding;
@@ -32,8 +34,8 @@ public class MeasurementResult extends AppCompatActivity implements View.OnClick
         this.resultBinding.conBtn.setOnClickListener(this);
         this.resultBinding.retakeBtn.setOnClickListener(this);
         this.sessionManager = new SessionManager(this);
-        List<GETMSMeasurementResponse.DataItem> list = MEASUREMENT;
-        if (list != null && list.size() > 0) {
+        HashMap<String, String> map = MEASUREMENT;
+        if (map != null && map.size() > 0) {
             this.layoutManager = new GridLayoutManager(this, 1);
             this.resultBinding.measurementRecyclerView.setLayoutManager(this.layoutManager);
             this.resultBinding.measurementRecyclerView.addItemDecoration(new SpaceItemDecoration(30));

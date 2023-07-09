@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -221,7 +222,8 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     public void onPause() {
         this.fotoapparat.stop();
         if (this.ImageStatustimerstatus.booleanValue()) {
-            this.ImageStatustimer.cancel();
+            if(this.ImageStatustimer!=null)
+                this.ImageStatustimer.cancel();
         }
         super.onPause();
         CommFunc.DismissDialog();
@@ -230,7 +232,8 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         this.dialog.dismiss();
         this.m1.release();
         if (this.count1isrunning.booleanValue()) {
-            this.cameraCount.cancel();
+            if(this.cameraCount!=null)
+                this.cameraCount.cancel();
         }
         if (this.counter2isrunning.booleanValue()) {
             this.delayCounter.cancel();
@@ -416,12 +419,12 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         if (path.contains("side")) {
             this.SideImageFilePath = path;
             Log.d("LOGnew", "SideImagePAth >>>>>     " + this.SideImageFilePath);
-            uploadImageSide(createBitmap, this.imageName);
+            uploadImageSide(createBitmap, path);
             return;
         }
         this.FrontImageFilePath = path;
         Log.d("LOGnew", "FrontImagePAth >>>>>     " + this.FrontImageFilePath);
-        uploadImageFront(createBitmap, this.imageName);
+        uploadImageFront(createBitmap, path);
     }
 
     private File getOutputMediaFile() {
@@ -440,8 +443,9 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
             CommFunc.DismissDialog();
             finish();
             Intent intent = new Intent(getApplicationContext(), PosePreviewAct.class);
-            intent.putExtra("frontimagepath", this.frontImageS3Path);
-            intent.putExtra("sideimagepath", this.SideImageS3Path);
+//            intent.putExtra("frontimagepath", this.frontImageS3Path);
+//            intent.putExtra("sideimagepath", this.SideImageS3Path);
+
             intent.putExtra("frontFilePath", this.FrontImageFilePath);
             intent.putExtra("sideFilePath", this.SideImageFilePath);
             ComUserProfileData.setAngle(this.angle);
@@ -558,37 +562,40 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     }
 
     private void uploadImageFront(Bitmap bitmap, String str) {
-        String trim = ("https://api.mysize.mirrorsize.com/api/utils/s3ImageUploadMultipartFront/M25uwr95/" + this.session.getUserDetails().get(SessionManager.PROCESS_ID) + "/").trim();
-        Log.d("LOGnew", "Image_uploadapi>>> " + trim);
-        final String str2 = str;
-        final Bitmap bitmap2 = bitmap;
-        VolleyMultipartRequest r1 = new VolleyMultipartRequest(1, trim, new Response.Listener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                uploadImageFront((NetworkResponse) response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                uploadImageFront(error);
-            }
-        }) {
-            /* access modifiers changed from: protected */
-            public Map<String, String> getParams() {
-                return new HashMap();
-            }
-
-            /* access modifiers changed from: protected */
-            public Map<String, DataPart> getByteData() {
-                HashMap hashMap = new HashMap();
-                hashMap.put("uploadfile", new DataPart(str2 + ".jpg", CameraAct.this.getFileDataFromDrawable(bitmap2)));
-                return hashMap;
-            }
-        };
-        r1.setRetryPolicy(new DefaultRetryPolicy(180000, 0, 1.0f));
-        RequestQueue newRequestQueue = Volley.newRequestQueue(this);
-        this.rQueue = newRequestQueue;
-        newRequestQueue.add(r1);
+        this.frontImageS3Path = getBase64Encode_Bitmap(bitmap);
+        PosePreviewAct.imageUrl1 =getBase64Encode_Bitmap(bitmap);
+        this.frontPoseStatus = true;
+//        String trim = ("https://api.mysize.mirrorsize.com/api/utils/s3ImageUploadMultipartFront/M25uwr95/" + this.session.getUserDetails().get(SessionManager.PROCESS_ID) + "/").trim();
+//        Log.d("LOGnew", "Image_uploadapi>>> " + trim);
+//        final String str2 = str;
+//        final Bitmap bitmap2 = bitmap;
+//        VolleyMultipartRequest r1 = new VolleyMultipartRequest(1, trim, new Response.Listener<NetworkResponse>() {
+//            @Override
+//            public void onResponse(NetworkResponse response) {
+//                uploadImageFront((NetworkResponse) response);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                uploadImageFront(error);
+//            }
+//        }) {
+//            /* access modifiers changed from: protected */
+//            public Map<String, String> getParams() {
+//                return new HashMap();
+//            }
+//
+//            /* access modifiers changed from: protected */
+//            public Map<String, DataPart> getByteData() {
+//                HashMap hashMap = new HashMap();
+//                hashMap.put("uploadfile", new DataPart(str2 + ".jpg", CameraAct.this.getFileDataFromDrawable(bitmap2)));
+//                return hashMap;
+//            }
+//        };
+//        r1.setRetryPolicy(new DefaultRetryPolicy(180000, 0, 1.0f));
+//        RequestQueue newRequestQueue = Volley.newRequestQueue(this);
+//        this.rQueue = newRequestQueue;
+//        newRequestQueue.add(r1);
     }
 
     /* access modifiers changed from: package-private */
@@ -625,37 +632,56 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     }
 
     private void uploadImageSide(Bitmap bitmap, String str) {
-        String trim = ("https://api.mysize.mirrorsize.com/api/utils/s3ImageUploadMultipartFront/M25uwr95/" + this.session.getUserDetails().get(SessionManager.PROCESS_ID) + "/").trim();
-        Log.d("LOGnew", "Image_uploadapi>>> " + trim);
-        final String str2 = str;
-        final Bitmap bitmap2 = bitmap;
-        VolleyMultipartRequest r1 = new VolleyMultipartRequest(1, trim, new Response.Listener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                uploadImageSide((NetworkResponse) response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                uploadImageSide(error);
-            }
-        }) {
-            /* access modifiers changed from: protected */
-            public Map<String, String> getParams() {
-                return new HashMap();
-            }
 
-            /* access modifiers changed from: protected */
-            public Map<String, DataPart> getByteData() {
-                HashMap hashMap = new HashMap();
-                hashMap.put("uploadfile", new DataPart(str2 + ".jpg", CameraAct.this.getFileDataFromDrawable(bitmap2)));
-                return hashMap;
-            }
-        };
-        r1.setRetryPolicy(new DefaultRetryPolicy(180000, 0, 1.0f));
-        RequestQueue newRequestQueue = Volley.newRequestQueue(this);
-        this.rQueue = newRequestQueue;
-        newRequestQueue.add(r1);
+        this.SideImageS3Path = getBase64Encode_Bitmap(bitmap);
+        PosePreviewAct.imageUrl2 = this.SideImageS3Path;
+        this.sidePoseStatus = true;
+        this.ImageStatustimerstatus = true;
+        CameraAct.this.checkImageStatus();
+//        this.ImageStatustimer = new CountDownTimer(120000, 1000) {
+//            public void onFinish() {
+//            }
+//
+//            public void onTick(long j) {
+//                CameraAct.this.checkImageStatus();
+//            }
+//        };
+//        this.SideImageS3Path = string;
+//        PosePreviewAct.imageUrl2 = string;
+//        this.sidePoseStatus = true;
+//        this.ImageStatustimerstatus = true;
+
+//        String trim = ("https://api.mysize.mirrorsize.com/api/utils/s3ImageUploadMultipartFront/M25uwr95/" + this.session.getUserDetails().get(SessionManager.PROCESS_ID) + "/").trim();
+//        Log.d("LOGnew", "Image_uploadapi>>> " + trim);
+//        final String str2 = str;
+//        final Bitmap bitmap2 = bitmap;
+//        VolleyMultipartRequest r1 = new VolleyMultipartRequest(1, trim, new Response.Listener<NetworkResponse>() {
+//            @Override
+//            public void onResponse(NetworkResponse response) {
+//                uploadImageSide((NetworkResponse) response);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                uploadImageSide(error);
+//            }
+//        }) {
+//            /* access modifiers changed from: protected */
+//            public Map<String, String> getParams() {
+//                return new HashMap();
+//            }
+//
+//            /* access modifiers changed from: protected */
+//            public Map<String, DataPart> getByteData() {
+//                HashMap hashMap = new HashMap();
+//                hashMap.put("uploadfile", new DataPart(str2 + ".jpg", CameraAct.this.getFileDataFromDrawable(bitmap2)));
+//                return hashMap;
+//            }
+//        };
+//        r1.setRetryPolicy(new DefaultRetryPolicy(180000, 0, 1.0f));
+//        RequestQueue newRequestQueue = Volley.newRequestQueue(this);
+//        this.rQueue = newRequestQueue;
+//        newRequestQueue.add(r1);
     }
 
     /* access modifiers changed from: package-private */
@@ -704,6 +730,17 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+    private String getBase64Encode_Bitmap(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+    public static Bitmap getBitmapDecode_Base64(String base64){
+        byte[] imageAsBytes = Base64.decode(base64.getBytes(), Base64.DEFAULT);
+
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
     }
 
     private class SampleFrameProcessor implements FrameProcessor {

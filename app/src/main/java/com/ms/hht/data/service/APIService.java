@@ -137,8 +137,10 @@ public interface APIService {
 
     @GET("lining_filters/{piece_id}/")
     Call<LiningFilterOptionResponse> getLiningFilter(@Path("piece_id") int i);
-
-    @POST("api/measurement/getmeasurement/")
+//
+//    @POST("api/measurement/getmeasurement/")
+//    Call<GETMSMeasurementResponse> getMSMeasurement(@Body GetMSMeasurementRequest getMSMeasurementRequest);
+    @POST("api/ms_measurement_process")
     Call<GETMSMeasurementResponse> getMSMeasurement(@Body GetMSMeasurementRequest getMSMeasurementRequest);
 
     @GET("order/{order_id}")
