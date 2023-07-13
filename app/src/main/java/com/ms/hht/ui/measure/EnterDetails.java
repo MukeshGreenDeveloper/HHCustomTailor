@@ -11,6 +11,8 @@ import com.ms.hht.data.response.ProcessResponse;
 import com.ms.hht.data.service.APICallList;
 import com.ms.hht.data.service.DisposableData;
 import com.ms.hht.databinding.ActEnterDetailsBinding;
+import com.ms.hht.noui.HHTApplication;
+import com.ms.hht.ui.home.HomeScreen;
 import com.ms.hht.utils.ComUserProfileData;
 import com.ms.hht.utils.CommFunc;
 import com.ms.hht.utils.Constants;
@@ -63,8 +65,15 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
         this.sessionManager = new SessionManager(this);
         this.detailsBinding.backBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                EnterDetails.this.finish();
-                EnterDetails.this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                if (!((HHTApplication) getApplication()).isHomeScreenPaused()) {
+                    Intent i1 = new Intent(EnterDetails.this, HomeScreen.class);
+                    startActivity(i1);
+                    finish();
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                } else {
+                    finish();
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                }
             }
         });
         this.detailsBinding.nextBtn.setOnClickListener(this);
@@ -83,8 +92,15 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
 
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        if (!((HHTApplication) getApplication()).isHomeScreenPaused()) {
+            Intent i1 = new Intent(EnterDetails.this, HomeScreen.class);
+            startActivity(i1);
+            finish();
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        }
     }
 
     public int HeightValidation() {
