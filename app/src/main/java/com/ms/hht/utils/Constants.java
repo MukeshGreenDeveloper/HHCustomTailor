@@ -24,6 +24,8 @@ public class Constants {
     public static String APPAREL_NAME = "AllMale";
     public static String BRAND_NAME = "HHTalior";
 
+    public static String IS_FROM_MENU_MEASUREMENT_HISTORY = "is_from_menu_measurement_history";
+
 
     public static final String SIGN_UP = "signup/";
     public static final String LOGIN = "signin/";

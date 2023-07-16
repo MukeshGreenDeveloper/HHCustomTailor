@@ -1,5 +1,7 @@
 package com.ms.hht.ui.measure;
 
+import static com.ms.hht.utils.Constants.IS_FROM_MENU_MEASUREMENT_HISTORY;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -294,6 +296,8 @@ public class PosePreviewAct extends AppCompatActivity {
         intent.putExtra("MeasurementIDCapturedNow",id);
         MeasurementResult.MeasurementHistoryActivityComingFrom = "cart";
         MeasurementResult.MEASUREMENT = this.getMSMeasurementResponse.getMeasurementData();
+        if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
+            intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
         finish();
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

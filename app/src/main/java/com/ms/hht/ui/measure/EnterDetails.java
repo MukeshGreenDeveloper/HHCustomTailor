@@ -1,5 +1,7 @@
 package com.ms.hht.ui.measure;
 
+import static com.ms.hht.utils.Constants.IS_FROM_MENU_MEASUREMENT_HISTORY;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -39,9 +41,14 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
                     CommFunc.ShowStatusPop(EnterDetails.this, processResponse.getMessage(), false);
                 } else if (processResponse.getCode().equalsIgnoreCase("1")) {
                     EnterDetails.this.sessionManager.updateProcessId(processResponse.getUserId());
-                    EnterDetails.this.startActivity(new Intent(EnterDetails.this, DemoVideo.class));
-                    EnterDetails.this.finish();
-                    EnterDetails.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    Intent mIntent = new Intent(EnterDetails.this, DemoVideo.class);
+                    if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
+                        mIntent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
+                    startActivity(mIntent);
+
+
+                    finish();
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else {
                     CommFunc.ShowStatusPop(EnterDetails.this, processResponse.getMessage(), false);
                 }

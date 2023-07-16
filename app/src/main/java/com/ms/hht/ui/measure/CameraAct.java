@@ -1,5 +1,7 @@
 package com.ms.hht.ui.measure;
 
+import static com.ms.hht.utils.Constants.IS_FROM_MENU_MEASUREMENT_HISTORY;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -151,6 +153,8 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     /* renamed from: lambda$onCreate$0$com-ms-hht-ui-measure-CameraAct  reason: not valid java name */
     public void onCreate(View view) {
         Intent intent = new Intent(this, PoseGuidelines.class);
+        if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
+            intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
         finish();
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -249,6 +253,8 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, PoseGuidelines.class);
+        if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
+            intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
         finish();
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -445,7 +451,8 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
             Intent intent = new Intent(getApplicationContext(), PosePreviewAct.class);
 //            intent.putExtra("frontimagepath", this.frontImageS3Path);
 //            intent.putExtra("sideimagepath", this.SideImageS3Path);
-
+            if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
+                intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
             intent.putExtra("frontFilePath", this.FrontImageFilePath);
             intent.putExtra("sideFilePath", this.SideImageFilePath);
             ComUserProfileData.setAngle(this.angle);

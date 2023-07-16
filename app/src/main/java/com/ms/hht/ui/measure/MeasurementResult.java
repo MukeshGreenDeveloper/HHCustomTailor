@@ -1,5 +1,7 @@
 package com.ms.hht.ui.measure;
 
+import static com.ms.hht.utils.Constants.IS_FROM_MENU_MEASUREMENT_HISTORY;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -50,14 +52,20 @@ public class MeasurementResult extends AppCompatActivity implements View.OnClick
         int id = view.getId();
         if (id == R.id.conBtn) {
             Intent intent = new Intent(this, MeasurementHistoryAct.class);
-            MeasurementHistoryAct.MeasurementHistoryActivityComingFrom = "cart";
-            if(measurementCapturedNow>0){
-                intent.putExtra("MeasurementIDCapturedNow",measurementCapturedNow);
+            if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false)) {
+                intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, false));
+            }else
+                MeasurementHistoryAct.MeasurementHistoryActivityComingFrom = "cart";
+            if (measurementCapturedNow > 0) {
+                intent.putExtra("MeasurementIDCapturedNow", measurementCapturedNow);
             }
             startActivity(intent);
             finish();
         } else if (id == R.id.retakeBtn) {
-            startActivity(new Intent(this, CameraAct.class));
+            Intent mIntent = new Intent(this, CameraAct.class);
+            if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
+                mIntent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
+            startActivity(mIntent);
         }
     }
 }

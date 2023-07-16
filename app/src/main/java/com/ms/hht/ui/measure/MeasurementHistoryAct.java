@@ -1,5 +1,7 @@
 package com.ms.hht.ui.measure;
 
+import static com.ms.hht.utils.Constants.IS_FROM_MENU_MEASUREMENT_HISTORY;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,7 +62,9 @@ public class MeasurementHistoryAct extends AppCompatActivity implements View.OnC
             historyBinding.retakeBtn.setVisibility(View.VISIBLE);
             historyBinding.retakeBtn.setText("Proceed");
         } else {
-            historyBinding.retakeBtn.setVisibility(View.GONE);
+            //From Menu
+            historyBinding.retakeBtn.setVisibility(View.VISIBLE);
+            historyBinding.retakeBtn.setText(getString(R.string.add_measurement));
         }
 
     }
@@ -94,6 +98,13 @@ public class MeasurementHistoryAct extends AppCompatActivity implements View.OnC
                         startActivity(i1);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }
+                }else{
+                    //Add Measurement
+                    Intent retakeIntent = new Intent(MeasurementHistoryAct.this, EnterDetails.class);
+                    retakeIntent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,true);
+                    startActivity(retakeIntent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
                 }
                 break;
         }
