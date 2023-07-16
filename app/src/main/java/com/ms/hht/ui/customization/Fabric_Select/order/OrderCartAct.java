@@ -14,6 +14,7 @@ import com.ms.hht.data.service.APICallList;
 import com.ms.hht.data.service.DisposableData;
 import com.ms.hht.databinding.ActOrderCartBinding;
 import com.ms.hht.ui.home.HomeScreen;
+import com.ms.hht.ui.measure.MeasureNow;
 import com.ms.hht.utils.CommFunc;
 import com.ms.hht.utils.InternetConnection;
 import com.ms.hht.utils.SessionManager;
@@ -87,9 +88,11 @@ public class OrderCartAct extends AppCompatActivity implements View.OnClickListe
                         cartListResponse.getData() != null && cartListResponse.getData().getQuoteItem() != null &&
                                 cartListResponse.getData().getQuoteItem().size() > 0)
                 {
-                    Intent int2 = new Intent(OrderCartAct.this, CartDetailsActivity.class);
+//                    Intent int2 = new Intent(OrderCartAct.this, CartDetailsActivity.class);
+                    Intent int2 = new Intent(OrderCartAct.this, MeasureNow.class);
                     CartDetailsActivity.CART_LIST = cartListResponse.getData();
                     startActivity(int2);
+
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
                 else {
