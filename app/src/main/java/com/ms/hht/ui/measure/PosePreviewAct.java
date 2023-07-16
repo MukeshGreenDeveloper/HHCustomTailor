@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,6 +24,7 @@ import com.example.ms_android_sdk.CallBack;
 import com.example.ms_android_sdk.Mirrorsize_Function;
 import com.google.gson.Gson;
 import com.ms.hht.R;
+import com.ms.hht.data.adapter.DisplayMeasurementResultAdapter;
 import com.ms.hht.data.request.GetMSMeasurementRequest;
 import com.ms.hht.data.request.SetMeasurementRequest;
 import com.ms.hht.data.response.GETMSMeasurementResponse;
@@ -39,6 +41,7 @@ import com.ms.hht.utils.SessionManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -50,7 +53,7 @@ public class PosePreviewAct extends AppCompatActivity {
     String ImagePath2;
     String[] PoseQuestions = {"Is your front pose correct, as shown in the picture? ", "Check if your arms are raised at 45° (approx.) and feet apart, as shown in the picture!", "Check if you tied your hairs above your neck.", "Did you turn at 90°? ", "Is your feet joined and palms touching your thigh?"};
     String apiMessage = "";
-    CountDownTimer delaytimer;
+//    CountDownTimer delaytimer;
     Boolean delaytimerstatus = false;
     Dialog dialog;
     String gender;
@@ -61,6 +64,7 @@ public class PosePreviewAct extends AppCompatActivity {
     Mirrorsize_Function mirrorsize_function;
     private final DisposableData response = new DisposableData() {
         public void onSuccess(String str, Object obj) throws Exception {
+            CommFunc.DismissDialog();
             if (str.equalsIgnoreCase("get Measurement result")) {
                 getMSMeasurementResponse = (GETMSMeasurementResponse) obj;
                 if (getMSMeasurementResponse == null) {
@@ -68,11 +72,14 @@ public class PosePreviewAct extends AppCompatActivity {
                     posePreviewAct.apiMessage = posePreviewAct.getResources().getString(R.string.try_again);
                 } else if (getMSMeasurementResponse.getCode().intValue() == 1) {
                     mirrorsize_function = new Mirrorsize_Function();
+                    CommFunc.ShowProgressbar(PosePreviewAct.this);
                     mirrorsize_function.MS_GetMeasurement(PosePreviewAct.this, Constants.MIRROR_ID,
                             Constants.APPAREL_NAME, Constants.BRAND_NAME, gender,
                             sessionManager.getMerchantEmail(), getMSMeasurementResponse.getUserId(), new CallBack() {
                                 @Override
                                 public void onSuccess(String response) {
+
+                                    CommFunc.DismissDialog();
                                     Log.d("keyss...", "Success=>" + response);
                                     getMSMeasurementResponse = new Gson().fromJson(response, GETMSMeasurementResponse.class);
 
@@ -89,6 +96,7 @@ public class PosePreviewAct extends AppCompatActivity {
 
                                 @Override
                                 public void onError(VolleyError error) {
+                                    CommFunc.DismissDialog();
                                     Log.d("keyss...", "onError=>" + error.networkResponse);
                                     error.printStackTrace();
                                     apiMessage = error.getMessage();
@@ -107,6 +115,7 @@ public class PosePreviewAct extends AppCompatActivity {
                 } else {
                     PosePreviewAct posePreviewAct2 = PosePreviewAct.this;
                     posePreviewAct2.apiMessage = posePreviewAct2.getMSMeasurementResponse.getMessage();
+
                 }
             } else if (str.equalsIgnoreCase("set Measurement result")) {
                 setMeasurementResponse = (SETmeasurementResponse) obj;
@@ -115,6 +124,7 @@ public class PosePreviewAct extends AppCompatActivity {
                     posePreviewAct3.apiMessage = posePreviewAct3.getResources().getString(R.string.try_again);
                 } else if (setMeasurementResponse.getCode().intValue() == 1) {
                     ApiStatus = "complete";
+                    checkData(setMeasurementResponse.getData().getId());
                 } else {
                     PosePreviewAct posePreviewAct4 = PosePreviewAct.this;
                     posePreviewAct4.apiMessage = posePreviewAct4.setMeasurementResponse.getMessage();
@@ -179,14 +189,20 @@ public class PosePreviewAct extends AppCompatActivity {
                     song.start();
                     if (!delaytimerstatus.booleanValue()) {
                         delaytimerstatus = true;
-                        delaytimer = new CountDownTimer(120000, 1000) {
-                            public void onFinish() {
-                            }
-
-                            public void onTick(long j) {
-                                checkData();
-                            }
-                        }.start();
+                        if(!TextUtils.isEmpty(PosePreviewAct.this.apiMessage)){
+                            CommFunc.DismissDialog();
+                            CommFunc.ShowStatusPop(PosePreviewAct.this, PosePreviewAct.this.apiMessage, false);
+                        } else
+                            setMeasurement(getMSMeasurementResponse);
+//                        delaytimer = new CountDownTimer(120000, 1000) {
+//                            public void onFinish() {
+//                            }
+//
+//                            public void onTick(long j) {
+////                                *********************
+//
+//                            }
+//                        }.start();
                     }
                 }
             }
@@ -194,16 +210,16 @@ public class PosePreviewAct extends AppCompatActivity {
     }
 
     /* access modifiers changed from: private */
-    public void checkData() {
+    public void checkData(Integer id) {
         Log.d("LOGnew", "Check Data function running");
         if (this.ApiStatus.equalsIgnoreCase("complete")) {
             CommFunc.DismissDialog();
             this.song.stop();
-            switchNextActivity();
+            switchNextActivity(id);
         }
         if (!this.apiMessage.isEmpty()) {
             CommFunc.DismissDialog();
-            this.delaytimer.cancel();
+//            this.delaytimer.cancel();
             this.song.stop();
             CommFunc.ShowStatusPop(this, this.apiMessage, false);
         }
@@ -221,6 +237,7 @@ public class PosePreviewAct extends AppCompatActivity {
         }
         String replaceAll = str.replaceAll(" ", "");
         if (InternetConnection.isConnected(this)) {
+            CommFunc.ShowProgressbar(PosePreviewAct.this);
             APICallList.getMSMeasurement(new GetMSMeasurementRequest(this.sessionManager.getUserDetails()
                             .get(SessionManager.PROCESS_ID),
                             String.valueOf((int) ComUserProfileData.getHeight()),
@@ -235,52 +252,46 @@ public class PosePreviewAct extends AppCompatActivity {
             CommFunc.ShowStatusPop(this, getResources().getString(R.string.internet), false);
         }
     }
+    public List<Object> measurementItem = new ArrayList();
 
     /* access modifiers changed from: private */
     public void setMeasurement(GETMSMeasurementResponse getMSMeasurementResponse) {
         String str;
-//        for (int i = 0; i < getMSMeasurementResponse.getMeasurementData().size() - 1; i++) {
-//            LinkedHashMap linkedHashMap = new LinkedHashMap();
-//            if (this.gender.equalsIgnoreCase("male")) {
-//                str = "https://commonms.s3.ap-south-1.amazonaws.com/male_small_icon/" + this.getMSMeasurementResponse.getData().get(i).getPointName();
-//            } else {
-//                str = "https://commonms.s3.ap-south-1.amazonaws.com/female_small_icon/" + this.getMSMeasurementResponse.getData().get(i).getPointName();
-//            }
-//            linkedHashMap.put("part", this.getMSMeasurementResponse.getData().get(i).getDisplayName());
-//            linkedHashMap.put("value", this.getMSMeasurementResponse.getData().get(i).getValueIninch());
-//            linkedHashMap.put("valueIncm", this.getMSMeasurementResponse.getData().get(i).getValueIncm());
-//            linkedHashMap.put("pointName", str);
-//            linkedHashMap.put("description", this.getMSMeasurementResponse.getData().get(i).getDescription());
-//            this.measurementItem.add(linkedHashMap);
-//        }
-//        if (InternetConnection.isConnected(this)) {
-//            SetMeasurementRequest.General general = new SetMeasurementRequest.General(ComUserProfileData.getWeightWithUnit(), ComUserProfileData.getHeightWithUnit(), Integer.valueOf(ComUserProfileData.getAge()), this.gender, ComUserProfileData.getShoeSize(), ComUserProfileData.getPreferredFit());
-//            LinkedHashMap linkedHashMap2 = new LinkedHashMap();
-//            linkedHashMap2.put("measurement", this.measurementItem);
-//            linkedHashMap2.put("comment", "");
-//            linkedHashMap2.put("general", general);
-//            APICallList.setUserMeasurement(linkedHashMap2, "set Measurement result", this.response, this);
-//            mirrorsize_function.MS_Get_Size_Recommendation(this, Constants.MIRROR_ID,
-//                    Constants.APPAREL_NAME, Constants.BRAND_NAME, gender, sessionManager.getMerchantEmail(),
-//                    getMSMeasurementResponse.getUserId(), new CallBack() {
-//                        @Override
-//                        public void onSuccess(String response) {
-//                            Log.d("keyssss2...","Success=>"+response);
-//                        }
-//
-//                        @Override
-//                        public void onError(VolleyError error) {
-//                            error.printStackTrace();
-//                            CommFunc.ShowStatusPop(PosePreviewAct.this, error.getMessage(), false);
-//                        }
-//                    });
-//            return;
-//        }
-//        CommFunc.ShowStatusPop(this, getResources().getString(R.string.internet), false);
+        HashMap<String,String> mMeasurments =getMSMeasurementResponse.getMeasurementData();
+        if(mMeasurments==null)
+            return;
+        for (String mKey: mMeasurments.keySet()) {
+            LinkedHashMap linkedHashMap = new LinkedHashMap();
+            if (this.gender.equalsIgnoreCase("male")) {
+                str = "https://commonms.s3.ap-south-1.amazonaws.com/male_small_icon/" + mKey;
+            } else {
+                str = "https://commonms.s3.ap-south-1.amazonaws.com/female_small_icon/" + mKey;
+            }
+            linkedHashMap.put("part", DisplayMeasurementResultAdapter.getNameOfItem(mKey));
+            linkedHashMap.put("value", mMeasurments.get(mKey));
+            linkedHashMap.put("valueIncm", mMeasurments.get(mKey));
+            linkedHashMap.put("pointName", mKey);
+            linkedHashMap.put("description", DisplayMeasurementResultAdapter.getNameOfItem(mKey));
+            this.measurementItem.add(linkedHashMap);
+        }
+        if (InternetConnection.isConnected(this)) {
+            SetMeasurementRequest.General general = new SetMeasurementRequest
+                    .General(ComUserProfileData.getWeightWithUnit(), ComUserProfileData.getHeightWithUnit(),
+                    Integer.valueOf(ComUserProfileData.getAge()), this.gender, ComUserProfileData.getShoeSize(),
+                    ComUserProfileData.getPreferredFit());
+            LinkedHashMap linkedHashMap2 = new LinkedHashMap();
+            linkedHashMap2.put("measurement", this.measurementItem);
+            linkedHashMap2.put("comment", "");
+            linkedHashMap2.put("general", general);
+            APICallList.setUserMeasurement(linkedHashMap2, "set Measurement result", this.response, this);
+
+        } else
+            CommFunc.ShowStatusPop(this, getResources().getString(R.string.internet), false);
     }
 
-    private void switchNextActivity() {
+    private void switchNextActivity(Integer id) {
         Intent intent = new Intent(this, MeasurementResult.class);
+        intent.putExtra("MeasurementIDCapturedNow",id);
         MeasurementResult.MeasurementHistoryActivityComingFrom = "cart";
         MeasurementResult.MEASUREMENT = this.getMSMeasurementResponse.getMeasurementData();
         finish();
@@ -296,6 +307,7 @@ public class PosePreviewAct extends AppCompatActivity {
                 .setText("We recommend you to retake for accurate measurement. RETAKE?");
         ((Button) this.dialog.findViewById(R.id.pop_no_button)).setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View view) {
                 showRetakeDialog(view);
             }
@@ -338,8 +350,8 @@ public class PosePreviewAct extends AppCompatActivity {
             this.song.stop();
             this.song.release();
         }
-        if (this.delaytimerstatus.booleanValue()) {
-            this.delaytimer.cancel();
-        }
+//        if (this.delaytimerstatus.booleanValue()) {
+//            this.delaytimer.cancel();
+//        }
     }
 }

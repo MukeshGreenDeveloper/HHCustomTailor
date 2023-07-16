@@ -49,7 +49,7 @@ public class DisplayMeasurementResultAdapter extends RecyclerView.Adapter<Displa
         holder.measurementGirth.setText(getNameOfItem(listOfKeys.get(position)));
     }
 
-    private String getNameOfItem(String itemKey) {
+    public static String getNameOfItem(String itemKey) {
         switch (itemKey){
             case "jacketLength":
                 return "Jacket Length";

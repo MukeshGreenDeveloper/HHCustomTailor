@@ -21,6 +21,7 @@ public class MeasurementResult extends AppCompatActivity implements View.OnClick
     GridLayoutManager layoutManager;
     ActMeasurementResultBinding resultBinding;
     SessionManager sessionManager;
+    Integer measurementCapturedNow = 0;
 
     public void onBackPressed() {
     }
@@ -35,6 +36,8 @@ public class MeasurementResult extends AppCompatActivity implements View.OnClick
         this.resultBinding.retakeBtn.setOnClickListener(this);
         this.sessionManager = new SessionManager(this);
         HashMap<String, String> map = MEASUREMENT;
+        if(getIntent()!=null && getIntent().getIntExtra("MeasurementIDCapturedNow",0)>0)
+            measurementCapturedNow = getIntent().getIntExtra("MeasurementIDCapturedNow", 0);
         if (map != null && map.size() > 0) {
             this.layoutManager = new GridLayoutManager(this, 1);
             this.resultBinding.measurementRecyclerView.setLayoutManager(this.layoutManager);
@@ -48,8 +51,11 @@ public class MeasurementResult extends AppCompatActivity implements View.OnClick
         if (id == R.id.conBtn) {
             Intent intent = new Intent(this, MeasurementHistoryAct.class);
             MeasurementHistoryAct.MeasurementHistoryActivityComingFrom = "cart";
-            finish();
+            if(measurementCapturedNow>0){
+                intent.putExtra("MeasurementIDCapturedNow",measurementCapturedNow);
+            }
             startActivity(intent);
+            finish();
         } else if (id == R.id.retakeBtn) {
             startActivity(new Intent(this, CameraAct.class));
         }

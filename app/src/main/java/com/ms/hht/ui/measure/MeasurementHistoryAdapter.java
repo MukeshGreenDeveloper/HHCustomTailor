@@ -28,9 +28,21 @@ public class MeasurementHistoryAdapter extends RecyclerView.Adapter<MeasurementH
 
     Context context;
     List<MeasurementHistoryResponse.DataItem> data;
+//    int recentlyCapturedMeasurementId = 0;
 
-    public MeasurementHistoryAdapter(Context context, List<MeasurementHistoryResponse.DataItem> data) {
+    public MeasurementHistoryAdapter(Context context, List<MeasurementHistoryResponse.DataItem> data/*, int measurementCapturedNow*/) {
         this.context = context;
+//        this.recentlyCapturedMeasurementId = measurementCapturedNow;
+//        if(recentlyCapturedMeasurementId>0){
+//            for(int i=0;i<data.size();i++){
+//                if(data.get(i).getId() == recentlyCapturedMeasurementId){
+//                    MeasurementHistoryResponse.DataItem dataItem = data.get(i);
+//                    dataItem.setChecked(true);
+//                    data.set(i,dataItem);
+//                    break;
+//                }
+//            }
+//        }
         this.data = data;
     }
 
