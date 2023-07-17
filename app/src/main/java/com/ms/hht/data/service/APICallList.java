@@ -1,6 +1,8 @@
 package com.ms.hht.data.service;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.ms.hht.data.SignUpResponse;
 import com.ms.hht.data.request.AddAndUpdateAddressRequest;
@@ -58,13 +60,16 @@ import com.ms.hht.data.response.UpdateCartQuantityResponse;
 import com.ms.hht.data.response.UpdateDefaultAddressResponse;
 import com.ms.hht.data.response.UpdateUserProfileResponse;
 import com.ms.hht.ui.payment.PlaceOrderRequestBody;
+
 import io.reactivex.disposables.CompositeDisposable;
+
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Converter;
 import retrofit2.Response;
 
 public class APICallList {
@@ -221,6 +226,49 @@ public class APICallList {
                 try {
                     System.out.println("ERRORRRRR*****" + th.toString());
                     disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void userLoginByToken(String token, final String item, final DisposableData res, Context context) {
+        service = APIClient.getClient(context).create(APIService.class);
+        Call<SignUpResponse> login_service = service.userLoginWithToken(token);
+        Log.d("keyss...", "Trying to login2 token received in userLoginByToken()==>" + token);
+        login_service.enqueue(new Callback<SignUpResponse>() {
+            @Override
+            public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
+                Log.d("keyss...", "Response received in onResponse==>" + token);
+
+                try {
+                    if (!response.isSuccessful()) {
+                        if (response.code() == 400 || response.code() == 401 || response.code() == 500) {
+                            Converter<ResponseBody, Object> errorConverter =
+                                    APIClient.retrofit.responseBodyConverter(SignUpResponse.class, new Annotation[0]);
+                            SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
+//                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
+                            System.out.println("error body2==>>" + response.errorBody());
+                            res.onSuccess(item, errorBody);
+                        } else if (response.code() == 408) {
+                            res.onError("Request timed out check your internet connection and try again");
+                        } else {
+                            res.onError("Server is down for maintenance sorry for the inconvenience.");
+                        }
+                    } else {
+                        res.onSuccess(item, response.body());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignUpResponse> call, Throwable t) {
+                try {
+                    System.out.println("ERRORRRRR*****" + t.toString());
+                    res.onError("Server is down for maintenance sorry for inconvenience.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

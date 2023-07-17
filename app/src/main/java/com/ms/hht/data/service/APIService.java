@@ -57,6 +57,8 @@ import com.ms.hht.data.response.UpdateCartQuantityResponse;
 import com.ms.hht.data.response.UpdateDefaultAddressResponse;
 import com.ms.hht.data.response.UpdateUserProfileResponse;
 import com.ms.hht.ui.payment.PlaceOrderRequestBody;
+import com.ms.hht.utils.Constants;
+
 import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -214,4 +216,7 @@ public interface APIService {
 
     @POST("verify_otp/")
     Call<SignUpResponse> verifyUserOtp(@Body VerifyOtpRequest verifyOtpRequest);
+
+    @POST(Constants.LOGIN_WITH_TOKEN)
+    Call<SignUpResponse> userLoginWithToken(@Query("token") String token);
 }
