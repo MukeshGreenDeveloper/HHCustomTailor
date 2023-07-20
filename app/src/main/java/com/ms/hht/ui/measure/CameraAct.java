@@ -40,6 +40,7 @@ import com.ms.hht.data.request.VolleyMultipartRequest;
 import com.ms.hht.data.response.ResponseTypeValues;
 import com.ms.hht.utils.ComUserProfileData;
 import com.ms.hht.utils.CommFunc;
+import com.ms.hht.utils.HHLogger;
 import com.ms.hht.utils.SessionManager;
 
 import org.json.JSONObject;
@@ -573,6 +574,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         this.frontImageS3Path = getBase64Encode_Bitmap(bitmap);
         PosePreviewAct.imageUrl1 =getBase64Encode_Bitmap(bitmap);
         this.frontPoseStatus = true;
+        HHLogger.getINSTANCE(CameraAct.this).LOG("CameraAct", PosePreviewAct.imageUrl1,"FrontImage");
 //        String trim = ("https://api.mysize.mirrorsize.com/api/utils/s3ImageUploadMultipartFront/M25uwr95/" + this.session.getUserDetails().get(SessionManager.PROCESS_ID) + "/").trim();
 //        Log.d("LOGnew", "Image_uploadapi>>> " + trim);
 //        final String str2 = str;
@@ -645,6 +647,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         PosePreviewAct.imageUrl2 = this.SideImageS3Path;
         this.sidePoseStatus = true;
         this.ImageStatustimerstatus = true;
+        HHLogger.getINSTANCE(CameraAct.this).LOG("CameraAct", PosePreviewAct.imageUrl2,"SidImage");
         CameraAct.this.checkImageStatus();
 //        this.ImageStatustimer = new CountDownTimer(120000, 1000) {
 //            public void onFinish() {

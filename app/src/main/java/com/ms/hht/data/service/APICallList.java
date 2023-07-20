@@ -59,7 +59,11 @@ import com.ms.hht.data.response.UpdateAddressResponse;
 import com.ms.hht.data.response.UpdateCartQuantityResponse;
 import com.ms.hht.data.response.UpdateDefaultAddressResponse;
 import com.ms.hht.data.response.UpdateUserProfileResponse;
+import com.ms.hht.ui.measure.EnterDetails;
+import com.ms.hht.ui.measure.PosePreviewAct;
 import com.ms.hht.ui.payment.PlaceOrderRequestBody;
+import com.ms.hht.utils.Constants;
+import com.ms.hht.utils.HHLogger;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -237,6 +241,7 @@ public class APICallList {
         service = APIClient.getClient(context).create(APIService.class);
         Call<SignUpResponse> login_service = service.userLoginWithToken(token);
         Log.d("keyss...", "Trying to login2 token received in userLoginByToken()==>" + token);
+        HHLogger.getINSTANCE(context).REQUEST("EnterDetails", Constants.LOGIN_WITH_TOKEN,token,null);
         login_service.enqueue(new Callback<SignUpResponse>() {
             @Override
             public void onResponse(Call<SignUpResponse> call, retrofit2.Response<SignUpResponse> response) {
@@ -250,6 +255,8 @@ public class APICallList {
                             SignUpResponse errorBody = (SignUpResponse) errorConverter.convert(response.errorBody());
 //                            System.out.println("ERROR: ==>>" + errorBody.getMessage());
                             System.out.println("error body2==>>" + response.errorBody());
+                            HHLogger.getINSTANCE(context).RESPONSE("EnterDetails", Constants.LOGIN_WITH_TOKEN,new Gson().toJson(errorBody),
+                                    null,response.code());
                             res.onSuccess(item, errorBody);
                         } else if (response.code() == 408) {
                             res.onError("Request timed out check your internet connection and try again");
@@ -257,10 +264,13 @@ public class APICallList {
                             res.onError("Server is down for maintenance sorry for the inconvenience.");
                         }
                     } else {
+                        HHLogger.getINSTANCE(context).RESPONSE("EnterDetails", Constants.LOGIN_WITH_TOKEN,new Gson().toJson(response.body()),
+                                null,response.code());
                         res.onSuccess(item, response.body());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    HHLogger.getINSTANCE(context).EXCEPTION("EnterDetails", e.getMessage());
                 }
             }
 
@@ -269,6 +279,8 @@ public class APICallList {
                 try {
                     System.out.println("ERRORRRRR*****" + t.toString());
                     res.onError("Server is down for maintenance sorry for inconvenience.");
+                    HHLogger.getINSTANCE(context).RESPONSE("EnterDetails", Constants.LOGIN_WITH_TOKEN,t.toString(),
+                            null,500);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1359,10 +1371,12 @@ public class APICallList {
     public static void getMSMeasurement(GetMSMeasurementRequest getMSMeasurementRequest, final String str, final DisposableData disposableData, Context context) {
         APIService aPIService = (APIService) APIClient.getClientUrl2(context).create(APIService.class);
         service = aPIService;
+        HHLogger.getINSTANCE(context).REQUEST("PosePreviewAct", "api/ms_measurement_process",new Gson().toJson(getMSMeasurementRequest),null);
         aPIService.getMSMeasurement(getMSMeasurementRequest).enqueue(new Callback<GETMSMeasurementResponse>() {
             public void onResponse(Call<GETMSMeasurementResponse> call, Response<GETMSMeasurementResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
+                        HHLogger.getINSTANCE(context).RESPONSE("PosePreviewAct", "api/ms_measurement_process","Failure",null,response.code());
                         if (!(response.code() == 400 || response.code() == 401)) {
                             if (response.code() != 500) {
                                 if (response.code() == 408) {
@@ -1375,12 +1389,17 @@ public class APICallList {
                             }
                         }
                         System.out.println("error body2==>>" + response.errorBody());
+                        HHLogger.getINSTANCE(context).RESPONSE("PosePreviewAct", "api/ms_measurement_process",response.errorBody().toString(),
+                                null,response.code());
                         disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(GETMSMeasurementResponse.class, new Annotation[0]).convert(response.errorBody()));
                         return;
                     }
+                    HHLogger.getINSTANCE(context).RESPONSE("PosePreviewAct", "api/ms_measurement_process",new Gson().toJson(response.body()),
+                            null,response.code());
                     disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
+                    HHLogger.getINSTANCE(context).EXCEPTION("PosePreviewAct", e.getMessage());
                 }
             }
 
@@ -1388,6 +1407,7 @@ public class APICallList {
                 try {
                     System.out.println("ERRORRRRR*****" + th.toString());
                     disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                    HHLogger.getINSTANCE(context).RESPONSE("PosePreviewAct","api/ms_measurement_process",th.getMessage(),null,500);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1398,10 +1418,14 @@ public class APICallList {
     public static void setUserMeasurement(Map<String, Object> map, final String str, final DisposableData disposableData, Context context) {
         APIService aPIService = (APIService) APIClient.getClient(context).create(APIService.class);
         service = aPIService;
+        HHLogger.getINSTANCE(context)
+                .REQUEST("PosePreviewAct","measurement/",null,map);
         aPIService.setUserMeasurement(map).enqueue(new Callback<SETmeasurementResponse>() {
             public void onResponse(Call<SETmeasurementResponse> call, Response<SETmeasurementResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
+                        HHLogger.getINSTANCE(context)
+                                .RESPONSE("PosePreviewAct","measurement/","Failed",null,response.code());
                         if (!(response.code() == 400 || response.code() == 401)) {
                             if (response.code() != 500) {
                                 if (response.code() == 408) {
@@ -1413,13 +1437,19 @@ public class APICallList {
                                 }
                             }
                         }
+                        HHLogger.getINSTANCE(context)
+                                .RESPONSE("PosePreviewAct","measurement/",response.errorBody().toString(),null,response.code());
                         System.out.println("error body2==>>" + response.errorBody());
                         disposableData.onSuccess(str, APIClient.retrofit.responseBodyConverter(SETmeasurementResponse.class, new Annotation[0]).convert(response.errorBody()));
                         return;
                     }
+                    HHLogger.getINSTANCE(context)
+                            .RESPONSE("PosePreviewAct","measurement/",new Gson().toJson(response.body()),null,response.code());
                     disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
+                    HHLogger.getINSTANCE(context)
+                            .EXCEPTION("PosePreviewAct",e.getMessage());
                 }
             }
 
@@ -1427,6 +1457,9 @@ public class APICallList {
                 try {
                     System.out.println("ERRORRRRR*****" + th.toString());
                     disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                    HHLogger.getINSTANCE(context)
+                            .RESPONSE("PosePreviewAct","measurement/",th.getMessage(),null,500);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1833,10 +1866,13 @@ public class APICallList {
     public static void processID(ProcessIDRequest processIDRequest, final String str, final DisposableData disposableData, Context context) {
         APIService aPIService = (APIService) APIClient.getClientUrl2(context).create(APIService.class);
         service = aPIService;
+        HHLogger.getINSTANCE(context).REQUEST("EnterDetails", "api/ms_initialize_user",new Gson().toJson(processIDRequest),null);
         aPIService.generateProcess(processIDRequest).enqueue(new Callback<ProcessResponse>() {
             public void onResponse(Call<ProcessResponse> call, Response<ProcessResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
+                        HHLogger.getINSTANCE(context).RESPONSE("EnterDetails", "api/ms_initialize_user","Failed API",
+                                null,response.code());
                         if (!(response.code() == 400 || response.code() == 401)) {
                             if (response.code() != 500) {
                                 if (response.code() == 408) {
@@ -1854,15 +1890,20 @@ public class APICallList {
                         disposableData.onSuccess(str, convert);
                         return;
                     }
+                    HHLogger.getINSTANCE(context).RESPONSE("EnterDetails", "api/ms_initialize_user",new Gson().toJson(response.body()),
+                            null,response.code());
                     disposableData.onSuccess(str, response.body());
                 } catch (Exception e) {
                     e.printStackTrace();
+                    HHLogger.getINSTANCE(context).EXCEPTION("EnterDetails", e.getMessage());
                 }
             }
 
             public void onFailure(Call<ProcessResponse> call, Throwable th) {
                 try {
                     disposableData.onError("Server is down for maintenance sorry for inconvenience.");
+                    HHLogger.getINSTANCE(context).RESPONSE("EnterDetails", "api/ms_initialize_user",th.getMessage(),
+                            null,500);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

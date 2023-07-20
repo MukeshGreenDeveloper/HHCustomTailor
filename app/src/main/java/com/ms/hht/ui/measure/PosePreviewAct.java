@@ -38,6 +38,7 @@ import com.ms.hht.utils.ComUserProfileData;
 import com.ms.hht.utils.CommFunc;
 import com.ms.hht.utils.CommonFunc;
 import com.ms.hht.utils.Constants;
+import com.ms.hht.utils.HHLogger;
 import com.ms.hht.utils.InternetConnection;
 import com.ms.hht.utils.SessionManager;
 
@@ -75,6 +76,15 @@ public class PosePreviewAct extends AppCompatActivity {
                 } else if (getMSMeasurementResponse.getCode().intValue() == 1) {
                     mirrorsize_function = new Mirrorsize_Function();
                     CommFunc.ShowProgressbar(PosePreviewAct.this);
+                    HashMap<String,Object> mapParam=new HashMap<>();
+                    mapParam.put("MIRROR_ID",Constants.MIRROR_ID);
+                    mapParam.put("APPAREL_NAME",Constants.APPAREL_NAME);
+                    mapParam.put("BRAND_NAME",Constants.BRAND_NAME);
+                    mapParam.put("gender",gender);
+                    mapParam.put("getMerchantEmail",sessionManager.getMerchantEmail());
+                    mapParam.put("getUserId",getMSMeasurementResponse.getUserId());
+                    HHLogger.getINSTANCE(PosePreviewAct.this)
+                            .REQUEST("PosePreviewAct","/api/ms_getRecommendation",new Gson().toJson(getMSMeasurementResponse),mapParam);
                     mirrorsize_function.MS_GetMeasurement(PosePreviewAct.this, Constants.MIRROR_ID,
                             Constants.APPAREL_NAME, Constants.BRAND_NAME, gender,
                             sessionManager.getMerchantEmail(), getMSMeasurementResponse.getUserId(), new CallBack() {
@@ -85,6 +95,9 @@ public class PosePreviewAct extends AppCompatActivity {
                                     Log.d("keyss...", "Success=>" + response);
                                     getMSMeasurementResponse = new Gson().fromJson(response, GETMSMeasurementResponse.class);
 
+                                    HHLogger.getINSTANCE(PosePreviewAct.this)
+                                            .RESPONSE("PosePreviewAct","/api/ms_getRecommendation",new Gson().toJson(getMSMeasurementResponse),
+                                                    null,500);
                                         if (getMSMeasurementResponse == null) {
                                             PosePreviewAct posePreviewAct3 = PosePreviewAct.this;
                                             posePreviewAct3.apiMessage = posePreviewAct3.getResources().getString(R.string.try_again);
@@ -102,6 +115,9 @@ public class PosePreviewAct extends AppCompatActivity {
                                     Log.d("keyss...", "onError=>" + error.networkResponse);
                                     error.printStackTrace();
                                     apiMessage = error.getMessage();
+
+                                    HHLogger.getINSTANCE(PosePreviewAct.this)
+                                            .RESPONSE("PosePreviewAct","/api/ms_getRecommendation",apiMessage,null,500);
                                 }
                             });
 //                    new GetMSMeasurementRequest(this.sessionManager.getUserDetails()
@@ -126,10 +142,16 @@ public class PosePreviewAct extends AppCompatActivity {
                     posePreviewAct3.apiMessage = posePreviewAct3.getResources().getString(R.string.try_again);
                 } else if (setMeasurementResponse.getCode().intValue() == 1) {
                     ApiStatus = "complete";
+
+                    HHLogger.getINSTANCE(PosePreviewAct.this)
+                            .RESPONSE("PosePreviewAct","set Measurement result","Success",null,200);
                     checkData(setMeasurementResponse.getData().getId());
                 } else {
                     PosePreviewAct posePreviewAct4 = PosePreviewAct.this;
                     posePreviewAct4.apiMessage = posePreviewAct4.setMeasurementResponse.getMessage();
+                    HHLogger.getINSTANCE(PosePreviewAct.this)
+                            .RESPONSE("PosePreviewAct","set Measurement result",posePreviewAct4.setMeasurementResponse.getMessage(),
+                                    null,0);
                 }
             }
         }

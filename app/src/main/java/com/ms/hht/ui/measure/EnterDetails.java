@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.gson.Gson;
 import com.ms.hht.R;
 import com.ms.hht.data.SignUpResponse;
 import com.ms.hht.data.request.ProcessIDRequest;
@@ -39,6 +40,7 @@ import com.ms.hht.ui.home.HomeScreen;
 import com.ms.hht.utils.ComUserProfileData;
 import com.ms.hht.utils.CommFunc;
 import com.ms.hht.utils.Constants;
+import com.ms.hht.utils.HHLogger;
 import com.ms.hht.utils.InternetConnection;
 import com.ms.hht.utils.SessionManager;
 import com.paypal.pyplcheckout.userprofile.model.UserStateKt;
@@ -142,6 +144,7 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
                                     if (pendingDynamicLinkData != null) {
                                         deepLink = pendingDynamicLinkData.getLink();
                                         token = deepLink.getQueryParameter("token");
+                                        HHLogger.getINSTANCE(EnterDetails.this).LOG("EnterDetails",token,"receivedIntentToken");
                                         userLoginByToken(token);
 
                                     }
@@ -152,10 +155,13 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.w("keysss....Error", "getDynamicLink:onFailure", e);
+                                    HHLogger.getINSTANCE(EnterDetails.this).RESPONSE("EnterDetails", Constants.LOGIN_WITH_TOKEN,e.getMessage(),
+                                            null,500);
                                 }
                             });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    HHLogger.getINSTANCE(EnterDetails.this).EXCEPTION("EnterDetails", e.getMessage());
                 }
             }
         }
@@ -372,6 +378,8 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
                 CommFunc.DismissDialog();
                 signUpResponse = (SignUpResponse) o;
                 if (signUpResponse != null) {
+                    HHLogger.getINSTANCE(EnterDetails.this).RESPONSE("EnterDetails","user login",new Gson().toJson(signUpResponse),
+                        null,signUpResponse.getCode());
                     if (signUpResponse.getCode() == 1) {
 //                        sessionManager = new SessionManager(EnterDetails.this);
                         if (signUpResponse.getData().getEmail() != null && signUpResponse.getData().getPassword() != null) {
@@ -379,6 +387,7 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
                             sessionManager.setUserEmail(signUpResponse.getData().getEmail());
                             sessionManager.setUserPassword(signUpResponse.getData().getPassword());
                             sessionManager.setUserToken(userToken);
+
                             userLogin(signUpResponse.getData().getEmail(), signUpResponse.getData().getPassword(), EnterDetails.this.userToken);
                         } else {
                             CommFunc.ShowStatusPop(EnterDetails.this, "Request could not be processed, requested information not found", false);
@@ -396,6 +405,8 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
                 CommFunc.DismissDialog();
                 signUpResponse = (SignUpResponse) o;
                 if (signUpResponse != null) {
+                    HHLogger.getINSTANCE(EnterDetails.this).RESPONSE("EnterDetails","user login via passcode",new Gson().toJson(signUpResponse),
+                            null,signUpResponse.getCode());
                     if (signUpResponse.getCode() == 1) {
                         sessionManager = new SessionManager(EnterDetails.this);
                         Log.d("keyss....=>", "id==>" + String.valueOf(signUpResponse.getData().getId()));
