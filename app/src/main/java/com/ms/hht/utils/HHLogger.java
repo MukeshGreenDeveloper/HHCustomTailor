@@ -10,9 +10,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -69,17 +71,32 @@ public class HHLogger {
         requestMAP.put("param",paramMap);
         requestMAP.put("paramJson",paramJson);
         requestMAP.put("TAG",TAG);
-        myLogRef.child(android.os.Build.MODEL).child(mTime).setValue(requestMAP).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.d("keyssss..","Update request api =>"+api);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("keyssss..","Failed to update request api =>"+api);
-            }
-        });
+        try {
+            myLogRef.child(android.os.Build.MODEL).child(mTime).setValue(requestMAP).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Log.d("keyssss..", "Update request api =>" + api);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("keyssss..", "Failed to update request api =>" + api);
+                }
+            });
+        }catch (DatabaseException e){
+            e.printStackTrace();
+            myLogRef.child(android.os.Build.MODEL).child(mTime).setValue(new Gson().toJson(requestMAP)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Log.d("keyssss..", "Update request api =>" + api);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("keyssss..", "Failed to update request api =>" + api);
+                }
+            });
+        }
     }
     public void RESPONSE(String TAG, String api, String responseJson,Object responseMap, int successCode){
         if(database ==null || myRef ==null )
