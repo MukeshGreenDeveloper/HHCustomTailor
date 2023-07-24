@@ -41,6 +41,7 @@ import com.ms.hht.data.response.ResponseTypeValues;
 import com.ms.hht.utils.ComUserProfileData;
 import com.ms.hht.utils.CommFunc;
 import com.ms.hht.utils.HHLogger;
+import com.ms.hht.utils.ImageUtils;
 import com.ms.hht.utils.SessionManager;
 
 import org.json.JSONObject;
@@ -403,7 +404,8 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
             Log.d("LOGnew", "Couldn't capture photo.");
             return;
         }
-        Bitmap bitmap = bitmapPhoto.bitmap;
+//        Bitmap bitmap = bitmapPhoto.bitmap;
+        Bitmap bitmap = ImageUtils.compressImage(bitmapPhoto.bitmap);
 
         //@TODO For Developer Debug purpose added this below line @Developertest
 //        bitmap = BitmapFactory.decodeResource(getResources(),

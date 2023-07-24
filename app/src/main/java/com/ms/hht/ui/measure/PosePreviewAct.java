@@ -39,6 +39,7 @@ import com.ms.hht.utils.CommFunc;
 import com.ms.hht.utils.CommonFunc;
 import com.ms.hht.utils.Constants;
 import com.ms.hht.utils.HHLogger;
+import com.ms.hht.utils.ImageUtils;
 import com.ms.hht.utils.InternetConnection;
 import com.ms.hht.utils.SessionManager;
 
@@ -218,15 +219,6 @@ public class PosePreviewAct extends AppCompatActivity {
                             CommFunc.ShowStatusPop(PosePreviewAct.this, PosePreviewAct.this.apiMessage, false);
                         } else
                             setMeasurement(getMSMeasurementResponse);
-//                        delaytimer = new CountDownTimer(120000, 1000) {
-//                            public void onFinish() {
-//                            }
-//
-//                            public void onTick(long j) {
-////                                *********************
-//
-//                            }
-//                        }.start();
                     }
                 }
             }
@@ -280,19 +272,13 @@ public class PosePreviewAct extends AppCompatActivity {
 
     /* access modifiers changed from: private */
     public void setMeasurement(GETMSMeasurementResponse getMSMeasurementResponse) {
-        String str;
         HashMap<String,String> mMeasurments =getMSMeasurementResponse.getMeasurementData();
         if(mMeasurments==null)
             return;
         for (String mKey: mMeasurments.keySet()) {
             LinkedHashMap linkedHashMap = new LinkedHashMap();
-            if (this.gender.equalsIgnoreCase("male")) {
-                str = "https://commonms.s3.ap-south-1.amazonaws.com/male_small_icon/" + mKey;
-            } else {
-                str = "https://commonms.s3.ap-south-1.amazonaws.com/female_small_icon/" + mKey;
-            }
             linkedHashMap.put("part", DisplayMeasurementResultAdapter.getNameOfItem(mKey));
-            linkedHashMap.put("value", mMeasurments.get(mKey));
+            linkedHashMap.put("value", ImageUtils.convertCm_Inch(mMeasurments.get(mKey)));
             linkedHashMap.put("valueIncm", mMeasurments.get(mKey));
             linkedHashMap.put("pointName", mKey);
             linkedHashMap.put("description", DisplayMeasurementResultAdapter.getNameOfItem(mKey));

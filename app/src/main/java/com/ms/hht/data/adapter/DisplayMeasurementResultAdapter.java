@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.ms.hht.R;
 import com.ms.hht.data.response.GETMSMeasurementResponse;
 import com.ms.hht.utils.ComUserProfileData;
+import com.ms.hht.utils.ImageUtils;
 import com.ms.hht.utils.SessionManager;
 
 
@@ -45,7 +46,7 @@ public class DisplayMeasurementResultAdapter extends RecyclerView.Adapter<Displa
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.girthValue.setText(measurementItems.get(listOfKeys.get(position)));
+        holder.girthValue.setText(ImageUtils.convertCm_Inch(measurementItems.get(listOfKeys.get(position)))+ " in");
         holder.measurementGirth.setText(getNameOfItem(listOfKeys.get(position)));
     }
 

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ms.hht.R;
 import com.ms.hht.data.response.MeasurementHistoryResponse;
+import com.ms.hht.utils.ImageUtils;
 
 import java.util.List;
 
@@ -40,8 +41,12 @@ public class MeasurementDetailAdapter extends RecyclerView.Adapter<MeasurementDe
     @Override
     public void onBindViewHolder(@NonNull MeasurementDetailAdapter.MyViewHolder holder, int position) {
         holder.nameTF.setText(data.get(position).getPart());
-        holder.measurementValue.setText(data.get(position).getValue() + " cm");
-        Glide.with(context).load(data.get(position).getPointName()).into(holder.measurementImage);
+        try {
+            holder.measurementValue.setText(ImageUtils.convertCm_Inch(data.get(position).getValue()) + " in");
+        }catch (Exception e){
+            holder.measurementValue.setText(data.get(position).getValue() + " cm");
+        }
+//        Glide.with(context).load(data.get(position).getPointName()).into(holder.measurementImage);
         dialog = new Dialog(context);
     }
 
@@ -53,13 +58,13 @@ public class MeasurementDetailAdapter extends RecyclerView.Adapter<MeasurementDe
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView nameTF, measurementValue;
-        ImageView measurementImage;
+//        ImageView measurementImage;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTF = itemView.findViewById(R.id.nameTF);
             measurementValue = itemView.findViewById(R.id.measuremntValue);
-            measurementImage = itemView.findViewById(R.id.measurementImg);
+//            measurementImage = itemView.findViewById(R.id.measurementImg);
         }
     }
 }
