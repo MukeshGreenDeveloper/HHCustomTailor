@@ -404,15 +404,16 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
             Log.d("LOGnew", "Couldn't capture photo.");
             return;
         }
-//        Bitmap bitmap = bitmapPhoto.bitmap;
         Bitmap bitmap = ImageUtils.compressImage(bitmapPhoto.bitmap);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(-90);
 
         //@TODO For Developer Debug purpose added this below line @Developertest
-//        bitmap = BitmapFactory.decodeResource(getResources(),
-//                (CameraAct.this.imageName == "side" ? R.drawable.img_side : R.drawable.img_front));
-        Matrix matrix = new Matrix();
+//        Bitmap bitmap = ImageUtils.compressImage(BitmapFactory.decodeResource(getResources(),
+//                (CameraAct.this.imageName == "side" ? R.drawable.img_side : R.drawable.img_front)));
+//        Matrix matrix = new Matrix();
 //        matrix.postRotate((float) (-bitmapPhoto.rotationDegrees));
-        matrix.postRotate(-90);
+
         Bitmap createBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         File outputMediaFile = getOutputMediaFile();
         if (outputMediaFile == null) {

@@ -14,6 +14,7 @@ import android.view.View;
 import com.ms.hht.R;
 import com.ms.hht.data.response.MeasurementHistoryResponse;
 import com.ms.hht.databinding.ActivityMeasurementDetailListBinding;
+import com.ms.hht.ui.customization.Fabric_Select.order.CartDetailsActivity;
 import com.ms.hht.ui.payment.PaymentAct;
 import com.ms.hht.utils.CommFunc;
 import com.paypal.checkout.PayPalCheckout;
@@ -49,23 +50,30 @@ public class MeasurementDetailListActivity extends AppCompatActivity{
         measurementDetailBinding.retakeBtn.setOnClickListener(v->{
             if (MeasurementHistoryActivityComingFrom.equalsIgnoreCase("cart")) {
 
-                if (SelectedMeasurementId<1){
+                if (SelectedMeasurementId<0){
                     CommFunc.ShowStatusPop(MeasurementDetailListActivity.this,"Please select measurement to proceed.",false);
                 }
                 else {
-                    Intent payIntent = new Intent(MeasurementDetailListActivity.this, PaymentAct.class);
-
-                    PayPalCheckout.setConfig(new CheckoutConfig(
-                            getApplication(),
-                            PAYPAL_LIVE_CLIENT_ID,
-                            Environment.LIVE,
-                            CurrencyCode.USD,
-                            UserAction.PAY_NOW
-                    ));
-
-                    PaymentAct.cart_measurement_id_in_paymentAct = SelectedMeasurementId;
-                    startActivity(payIntent);
+                    Intent i1 = new Intent(MeasurementDetailListActivity.this, CartDetailsActivity.class);
+//                    MeasurementDetailListActivity.measurementDetailList = getMeasurementHistoryResponse.getData().get(SelectedMeasurementId).getMeasurement();
+//                    MeasurementDetailListActivity.MeasurementHistoryActivityComingFrom = MeasurementHistoryActivityComingFrom;
+//                    MeasurementDetailListActivity.SelectedMeasurementId = getMeasurementHistoryResponse.getData().get(SelectedMeasurementId).getId();
+//                    PaymentAct.cart_measurement_id_in_paymentAct = getMeasurementHistoryResponse.getData().get(SelectedMeasurementId).getId();
+                    startActivity(i1);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                    Intent payIntent = new Intent(MeasurementDetailListActivity.this, PaymentAct.class);
+//
+//                    PayPalCheckout.setConfig(new CheckoutConfig(
+//                            getApplication(),
+//                            PAYPAL_LIVE_CLIENT_ID,
+//                            Environment.LIVE,
+//                            CurrencyCode.USD,
+//                            UserAction.PAY_NOW
+//                    ));
+//
+//                    PaymentAct.cart_measurement_id_in_paymentAct = SelectedMeasurementId;
+//                    startActivity(payIntent);
+//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             }
         });

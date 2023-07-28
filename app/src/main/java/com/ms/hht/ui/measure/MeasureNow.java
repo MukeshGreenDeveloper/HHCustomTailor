@@ -13,7 +13,7 @@ import com.ms.hht.ui.home.HomeScreen;
 
 public class MeasureNow extends AppCompatActivity implements View.OnClickListener {
 
-    public static String activityComingFrom = "";
+    public static String activityComingFrom = "cart";
     ActMeasureNowBinding nowBinding;
 
     @Override
