@@ -55,20 +55,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.fotoapparat.Fotoapparat;
-import io.fotoapparat.error.CameraErrorListener;
-import io.fotoapparat.exception.camera.CameraException;
-import io.fotoapparat.log.LoggersKt;
-import io.fotoapparat.parameter.ScaleType;
-import io.fotoapparat.preview.Frame;
-import io.fotoapparat.preview.FrameProcessor;
-import io.fotoapparat.result.BitmapPhoto;
-import io.fotoapparat.result.WhenDoneListener;
-import io.fotoapparat.result.transformer.ResolutionTransformersKt;
-import io.fotoapparat.selector.JpegQualitySelectorsKt;
-import io.fotoapparat.selector.LensPositionSelectorsKt;
-import io.fotoapparat.selector.ResolutionSelectorsKt;
-import io.fotoapparat.view.CameraView;
+import com.ms.hht.lib.fotoapparat.Fotoapparat;
+import com.ms.hht.lib.fotoapparat.error.CameraErrorListener;
+import com.ms.hht.lib.fotoapparat.exception.camera.CameraException;
+import com.ms.hht.lib.fotoapparat.log.LoggersKt;
+import com.ms.hht.lib.fotoapparat.parameter.ScaleType;
+import com.ms.hht.lib.fotoapparat.preview.Frame;
+import com.ms.hht.lib.fotoapparat.preview.FrameProcessor;
+import com.ms.hht.lib.fotoapparat.result.BitmapPhoto;
+import com.ms.hht.lib.fotoapparat.result.WhenDoneListener;
+import com.ms.hht.lib.fotoapparat.result.transformer.ResolutionTransformersKt;
+import com.ms.hht.lib.fotoapparat.selector.JpegQualitySelectorsKt;
+import com.ms.hht.lib.fotoapparat.selector.LensPositionSelectorsKt;
+import com.ms.hht.lib.fotoapparat.selector.ResolutionSelectorsKt;
+import com.ms.hht.lib.fotoapparat.view.CameraView;
 
 public class CameraAct extends AppCompatActivity implements SensorEventListener {
     static final /* synthetic */ boolean $assertionsDisabled = false;
