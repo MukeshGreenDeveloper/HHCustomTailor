@@ -54,6 +54,13 @@ public class MeasurementHistoryAdapter extends RecyclerView.Adapter<MeasurementH
                 MeasurementDetailListActivity.MeasurementHistoryActivityComingFrom = MeasurementHistoryActivityComingFrom;
                 MeasurementDetailListActivity.SelectedMeasurementId = position;
                 PaymentAct.cart_measurement_id_in_paymentAct = data.get(position).getId();
+
+                /* Intent i1 = new Intent(MeasurementHistoryAct.this, CartDetailsActivity.class);
+                        MeasurementDetailListActivity.measurementDetailList = getMeasurementHistoryResponse.getData().get(SelectedMeasurementId).getMeasurement();
+                        MeasurementDetailListActivity.MeasurementHistoryActivityComingFrom = MeasurementHistoryActivityComingFrom;
+                        MeasurementDetailListActivity.SelectedMeasurementId = getMeasurementHistoryResponse.getData().get(SelectedMeasurementId).getId();
+                        PaymentAct.cart_measurement_id_in_paymentAct = getMeasurementHistoryResponse.getData().get(SelectedMeasurementId).getId();
+                        startActivity(i1);*/
                 context.startActivity(i1);
                 ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }

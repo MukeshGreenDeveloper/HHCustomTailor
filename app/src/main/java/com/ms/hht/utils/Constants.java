@@ -20,10 +20,16 @@ public class Constants {
 
     public static String PAYPAL_LIVE_CLIENT_ID = "AZitRVDZCaKLmSXMV8WZSfM1qu1tYnhBpgkjCzza8RtS2umtQ61JIrFJd2uX99-bxENL6za_k-8Ccn4I";
     public static String PAYPAL_SANDBOX_CLIENT_ID = "AXfpchZSvEkdvv9LqWwj4IO8dkhjQgKHTzqxPyscuSnvx3z_AOe7mCCpbIGxuV1OHPc3ykoNGTRfTy3f";
+    public static String MIRROR_ID = "ss2TzNQKF2mNNsbpqH681BvXqAmSGNcZVd1NXfJZgWxarxqTuyK44JComhqspy90";
+    public static String APPAREL_NAME = "AllMale";
+    public static String BRAND_NAME = "HHTalior";
+
+    public static String IS_FROM_MENU_MEASUREMENT_HISTORY = "is_from_menu_measurement_history";
 
 
     public static final String SIGN_UP = "signup/";
     public static final String LOGIN = "signin/";
+    public static final String LOGIN_WITH_TOKEN = "signin_with_token/";
     public static final String FORGOT_PASSWORD = "forgot_password/";
     public static final String RESENT_OTP = "resend_otp/";
     public static final String GENERATE_PASSWORD = "generate_new_password/";

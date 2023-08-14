@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.VideoView;
 
@@ -15,6 +16,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.ms.hht.R;
 import com.ms.hht.ui.home.HomeScreen;
 import com.ms.hht.ui.login.LoginActivity;
@@ -35,7 +41,6 @@ public class SplashAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_splash);
         sessionManager = new SessionManager(SplashAct.this);
-
         if (sessionManager.getLoginSession().equalsIgnoreCase("logged in")) {
             Intent in2 = new Intent(SplashAct.this, HomeScreen.class);
             finish();

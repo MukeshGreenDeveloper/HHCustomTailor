@@ -5,6 +5,7 @@ public class SignupRequest {
     String firstname;
     String email;
     String password;
+    String token;
 
 
     public SignupRequest(String firstname, String email, String password) {
@@ -20,5 +21,9 @@ public class SignupRequest {
 
     public SignupRequest(String email) {
         this.email = email;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

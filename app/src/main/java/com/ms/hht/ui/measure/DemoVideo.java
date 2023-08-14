@@ -1,5 +1,7 @@
 package com.ms.hht.ui.measure;
 
+import static com.ms.hht.utils.Constants.IS_FROM_MENU_MEASUREMENT_HISTORY;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -75,6 +77,8 @@ public class DemoVideo extends AppCompatActivity {
     public void nextactivity() {
 
         Intent i = new Intent(getApplicationContext(), PoseGuidelines.class);
+        if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
+            i.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
         finish();
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -98,6 +102,8 @@ public class DemoVideo extends AppCompatActivity {
 
     public void goback() {
         Intent i1 = new Intent(DemoVideo.this, EnterDetails.class);
+        if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
+            i1.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
         finish();
         startActivity(i1);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

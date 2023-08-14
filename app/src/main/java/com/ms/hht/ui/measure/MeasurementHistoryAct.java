@@ -1,5 +1,7 @@
 package com.ms.hht.ui.measure;
 
+import static com.ms.hht.utils.Constants.IS_FROM_MENU_MEASUREMENT_HISTORY;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,8 @@ import com.ms.hht.data.service.APIClient;
 import com.ms.hht.data.service.APIService;
 import com.ms.hht.data.service.DisposableData;
 import com.ms.hht.databinding.ActMeasurementHistoryBinding;
+import com.ms.hht.ui.customization.Fabric_Select.order.CartDetailsActivity;
+import com.ms.hht.ui.customization.Fabric_Select.order.OrderCartAct;
 import com.ms.hht.ui.payment.PaymentAct;
 import com.ms.hht.utils.CommFunc;
 import com.ms.hht.utils.InternetConnection;
@@ -33,6 +37,7 @@ public class MeasurementHistoryAct extends AppCompatActivity implements View.OnC
     MeasurementHistoryAdapter measurementHistoryAdapter;
     public static int SelectedMeasurementId = -1;
     public static String MeasurementHistoryActivityComingFrom = "";
+    int measurementCapturedNow = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,9 @@ public class MeasurementHistoryAct extends AppCompatActivity implements View.OnC
         historyBinding = ActMeasurementHistoryBinding.inflate(getLayoutInflater());
         setContentView(historyBinding.getRoot());
 
+        if(getIntent()!=null && getIntent().getIntExtra("MeasurementIDCapturedNow",0)>0) {
+            measurementCapturedNow = getIntent().getIntExtra("MeasurementIDCapturedNow", 0);
+        }
         historyBinding.back.setOnClickListener(this);
         historyBinding.retakeBtn.setOnClickListener(this);
         apiService3 = APIClient.getClient(MeasurementHistoryAct.this).create(APIService.class);
@@ -54,7 +62,9 @@ public class MeasurementHistoryAct extends AppCompatActivity implements View.OnC
             historyBinding.retakeBtn.setVisibility(View.VISIBLE);
             historyBinding.retakeBtn.setText("Proceed");
         } else {
-            historyBinding.retakeBtn.setVisibility(View.GONE);
+            //From Menu
+            historyBinding.retakeBtn.setVisibility(View.VISIBLE);
+            historyBinding.retakeBtn.setText(getString(R.string.add_measurement));
         }
 
     }
@@ -79,7 +89,8 @@ public class MeasurementHistoryAct extends AppCompatActivity implements View.OnC
                     }
                     else {
 
-                        Intent i1 = new Intent(MeasurementHistoryAct.this, MeasurementDetailListActivity.class);
+//                        Intent i1 = new Intent(MeasurementHistoryAct.this, MeasurementDetailListActivity.class);
+                        Intent i1 = new Intent(MeasurementHistoryAct.this, CartDetailsActivity.class);
                         MeasurementDetailListActivity.measurementDetailList = getMeasurementHistoryResponse.getData().get(SelectedMeasurementId).getMeasurement();
                         MeasurementDetailListActivity.MeasurementHistoryActivityComingFrom = MeasurementHistoryActivityComingFrom;
                         MeasurementDetailListActivity.SelectedMeasurementId = getMeasurementHistoryResponse.getData().get(SelectedMeasurementId).getId();
@@ -87,6 +98,13 @@ public class MeasurementHistoryAct extends AppCompatActivity implements View.OnC
                         startActivity(i1);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }
+                }else{
+                    //Add Measurement
+                    Intent retakeIntent = new Intent(MeasurementHistoryAct.this, EnterDetails.class);
+                    retakeIntent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,true);
+                    startActivity(retakeIntent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
                 }
                 break;
         }
@@ -117,37 +135,23 @@ public class MeasurementHistoryAct extends AppCompatActivity implements View.OnC
                     if (getMeasurementHistoryResponse.getCode() == 1) {
                         LinearLayoutManager layoutManager1 = new LinearLayoutManager(MeasurementHistoryAct.this, RecyclerView.VERTICAL, false);
                         historyBinding.measRecy.setLayoutManager(layoutManager1);
-                        measurementHistoryAdapter = new MeasurementHistoryAdapter(MeasurementHistoryAct.this, getMeasurementHistoryResponse.getData());
+                        if(measurementCapturedNow>0){
+                            for(int i=0;i<getMeasurementHistoryResponse.getData().size();i++){
+                                MeasurementHistoryResponse.DataItem dataItem = getMeasurementHistoryResponse.getData().get(i);
+                                if(getMeasurementHistoryResponse.getData().get(i).getId() == measurementCapturedNow){
+                                    MeasurementHistoryAct.this.SelectedMeasurementId = i;
+                                    dataItem.setChecked(true);
+                                    getMeasurementHistoryResponse.getData().set(i,dataItem);
+                                    break;
+                                }
+                            }
+                        }
+                        measurementHistoryAdapter = new MeasurementHistoryAdapter(MeasurementHistoryAct.this, getMeasurementHistoryResponse.getData()/*,measurementCapturedNow*/);
                         historyBinding.measRecy.setAdapter(measurementHistoryAdapter);
                         historyBinding.measRecy.setHasFixedSize(true);
                         historyBinding.measRecy.setItemViewCacheSize(20);
                         historyBinding.measRecy.setDrawingCacheEnabled(true);
                         historyBinding.measRecy.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-
-//                        if (MeasurementHistoryActivityComingFrom.equalsIgnoreCase("cart")) {
-//                            historyBinding.measRecy.addOnItemTouchListener(new RecyclerTouchListener(MeasurementHistoryAct.this,
-//                                    historyBinding.measRecy, new RecyclerTouchListener.ClickListener() {
-//                                @Override
-//                                public void onClick(View view, int position) {
-//                                    for(int i=0 ; i<getMeasurementHistoryResponse.getData().size() ;i++) {
-//                                        if (i==position) {
-//                                            getMeasurementHistoryResponse.getData().get(i).setChecked(true);
-//                                            SelectedMeasurementId =  getMeasurementHistoryResponse.getData().get(i).getId();
-//                                            PaymentAct.cart_measurement_id_in_paymentAct = getMeasurementHistoryResponse.getData().get(position).getId();
-//                                        }
-//                                        else {
-//                                            getMeasurementHistoryResponse.getData().get(i).setChecked(false);
-//                                        }
-//                                    }
-//                                    measurementHistoryAdapter.notifyDataSetChanged();
-//                                }
-//
-//                                @Override
-//                                public void onLongClick(View view, int position) {
-//
-//                                }
-//                            }));
-//                        }
 
                     } else {
                         CommFunc.ShowStatusPop(MeasurementHistoryAct.this, getMeasurementHistoryResponse.getMessage(), false);

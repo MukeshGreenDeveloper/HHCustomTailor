@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/thankTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:fontFamily="@font/lato_regular"
+        android:text="@string/thank"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/_25sdp" />
+
+    <TextView
+        android:id="@+id/weTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thankTxt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:fontFamily="@font/lato_regular"
+        android:text="@string/thanktxt"
+        android:textColor="@color/App_color_dark_grey"
+        android:textSize="@dimen/_22sdp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/measurementRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnLinLay"
+        android:layout_below="@+id/weTxt"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:numColumns="1"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:stretchMode="columnWidth" />
+
+    <LinearLayout
+        android:id="@+id/btnLinLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/retakeBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight="0.4"
+            android:background="@drawable/btn_light_bg"
+            android:text="@string/retake"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/conBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_weight="0.4"
+            android:background="@drawable/black_backgroud_for_button"
+            android:text="@string/con"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</RelativeLayout>
