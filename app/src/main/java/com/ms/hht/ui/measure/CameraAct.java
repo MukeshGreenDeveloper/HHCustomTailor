@@ -19,6 +19,7 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Size;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +29,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -35,9 +40,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.mlkit.common.MlKitException;
+import com.google.mlkit.vision.pose.PoseDetectorOptionsBase;
 import com.ms.hht.R;
 import com.ms.hht.data.request.VolleyMultipartRequest;
 import com.ms.hht.data.response.ResponseTypeValues;
+import com.ms.hht.java.posedetector.PoseDetectorProcessor;
+import com.ms.hht.javautil.GraphicOverlay;
+import com.ms.hht.javautil.VisionImageProcessor;
+import com.ms.hht.javautil.preference.PreferenceUtils;
 import com.ms.hht.utils.ComUserProfileData;
 import com.ms.hht.utils.CommFunc;
 import com.ms.hht.utils.HHLogger;
@@ -54,6 +65,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import com.ms.hht.lib.fotoapparat.Fotoapparat;
 import com.ms.hht.lib.fotoapparat.error.CameraErrorListener;
@@ -116,6 +128,17 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     View view2;
     View view3;
     View view4;
+    @Nullable
+    private VisionImageProcessor imageProcessor;
+    private int lensFacing = CameraSelector.LENS_FACING_FRONT;
+    @Nullable
+    private ImageAnalysis analysisUseCase;
+    private boolean needUpdateGraphicOverlayImageSourceInfo;
+    private GraphicOverlay graphicOverlay;
+    private final String TAG = "CameraAct";
+    @Nullable
+    private ProcessCameraProvider cameraProvider;
+    private CameraSelector cameraSelector;
 
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
@@ -149,14 +172,89 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
                 onCreate(view);
             }
         });
+
+        //Pose Detection Options
+        graphicOverlay = findViewById(R.id.graphic_overlay);
+        if (graphicOverlay == null) {
+            Log.d(TAG, "graphicOverlay is null");
+        }
+        if (imageProcessor != null) {
+            imageProcessor.stop();
+        }
+        PoseDetectorOptionsBase poseDetectorOptions =
+                PreferenceUtils.getPoseDetectorOptionsForLivePreview(this);
+        boolean shouldShowInFrameLikelihood =
+                PreferenceUtils.shouldShowPoseDetectionInFrameLikelihoodLivePreview(this);
+        boolean visualizeZ = PreferenceUtils.shouldPoseDetectionVisualizeZ(this);
+        boolean rescaleZ = PreferenceUtils.shouldPoseDetectionRescaleZForVisualization(this);
+        boolean runClassification = PreferenceUtils.shouldPoseDetectionRunClassification(this);
+        imageProcessor =
+                new PoseDetectorProcessor(
+                        this,
+                        poseDetectorOptions,
+                        shouldShowInFrameLikelihood,
+                        visualizeZ,
+                        rescaleZ,
+                        runClassification,
+                        /* isStreamMode = */ true);
+        ImageAnalysis.Builder builder = new ImageAnalysis.Builder();
+        Size targetResolution = PreferenceUtils.getCameraXTargetResolution(this, lensFacing);
+        if (targetResolution != null) {
+            builder.setTargetResolution(targetResolution);
+        }
+        analysisUseCase = builder.build();
+
+        needUpdateGraphicOverlayImageSourceInfo = true;
+        analysisUseCase.setAnalyzer(
+                // imageProcessor.processImageProxy will use another thread to run the detection underneath,
+                // thus we can just runs the analyzer itself on main thread.
+                ContextCompat.getMainExecutor(this),
+                imageProxy -> {
+                    if (needUpdateGraphicOverlayImageSourceInfo) {
+                        boolean isImageFlipped = lensFacing == CameraSelector.LENS_FACING_FRONT;
+                        int rotationDegrees = imageProxy.getImageInfo().getRotationDegrees();
+                        if (rotationDegrees == 0 || rotationDegrees == 180) {
+                            graphicOverlay.setImageSourceInfo(
+                                    imageProxy.getWidth(), imageProxy.getHeight(), isImageFlipped);
+                        } else {
+                            graphicOverlay.setImageSourceInfo(
+                                    imageProxy.getHeight(), imageProxy.getWidth(), isImageFlipped);
+                        }
+                        needUpdateGraphicOverlayImageSourceInfo = false;
+                    }
+                    try {
+                        imageProcessor.processImageProxy(imageProxy, graphicOverlay);
+                    } catch (MlKitException e) {
+                        Log.e(TAG, "Failed to process image. Error: " + e.getLocalizedMessage());
+                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+        try {
+            cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
+            cameraProvider = ProcessCameraProvider.getInstance(getApplication()).get();
+            cameraProvider.bindToLifecycle(/* lifecycleOwner= */ this, cameraSelector, analysisUseCase);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (imageProcessor != null) {
+            imageProcessor.stop();
+        }
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$onCreate$0$com-ms-hht-ui-measure-CameraAct  reason: not valid java name */
     public void onCreate(View view) {
         Intent intent = new Intent(this, PoseGuidelines.class);
-        if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
-            intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
+        if (getIntent() != null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, false))
+            intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, false));
         finish();
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -228,7 +326,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     public void onPause() {
         this.fotoapparat.stop();
         if (this.ImageStatustimerstatus.booleanValue()) {
-            if(this.ImageStatustimer!=null)
+            if (this.ImageStatustimer != null)
                 this.ImageStatustimer.cancel();
         }
         super.onPause();
@@ -238,7 +336,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         this.dialog.dismiss();
         this.m1.release();
         if (this.count1isrunning.booleanValue()) {
-            if(this.cameraCount!=null)
+            if (this.cameraCount != null)
                 this.cameraCount.cancel();
         }
         if (this.counter2isrunning.booleanValue()) {
@@ -250,13 +348,17 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         if (this.m3.isPlaying()) {
             this.m3.release();
         }
+
+        if (imageProcessor != null) {
+            imageProcessor.stop();
+        }
     }
 
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, PoseGuidelines.class);
-        if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
-            intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
+        if (getIntent() != null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, false))
+            intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, false));
         finish();
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -456,8 +558,8 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
             Intent intent = new Intent(getApplicationContext(), PosePreviewAct.class);
 //            intent.putExtra("frontimagepath", this.frontImageS3Path);
 //            intent.putExtra("sideimagepath", this.SideImageS3Path);
-            if(getIntent()!=null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false))
-                intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY,false));
+            if (getIntent() != null && getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, false))
+                intent.putExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, getIntent().getBooleanExtra(IS_FROM_MENU_MEASUREMENT_HISTORY, false));
             intent.putExtra("frontFilePath", this.FrontImageFilePath);
             intent.putExtra("sideFilePath", this.SideImageFilePath);
             ComUserProfileData.setAngle(this.angle);
@@ -575,9 +677,9 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
 
     private void uploadImageFront(Bitmap bitmap, String str) {
         this.frontImageS3Path = getBase64Encode_Bitmap(bitmap);
-        PosePreviewAct.imageUrl1 =getBase64Encode_Bitmap(bitmap);
+        PosePreviewAct.imageUrl1 = getBase64Encode_Bitmap(bitmap);
         this.frontPoseStatus = true;
-        HHLogger.getINSTANCE(CameraAct.this).LOG("CameraAct", PosePreviewAct.imageUrl1,"FrontImage");
+        HHLogger.getINSTANCE(CameraAct.this).LOG("CameraAct", PosePreviewAct.imageUrl1, "FrontImage");
 //        String trim = ("https://api.mysize.mirrorsize.com/api/utils/s3ImageUploadMultipartFront/M25uwr95/" + this.session.getUserDetails().get(SessionManager.PROCESS_ID) + "/").trim();
 //        Log.d("LOGnew", "Image_uploadapi>>> " + trim);
 //        final String str2 = str;
@@ -650,7 +752,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         PosePreviewAct.imageUrl2 = this.SideImageS3Path;
         this.sidePoseStatus = true;
         this.ImageStatustimerstatus = true;
-        HHLogger.getINSTANCE(CameraAct.this).LOG("CameraAct", PosePreviewAct.imageUrl2,"SidImage");
+        HHLogger.getINSTANCE(CameraAct.this).LOG("CameraAct", PosePreviewAct.imageUrl2, "SidImage");
         CameraAct.this.checkImageStatus();
 //        this.ImageStatustimer = new CountDownTimer(120000, 1000) {
 //            public void onFinish() {
@@ -745,13 +847,15 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-    private String getBase64Encode_Bitmap(Bitmap bitmap){
+
+    private String getBase64Encode_Bitmap(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
-    public static Bitmap getBitmapDecode_Base64(String base64){
+
+    public static Bitmap getBitmapDecode_Base64(String base64) {
         byte[] imageAsBytes = Base64.decode(base64.getBytes(), Base64.DEFAULT);
 
         return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
