@@ -31,7 +31,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -135,9 +137,11 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     private ImageAnalysis analysisUseCase;
     private boolean needUpdateGraphicOverlayImageSourceInfo;
     private GraphicOverlay graphicOverlay;
+    private PreviewView previewView;
     private final String TAG = "CameraAct";
     @Nullable
     private ProcessCameraProvider cameraProvider;
+    @Nullable private Preview previewUseCase;
     private CameraSelector cameraSelector;
 
     public void onAccuracyChanged(Sensor sensor, int i) {
@@ -175,6 +179,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
 
         //Pose Detection Options
         graphicOverlay = findViewById(R.id.graphic_overlay);
+        previewView = findViewById(R.id.preview_view);
         if (graphicOverlay == null) {
             Log.d(TAG, "graphicOverlay is null");
         }
@@ -232,6 +237,13 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
                 });
         try {
             cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
+            Preview.Builder prevbuilder = new Preview.Builder();
+            Size ptargetResolution = PreferenceUtils.getCameraXTargetResolution(this, lensFacing);
+            if (targetResolution != null) {
+                prevbuilder.setTargetResolution(ptargetResolution);
+            }
+            previewUseCase = prevbuilder.build();
+            previewUseCase.setSurfaceProvider(previewView.getSurfaceProvider());
             cameraProvider = ProcessCameraProvider.getInstance(getApplication()).get();
             cameraProvider.bindToLifecycle(/* lifecycleOwner= */ this, cameraSelector, analysisUseCase);
         } catch (ExecutionException e) {

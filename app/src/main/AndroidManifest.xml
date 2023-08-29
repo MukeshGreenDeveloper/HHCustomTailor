@@ -15,7 +15,12 @@
     <uses-permission
         android:name="android.permission.CAMERA"
         android:required="false" />
+    <uses-sdk
+        tools:overrideLibrary="
+          androidx.camera.camera2, androidx.camera.core,
+          androidx.camera.view, androidx.camera.lifecycle" />
 
+    <uses-feature android:name="android.hardware.camera"/>
     <application
         android:name=".noui.HHTApplication"
         android:allowBackup="false"
@@ -230,6 +235,11 @@
             android:exported="true"
             android:screenOrientation="portrait" />
     </application>
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
 
     <!--    // password: hhtailor-->
     <!--    key0-->
