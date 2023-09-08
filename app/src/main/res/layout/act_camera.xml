@@ -5,16 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:keepScreenOn="true">
 
-    <com.ms.hht.lib.fotoapparat.view.CameraView
-        android:id="@+id/camera_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <androidx.camera.view.PreviewView
+<!--    <com.ms.hht.lib.fotoapparat.view.CameraView-->
+<!--        android:id="@+id/camera_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+    <com.ms.hht.mlkit.CameraSourcePreview
         android:id="@+id/preview_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"/>
-    <com.ms.hht.javautil.GraphicOverlay
+    <com.ms.hht.mlkit.GraphicOverlay
         android:id="@+id/graphic_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
