@@ -166,6 +166,16 @@ public class CameraSource {
     processingThread.start();
     return this;
   }
+  public synchronized void restartCamera() throws IOException{
+    camera = createCamera();
+    dummySurfaceTexture = new SurfaceTexture(DUMMY_TEXTURE_NAME);
+    camera.setPreviewTexture(dummySurfaceTexture);
+    camera.startPreview();
+
+    processingThread = new Thread(processingRunnable);
+    processingRunnable.setActive(true);
+    processingThread.start();
+  }
 
   /**
    * Opens the camera and starts sending preview frames to the underlying detector. The supplied
@@ -431,7 +441,6 @@ public class CameraSource {
                           Camera.PictureCallback pictureCallbackJPG) {
     try {
       camera.takePicture(cameraShutterCallback, pictureCallbackRAW, pictureCallbackJPG);
-      camera.release();
     }catch (Exception e){
       e.printStackTrace();
     }

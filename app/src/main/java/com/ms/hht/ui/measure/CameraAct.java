@@ -24,8 +24,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SizeF;
@@ -35,8 +33,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
@@ -47,24 +43,13 @@ import com.android.volley.VolleyError;
 import com.google.mlkit.vision.pose.PoseDetectorOptionsBase;
 import com.ms.hht.R;
 import com.ms.hht.data.response.ResponseTypeValues;
-import com.ms.hht.lib.fotoapparat.Fotoapparat;
-import com.ms.hht.lib.fotoapparat.error.CameraErrorListener;
 import com.ms.hht.lib.fotoapparat.exception.camera.CameraException;
-import com.ms.hht.lib.fotoapparat.log.LoggersKt;
-import com.ms.hht.lib.fotoapparat.parameter.ScaleType;
 import com.ms.hht.lib.fotoapparat.preview.Frame;
 import com.ms.hht.lib.fotoapparat.preview.FrameProcessor;
 import com.ms.hht.lib.fotoapparat.result.BitmapPhoto;
-import com.ms.hht.lib.fotoapparat.result.WhenDoneListener;
-import com.ms.hht.lib.fotoapparat.result.transformer.ResolutionTransformersKt;
-import com.ms.hht.lib.fotoapparat.selector.JpegQualitySelectorsKt;
-import com.ms.hht.lib.fotoapparat.selector.LensPositionSelectorsKt;
-import com.ms.hht.lib.fotoapparat.selector.ResolutionSelectorsKt;
-import com.ms.hht.lib.fotoapparat.view.CameraView;
 import com.ms.hht.mlkit.CameraSource;
 import com.ms.hht.mlkit.CameraSourcePreview;
 import com.ms.hht.mlkit.GraphicOverlay;
-import com.ms.hht.mlkit.VisionImageProcessor;
 import com.ms.hht.mlkit.java.posedetector.PoseDetectorProcessor;
 import com.ms.hht.mlkit.preference.PreferenceUtils;
 import com.ms.hht.utils.ComUserProfileData;
@@ -76,7 +61,6 @@ import com.ms.hht.utils.SessionManager;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -599,6 +583,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
 
     public void captureImage() {
         Log.d("keyss...","Capture Image()==>");
+//        cameraSource.stop();
         cameraSource.takePicture(new Camera.ShutterCallback() {
             @Override
             public void onShutter() {
@@ -608,10 +593,11 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
 //        new Photo(bytes,-90);
-                if(bytes!=null){
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    Log.d("keyss...","Picker Taken()==>");
-                }
+//                if(bytes!=null){
+//                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                    Log.d("keyss...","Picker Taken()==>");
+//                }
+
             }
         },new Camera.PictureCallback() {
             @SuppressLint("MissingPermission")
@@ -623,30 +609,13 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     captureImage(new BitmapPhoto(bitmap, -90));
                     try {
-                        //camera.unlock();
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                cameraSource.release();
-                            }
-                        });
-                        //camera.startPreview();
-//                        cameraSource.release();
-//                        cameraSource.start();
+                        cameraSource.restartCamera();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         });
-//        this.fotoapparat.takePicture().toBitmap(ResolutionTransformersKt.scaled(0.25f))
-//                .whenDone(new WhenDoneListener<BitmapPhoto>() {
-//                    @Override
-//                    public void whenDone(@Nullable BitmapPhoto bitmapPhoto) {
-//                        captureImage((BitmapPhoto) bitmapPhoto);
-//                    }
-//                });
 
     }
 
