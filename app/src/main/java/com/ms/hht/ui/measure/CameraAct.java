@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Sensor;
@@ -24,6 +25,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.speech.tts.TextToSpeech;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SizeF;
@@ -40,7 +42,9 @@ import androidx.core.app.ActivityCompat;
 import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
+import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseDetectorOptionsBase;
+import com.google.mlkit.vision.pose.PoseLandmark;
 import com.ms.hht.R;
 import com.ms.hht.data.response.ResponseTypeValues;
 import com.ms.hht.lib.fotoapparat.exception.camera.CameraException;
@@ -50,6 +54,7 @@ import com.ms.hht.lib.fotoapparat.result.BitmapPhoto;
 import com.ms.hht.mlkit.CameraSource;
 import com.ms.hht.mlkit.CameraSourcePreview;
 import com.ms.hht.mlkit.GraphicOverlay;
+import com.ms.hht.mlkit.PoseDetectionNotifier;
 import com.ms.hht.mlkit.java.posedetector.PoseDetectorProcessor;
 import com.ms.hht.mlkit.preference.PreferenceUtils;
 import com.ms.hht.utils.ComUserProfileData;
@@ -66,8 +71,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-public class CameraAct extends AppCompatActivity implements SensorEventListener {
+public class CameraAct extends AppCompatActivity implements SensorEventListener, PoseDetectionNotifier {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     boolean Correct_angle_status = true;
     String FrontImageFilePath;
@@ -79,7 +86,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     ImageView back;
     MediaPlayer beepplayer;
     CountDownTimer cameraCount;
-//    CameraView cameraView;
+    //    CameraView cameraView;
     String correctemail;
     MediaPlayer count1;
     Boolean count1isrunning = false;
@@ -91,7 +98,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     int d = 0;
     CountDownTimer delayCounter;
     Dialog dialog;
-//    Fotoapparat fotoapparat;
+    //    Fotoapparat fotoapparat;
     TextView front;
     String frontImageS3Path = "value";
     boolean frontPoseStatus = false;
@@ -129,9 +136,12 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     public static double verticalAngle = 0;
     public static int width = 0;
     public static int height = 0;
-
+    private TextToSpeech textToSpeech;
+    private boolean isTextToSpeechReady=false;
     float F = 1f;           //focal length
     float angleX, angleY;
+    boolean startCheckingMeasurement= false;
+
     private Camera frontCam() {
         int cameraCount = 0;
         Camera cam = null;
@@ -253,17 +263,24 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
                         FLPY = lensIntrinsicCalibration[1];// The first element represents principalPointX
                     }
                 }
-                Log.d("tryFL",FLX+"  "+FLPY+"   "+FLPX+"  "+FLPY);
+                Log.d("tryFL", FLX + "  " + FLPY + "   " + FLPX + "  " + FLPY);
 
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
 
 
-
         }
         createCameraSource(selectedModel);
-
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.UK);
+                    isTextToSpeechReady = true;
+                }else isTextToSpeechReady =false;
+            }
+        });
     }
 
     private void createCameraSource(String model) {
@@ -294,7 +311,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
                                     visualizeZ,
                                     rescaleZ,
                                     runClassification,
-                                    /* isStreamMode = */ true));
+                                    /* isStreamMode = */ true, this));
                     break;
                 default:
                     Log.e(TAG, "Unknown model: " + model);
@@ -332,6 +349,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
             }
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -487,34 +505,34 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     public void mainfunc() {
         this.cameraCount = new CountDownTimer(6000, 1000) {
             public void onTick(long j) {
-                CameraAct.this.interval--;
-                CameraAct.this.count1isrunning = true;
-                if (CameraAct.this.interval == 5) {
-                    CameraAct.this.count5.start();
-                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                } else if (CameraAct.this.interval == 4) {
-                    CameraAct.this.count4.start();
-                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                } else if (CameraAct.this.interval == 3) {
-                    CameraAct.this.count3.start();
-                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                } else if (CameraAct.this.interval == 2) {
-                    CameraAct.this.count2.start();
-                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                } else if (CameraAct.this.interval == 1) {
-                    CameraAct.this.count1.start();
-                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                } else if (CameraAct.this.interval == 0) {
-                    CameraAct.this.imageName = "front";
-                    CameraAct.this.captureImage();
-                    if (CameraAct.this.gender.equalsIgnoreCase("male")) {
-                        CameraAct.this.poseimage.setImageResource(R.drawable.maletightfitside);
-                    } else {
-                        CameraAct.this.poseimage.setImageResource(R.drawable.femalesidetightfit);
-                    }
-                    CameraAct.this.number.setText("");
-                    CameraAct.this.front.setText(R.string.side);
-                }
+//                CameraAct.this.interval--;
+//                CameraAct.this.count1isrunning = true;
+//                if (CameraAct.this.interval == 5) {
+//                    CameraAct.this.count5.start();
+//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
+//                } else if (CameraAct.this.interval == 4) {
+//                    CameraAct.this.count4.start();
+//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
+//                } else if (CameraAct.this.interval == 3) {
+//                    CameraAct.this.count3.start();
+//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
+//                } else if (CameraAct.this.interval == 2) {
+//                    CameraAct.this.count2.start();
+//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
+//                } else if (CameraAct.this.interval == 1) {
+//                    CameraAct.this.count1.start();
+//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
+//                } else if (CameraAct.this.interval == 0) {
+//                    CameraAct.this.imageName = "front";
+//                    CameraAct.this.captureImage();
+//                    if (CameraAct.this.gender.equalsIgnoreCase("male")) {
+//                        CameraAct.this.poseimage.setImageResource(R.drawable.maletightfitside);
+//                    } else {
+//                        CameraAct.this.poseimage.setImageResource(R.drawable.femalesidetightfit);
+//                    }
+//                    CameraAct.this.number.setText("");
+//                    CameraAct.this.front.setText(R.string.side);
+//                }
             }
 
             public void onFinish() {
@@ -582,12 +600,12 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
     }
 
     public void captureImage() {
-        Log.d("keyss...","Capture Image()==>");
+        Log.d("keyss...", "Capture Image()==>");
 //        cameraSource.stop();
         cameraSource.takePicture(new Camera.ShutterCallback() {
             @Override
             public void onShutter() {
-                Log.d("keyss...","Shutter Taken()==>");
+                Log.d("keyss...", "Shutter Taken()==>");
             }
         }, new Camera.PictureCallback() {
             @Override
@@ -599,13 +617,13 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
 //                }
 
             }
-        },new Camera.PictureCallback() {
+        }, new Camera.PictureCallback() {
             @SuppressLint("MissingPermission")
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
-                Log.d("keyss...","Shutter Taken()==>");
+                Log.d("keyss...", "Shutter Taken()==>");
 //        new Photo(bytes,-90);
-                if(bytes!=null) {
+                if (bytes != null) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     captureImage(new BitmapPhoto(bitmap, -90));
                     try {
@@ -752,7 +770,11 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
                         CameraAct.this.m3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(MediaPlayer mp) {
-                                onTick(mp);
+                                //**************************You are set to get Measured******************
+                                startCheckingMeasurement= true;
+
+
+//                                onTick(mp);
                             }
                         });
                     }
@@ -771,7 +793,6 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
             }
         }.start();
     }
-
     private void ShowPopup() {
         this.dialog.setContentView(R.layout.status_popup);
         this.dialog.show();
@@ -850,6 +871,22 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener 
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    @Override
+    public void humanDetected(List<PoseLandmark> landmarks, Pose pose, Canvas canvas) {
+
+    }
+
+    @Override
+    public void nextMesage(String mesage) {
+        if(startCheckingMeasurement)
+        textToSpeech.speak(mesage, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    @Override
+    public void readyToCapture(String pose_complete) {
+
     }
 
     private class SampleFrameProcessor implements FrameProcessor {

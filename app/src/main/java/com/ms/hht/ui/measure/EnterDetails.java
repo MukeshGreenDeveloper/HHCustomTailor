@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.gson.Gson;
+import com.ms.hht.BuildConfig;
 import com.ms.hht.R;
 import com.ms.hht.data.SignUpResponse;
 import com.ms.hht.data.request.ProcessIDRequest;
@@ -164,6 +166,12 @@ public class EnterDetails extends AppCompatActivity implements View.OnClickListe
                     HHLogger.getINSTANCE(EnterDetails.this).EXCEPTION("EnterDetails", e.getMessage());
                 }
             }
+        }
+        if(BuildConfig.DEBUG){
+            this.detailsBinding.LooseBtn.setBackgroundResource(R.drawable.blue_background_for_button);
+            this.detailsBinding.taperedBtn.setBackgroundResource(R.drawable.white_edit_text_background);
+            this.detailsBinding.regularBtn.setBackgroundResource(R.drawable.white_edit_text_background);
+            this.PrefferedType = "Loose";
         }
     }
 

@@ -18,8 +18,8 @@ package com.ms.hht.mlkit.java;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -28,15 +28,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SizeF;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -44,13 +37,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.annotation.KeepName;
+import com.google.mlkit.vision.pose.Pose;
+import com.google.mlkit.vision.pose.PoseLandmark;
 import com.ms.hht.mlkit.CameraSource;
 import com.ms.hht.mlkit.CameraSourcePreview;
 import com.ms.hht.mlkit.GraphicOverlay;
 import com.ms.hht.R;
+import com.ms.hht.mlkit.PoseDetectionNotifier;
 import com.ms.hht.mlkit.java.posedetector.PoseDetectorProcessor;
 import com.ms.hht.mlkit.preference.PreferenceUtils;
-import com.ms.hht.mlkit.preference.SettingsActivity;
 import com.google.mlkit.vision.pose.PoseDetectorOptionsBase;
 
 import java.io.IOException;
@@ -59,7 +54,7 @@ import java.util.List;
 //import com.google.android.gms.vision.CameraSource;
 /** Live preview demo for ML Kit APIs. */
 @KeepName
-public final class LivePreviewActivity extends AppCompatActivity {
+public final class LivePreviewActivity extends AppCompatActivity implements PoseDetectionNotifier {
   private static final String OBJECT_DETECTION = "Object Detection";
   private static final String OBJECT_DETECTION_CUSTOM = "Custom Object Detection";
   private static final String CUSTOM_AUTOML_OBJECT_DETECTION =
@@ -317,7 +312,7 @@ public final class LivePreviewActivity extends AppCompatActivity {
                           visualizeZ,
                           rescaleZ,
                           runClassification,
-                          /* isStreamMode = */ true));
+                          /* isStreamMode = */ true,this));
           break;
         default:
           Log.e(TAG, "Unknown model: " + model);
@@ -377,5 +372,20 @@ public final class LivePreviewActivity extends AppCompatActivity {
     if (cameraSource != null) {
       cameraSource.release();
     }
+  }
+
+  @Override
+  public void humanDetected(List<PoseLandmark> landmarks, Pose pose, Canvas canvas) {
+
+  }
+
+  @Override
+  public void nextMesage(String mesage) {
+
+  }
+
+  @Override
+  public void readyToCapture(String pose_complete) {
+
   }
 }

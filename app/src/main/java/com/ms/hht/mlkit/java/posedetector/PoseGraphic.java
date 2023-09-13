@@ -28,6 +28,7 @@ import android.util.Log;
 import com.google.mlkit.vision.common.PointF3D;
 import com.ms.hht.mlkit.GraphicOverlay;
 import com.ms.hht.mlkit.GraphicOverlay.Graphic;
+import com.ms.hht.mlkit.PoseDetectionNotifier;
 import com.ms.hht.mlkit.java.LivePreviewActivity;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseLandmark;
@@ -58,18 +59,20 @@ public class PoseGraphic extends Graphic {
   private final Paint anglePaint;
   private final Paint distancePaint;
   private final Paint msgPaint;
+  private  PoseDetectionNotifier poseDetectionNotifier;
   PoseGraphic(
-      GraphicOverlay overlay,
-      Pose pose,
-      boolean showInFrameLikelihood,
-      boolean visualizeZ,
-      boolean rescaleZForVisualization,
-      List<String> poseClassification) {
+          GraphicOverlay overlay,
+          Pose pose,
+          boolean showInFrameLikelihood,
+          boolean visualizeZ,
+          boolean rescaleZForVisualization,
+          List<String> poseClassification, PoseDetectionNotifier poseDetectionNotifier) {
     super(overlay);
     this.pose = pose;
     this.showInFrameLikelihood = showInFrameLikelihood;
     this.visualizeZ = visualizeZ;
     this.rescaleZForVisualization = rescaleZForVisualization;
+    this.poseDetectionNotifier = poseDetectionNotifier;
 
     this.poseClassification = poseClassification;
     classificationTextPaint = new Paint();
@@ -112,7 +115,9 @@ public class PoseGraphic extends Graphic {
     if (landmarks.isEmpty()) {
       return;
     }
-
+    if(poseDetectionNotifier!=null && landmarks.size()>20){
+      poseDetectionNotifier.humanDetected(landmarks,pose,canvas);
+    }
     // Draw pose classification text.
 //    float classificationX = POSE_CLASSIFICATION_TEXT_SIZE * 0.5f;
 //    for (int i = 0; i < poseClassification.size(); i++) {
@@ -277,12 +282,14 @@ public class PoseGraphic extends Graphic {
                 0,
                 translateY2(),
                 distancePaint);
+        poseDetectionNotifier.readyToCapture("Pose Complete");
       }else{
         canvas.drawText(
                 "Angle between your legs and arms should 45",
                 xPos,
                 translateY2(),
                 msgPaint);
+        poseDetectionNotifier.nextMesage("Angle between your legs and arms should 45");
       }
     }else{
       canvas.drawText(
@@ -290,6 +297,7 @@ public class PoseGraphic extends Graphic {
              xPos,
               translateY2(),
               msgPaint);
+      poseDetectionNotifier.nextMesage("Please stand from 4 to 6 feet's away from camera");
     }
 
     Log.d("tryDistance","d="+LivePreviewActivity.FLX+"    "+LivePreviewActivity.horizontalAngle+"    "+LivePreviewActivity.verticalAngle+"   "+LivePreviewActivity.width);

@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.odml.image.MlImage;
 import com.google.mlkit.vision.common.InputImage;
 import com.ms.hht.mlkit.GraphicOverlay;
+import com.ms.hht.mlkit.PoseDetectionNotifier;
 import com.ms.hht.mlkit.java.VisionProcessorBase;
 import com.ms.hht.mlkit.java.posedetector.classification.PoseClassifierProcessor;
 import com.google.mlkit.vision.pose.Pose;
@@ -54,6 +55,7 @@ public class PoseDetectorProcessor
 
   private PoseClassifierProcessor poseClassifierProcessor;
   /** Internal class to hold Pose and classification results. */
+  private PoseDetectionNotifier poseDetectionNotifier;
   protected static class PoseWithClassification {
     private final Pose pose;
     private final List<String> classificationResult;
@@ -73,15 +75,17 @@ public class PoseDetectorProcessor
   }
 
   public PoseDetectorProcessor(
-      Context context,
-      PoseDetectorOptionsBase options,
-      boolean showInFrameLikelihood,
-      boolean visualizeZ,
-      boolean rescaleZForVisualization,
-      boolean runClassification,
-      boolean isStreamMode) {
+          Context context,
+          PoseDetectorOptionsBase options,
+          boolean showInFrameLikelihood,
+          boolean visualizeZ,
+          boolean rescaleZForVisualization,
+          boolean runClassification,
+          boolean isStreamMode,
+          PoseDetectionNotifier notifier) {
     super(context);
     this.showInFrameLikelihood = showInFrameLikelihood;
+    this.poseDetectionNotifier = notifier;
     this.visualizeZ = visualizeZ;
     this.rescaleZForVisualization = rescaleZForVisualization;
     detector = PoseDetection.getClient(options);
@@ -146,7 +150,7 @@ public class PoseDetectorProcessor
             showInFrameLikelihood,
             visualizeZ,
             rescaleZForVisualization,
-            poseWithClassification.classificationResult));
+            poseWithClassification.classificationResult,poseDetectionNotifier));
   }
 
   @Override
