@@ -26,6 +26,7 @@ import android.graphics.PointF;
 import android.util.Log;
 
 import com.google.mlkit.vision.common.PointF3D;
+import com.ms.hht.data.BodyValidationFields;
 import com.ms.hht.mlkit.GraphicOverlay;
 import com.ms.hht.mlkit.GraphicOverlay.Graphic;
 import com.ms.hht.mlkit.PoseDetectionNotifier;
@@ -275,26 +276,53 @@ public class PoseGraphic extends Graphic {
     int xPos = (canvas.getWidth() / 2);
     int yPos = (int) ((canvas.getHeight() / 2) - ((msgPaint.descent() + msgPaint.ascent()) / 2)) ;
 
+
+    // Step 1: Obtain the distance from the camera to the person in feet
+    double cameraToPersonDistanceFeet = distance; // You need to implement this method to get the distance.
+
+// Step 2: Calculate the distance between the feet based on the positions of the body landmarks
+// Assuming you have the coordinates of two landmarks representing the feet, e.g., PointF feetLandmark1 and PointF feetLandmark2
+    PointF feetLandmark1 = leftAnkle.getPosition(); // You need to implement this method to get the landmark position.
+    PointF feetLandmark2 = rightAnkle.getPosition(); // You need to implement this method to get the landmark position.
+
+// Step 3: Use trigonometry to find the distance between the feet
+    double distanceBetweenFeet = calculateDistanceBetweenPoints(feetLandmark1, feetLandmark2);
+
+    double pixelsPerFoot = distance / (0.206);
+
+// Now, you can calculate the distance between the feet in feet using the camera-to-person distance
+    double actualDistanceBetweenFeet = distanceBetweenFeet * (cameraToPersonDistanceFeet/pixelsPerFoot);
+    BodyValidationFields bodyValidationFields =  new BodyValidationFields();
+    poseDetectionNotifier.setBodyValidationField(bodyValidationFields);
     if(distance>= 4 && distance<=6){
-      if((angleDegrees>= 40 && angleDegrees<=50) && (rangleDegrees>= 40 && rangleDegrees<=50) ){
+      if(actualDistanceBetweenFeet<11){
         canvas.drawText(
-                "        Pose Complete                  ",
-                0,
-                translateY2(),
-                distancePaint);
-        poseDetectionNotifier.readyToCapture("Pose Complete");
-      }else{
-        canvas.drawText(
-                "Angle between your legs and arms should 45",
+                "Distance between your feet's should be grater than 1 feet",
                 xPos,
                 translateY2(),
                 msgPaint);
-        poseDetectionNotifier.nextMesage("Angle between your legs and arms should 45");
+        poseDetectionNotifier.nextMesage("Distance between your feet's should be grater than 1 feet");
+      }else {
+        if ((angleDegrees >= 40 && angleDegrees <= 50) && (rangleDegrees >= 40 && rangleDegrees <= 50)) {
+          canvas.drawText(
+                  "        Pose Complete                  ",
+                  0,
+                  translateY2(),
+                  distancePaint);
+          poseDetectionNotifier.readyToCapture("Pose Complete");
+        } else {
+          canvas.drawText(
+                  "Angle between your legs and arms should 45",
+                  xPos,
+                  translateY2(),
+                  msgPaint);
+          poseDetectionNotifier.nextMesage("Angle between your legs and arms should 45");
+        }
       }
     }else{
       canvas.drawText(
               "Please stand from 4 to 6 feet's away from camera",
-             xPos,
+              xPos,
               translateY2(),
               msgPaint);
       poseDetectionNotifier.nextMesage("Please stand from 4 to 6 feet's away from camera");
@@ -369,6 +397,16 @@ public class PoseGraphic extends Graphic {
 //            whitePaint);
 //      }
 //    }
+  }
+
+  public static double calculateDistanceBetweenPoints(PointF point1, PointF point2) {
+    double deltaX = point1.x - point2.x;
+    double deltaY = point1.y - point2.y;
+
+    // Use the Pythagorean theorem to calculate the distance
+    double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    return distance;
   }
 
   void drawPoint(Canvas canvas, PoseLandmark landmark, Paint paint) {

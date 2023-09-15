@@ -889,11 +889,13 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
 
     }
 
-    private class SampleFrameProcessor implements FrameProcessor {
-        public void process(Frame frame) {
-        }
+    @Override
+    public void setBodyValidationField(PoseDetectorProcessor.BodyValidationFields validationField) {
 
-        private SampleFrameProcessor() {
-        }
+    }
+
+    @Override
+    public PoseDetectorProcessor.BodyValidationFields getBodyValidationField() {
+        return null;
     }
 }

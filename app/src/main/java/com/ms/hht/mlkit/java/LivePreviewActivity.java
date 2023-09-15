@@ -388,4 +388,14 @@ public final class LivePreviewActivity extends AppCompatActivity implements Pose
   public void readyToCapture(String pose_complete) {
 
   }
+
+  @Override
+  public void setBodyValidationField(PoseDetectorProcessor.BodyValidationFields validationField) {
+
+  }
+
+  @Override
+  public PoseDetectorProcessor.BodyValidationFields getBodyValidationField() {
+    return null;
+  }
 }
