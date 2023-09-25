@@ -650,4 +650,24 @@
         <item>1</item>
         <item>999</item>
     </string-array>
+    <!--Audio 1-->
+    <string name="voice_verticalystrait">Please place your device veritcally straight on a table and step back to make yourself fully visible in the camera frame </string>
+    <!--Audio 2-->
+    <string name="voice_not_positioned_correctly">Your device is not positioned correctly. Please place your device veritcally straight</string>
+    <!--Audio 3-->
+    <string name="voice_your_are_set_get_measured">You are set to get measured, please step back to stand inside the camera frame as shown in the above picture and wait for the count of</string>
+    <!--Audio 5-->
+    <string name="voice_turn_right">Now turn right at 90 degree, look straight with your feets joint and arms down as shown in the picture and wait for the count of 5</string>
+    <!--Audio 6-->
+    <string name="voice_we_are_now_processing">We are now processing your data, to get your measurements please be patient</string>
+    <string name="voice_we_are_not_able_to_identify">We are able to identify, step back to make yourself fully visible in the camera frame</string>
+    <string name="voice_please_keep_leg_distance">Please keep 1 feet distance between your feet</string>
+    <string name="voice_please_wait_capture">You are set to get measure, we are capturing your data on the count of</string>
+    <string name="voice_please_keep_angle">Please keep your arms and legs in 45 degree angle</string>
+    <string name="voice_please_stand_distance_camera">Please stand 4 to 6 feet away from your device</string>
+    <string name="voice_one">One</string>
+    <string name="voice_two">Two</string>
+    <string name="voice_three">Three</string>
+    <string name="voice_four">Four</string>
+    <string name="voice_five">Five</string>
 </resources>

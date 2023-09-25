@@ -39,6 +39,7 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.common.annotation.KeepName;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseLandmark;
+import com.ms.hht.data.BodyValidationFields;
 import com.ms.hht.mlkit.CameraSource;
 import com.ms.hht.mlkit.CameraSourcePreview;
 import com.ms.hht.mlkit.GraphicOverlay;
@@ -385,17 +386,22 @@ public final class LivePreviewActivity extends AppCompatActivity implements Pose
   }
 
   @Override
+  public void nextMesage(String mesage, boolean forstStop) {
+
+  }
+
+  @Override
   public void readyToCapture(String pose_complete) {
 
   }
 
   @Override
-  public void setBodyValidationField(PoseDetectorProcessor.BodyValidationFields validationField) {
-
+  public void setBodyValidationField(BodyValidationFields validationField) {
+    this.validationField = validationField;
   }
-
+  BodyValidationFields validationField;
   @Override
-  public PoseDetectorProcessor.BodyValidationFields getBodyValidationField() {
-    return null;
+  public BodyValidationFields getBodyValidationField() {
+    return validationField;
   }
 }

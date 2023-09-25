@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SizeF;
@@ -46,6 +47,7 @@ import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseDetectorOptionsBase;
 import com.google.mlkit.vision.pose.PoseLandmark;
 import com.ms.hht.R;
+import com.ms.hht.data.BodyValidationFields;
 import com.ms.hht.data.response.ResponseTypeValues;
 import com.ms.hht.lib.fotoapparat.exception.camera.CameraException;
 import com.ms.hht.lib.fotoapparat.preview.Frame;
@@ -84,16 +86,16 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     String SideImageS3Path = "Value";
     float angle = 0.0f;
     ImageView back;
-    MediaPlayer beepplayer;
+    //    MediaPlayer beepplayer;
     CountDownTimer cameraCount;
     //    CameraView cameraView;
     String correctemail;
-    MediaPlayer count1;
+    //    MediaPlayer count1;
     Boolean count1isrunning = false;
-    MediaPlayer count2;
-    MediaPlayer count3;
-    MediaPlayer count4;
-    MediaPlayer count5;
+    //    MediaPlayer count2;
+//    MediaPlayer count3;
+//    MediaPlayer count4;
+//    MediaPlayer count5;
     Boolean counter2isrunning = false;
     int d = 0;
     CountDownTimer delayCounter;
@@ -105,9 +107,9 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     String gender = "male";
     String imageName;
     int interval = 6;
-    MediaPlayer m1;
-    MediaPlayer m2;
-    MediaPlayer m3;
+    //    MediaPlayer m1;
+//    MediaPlayer m2;
+//    MediaPlayer m3;
     SensorManager mSensorManager;
     TextView number;
     ImageView poseimage;
@@ -115,7 +117,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     int s1 = 1;
     SessionManager session;
     boolean sidePoseStatus = false;
-    MediaActionSound sound;
+    //    MediaActionSound sound;
     View view1;
     View view2;
     View view3;
@@ -137,10 +139,10 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     public static int width = 0;
     public static int height = 0;
     private TextToSpeech textToSpeech;
-    private boolean isTextToSpeechReady=false;
+    private boolean isTextToSpeechReady = false, isTextPlaying = false;
     float F = 1f;           //focal length
     float angleX, angleY;
-    boolean startCheckingMeasurement= false;
+//    boolean startCheckingMeasurement= false;
 
     private Camera frontCam() {
         int cameraCount = 0;
@@ -188,7 +190,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
         this.view4 = findViewById(R.id.view4);
         this.gender = ComUserProfileData.getmeasurementGender();
         this.mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        this.sound = new MediaActionSound();
+//        this.sound = new MediaActionSound();
         this.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -275,10 +277,31 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if (status != TextToSpeech.ERROR) {
+                if (status == TextToSpeech.ERROR) {
+                    isTextToSpeechReady = false;
+                } else if (status == TextToSpeech.SUCCESS) {
+                    isTextToSpeechReady = false;
                     textToSpeech.setLanguage(Locale.UK);
-                    isTextToSpeechReady = true;
-                }else isTextToSpeechReady =false;
+                    isTextPlaying = false;
+                    textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String s) {
+                            isTextPlaying = true;
+                        }
+
+                        @Override
+                        public void onDone(String s) {
+                            //On Complete
+                            isTextPlaying = false;
+//                            delayOperation1(null);
+                        }
+
+                        @Override
+                        public void onError(String s) {
+                            isTextPlaying = false;
+                        }
+                    });
+                }
             }
         });
     }
@@ -394,15 +417,15 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     public void onStart() {
         super.onStart();
 //        this.fotoapparat.start();
-        this.m1 = MediaPlayer.create(this, R.raw.audio1);
-        this.m2 = MediaPlayer.create(this, R.raw.audio2);
-        this.m3 = MediaPlayer.create(this, R.raw.audio3);
-        this.beepplayer = MediaPlayer.create(this, R.raw.beep);
-        this.count1 = MediaPlayer.create(this, R.raw.count1);
-        this.count2 = MediaPlayer.create(this, R.raw.count2);
-        this.count3 = MediaPlayer.create(this, R.raw.count3);
-        this.count4 = MediaPlayer.create(this, R.raw.count4);
-        this.count5 = MediaPlayer.create(this, R.raw.count5);
+//        this.m1 = MediaPlayer.create(this, R.raw.audio1);
+//        this.m2 = MediaPlayer.create(this, R.raw.audio2);
+//        this.m3 = MediaPlayer.create(this, R.raw.audio3);
+//        this.beepplayer = MediaPlayer.create(this, R.raw.beep);
+//        this.count1 = MediaPlayer.create(this, R.raw.count1);
+//        this.count2 = MediaPlayer.create(this, R.raw.count2);
+//        this.count3 = MediaPlayer.create(this, R.raw.count3);
+//        this.count4 = MediaPlayer.create(this, R.raw.count4);
+//        this.count5 = MediaPlayer.create(this, R.raw.count5);
         SensorManager sensorManager = this.mSensorManager;
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(1), 2000000);
     }
@@ -417,17 +440,18 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     public void onResume() {
         super.onResume();
 //        this.fotoapparat.start();
-        this.m1 = MediaPlayer.create(this, R.raw.audio1);
-        this.m2 = MediaPlayer.create(this, R.raw.audio2);
-        this.m3 = MediaPlayer.create(this, R.raw.audio3);
-        this.count1 = MediaPlayer.create(this, R.raw.count1);
-        this.count2 = MediaPlayer.create(this, R.raw.count2);
-        this.count3 = MediaPlayer.create(this, R.raw.count3);
-        this.count4 = MediaPlayer.create(this, R.raw.count4);
-        this.count5 = MediaPlayer.create(this, R.raw.count5);
+//        this.m1 = MediaPlayer.create(this, R.raw.audio1);
+//        this.m2 = MediaPlayer.create(this, R.raw.audio2);
+//        this.m3 = MediaPlayer.create(this, R.raw.audio3);
+//        this.count1 = MediaPlayer.create(this, R.raw.count1);
+//        this.count2 = MediaPlayer.create(this, R.raw.count2);
+//        this.count3 = MediaPlayer.create(this, R.raw.count3);
+//        this.count4 = MediaPlayer.create(this, R.raw.count4);
+//        this.count5 = MediaPlayer.create(this, R.raw.count5);
         SensorManager sensorManager = this.mSensorManager;
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(1), 2000000);
-        this.m1.start();
+//        this.m1.start();
+
         delayOperation1();
         Log.d(TAG, "onResume");
         createCameraSource(selectedModel);
@@ -446,7 +470,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
         SensorManager sensorManager = this.mSensorManager;
         sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(1));
         this.dialog.dismiss();
-        this.m1.release();
+//        this.m1.release();
         if (this.count1isrunning.booleanValue()) {
             if (this.cameraCount != null)
                 this.cameraCount.cancel();
@@ -454,12 +478,12 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
         if (this.counter2isrunning.booleanValue()) {
             this.delayCounter.cancel();
         }
-        if (this.m2.isPlaying()) {
-            this.m2.release();
-        }
-        if (this.m3.isPlaying()) {
-            this.m3.release();
-        }
+//        if (this.m2.isPlaying()) {
+//            this.m2.release();
+//        }
+//        if (this.m3.isPlaying()) {
+//            this.m3.release();
+//        }
 
         preview.stop();
     }
@@ -505,45 +529,45 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     public void mainfunc() {
         this.cameraCount = new CountDownTimer(6000, 1000) {
             public void onTick(long j) {
-//                CameraAct.this.interval--;
-//                CameraAct.this.count1isrunning = true;
-//                if (CameraAct.this.interval == 5) {
-//                    CameraAct.this.count5.start();
-//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-//                } else if (CameraAct.this.interval == 4) {
-//                    CameraAct.this.count4.start();
-//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-//                } else if (CameraAct.this.interval == 3) {
-//                    CameraAct.this.count3.start();
-//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-//                } else if (CameraAct.this.interval == 2) {
-//                    CameraAct.this.count2.start();
-//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-//                } else if (CameraAct.this.interval == 1) {
-//                    CameraAct.this.count1.start();
-//                    CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-//                } else if (CameraAct.this.interval == 0) {
-//                    CameraAct.this.imageName = "front";
-//                    CameraAct.this.captureImage();
-//                    if (CameraAct.this.gender.equalsIgnoreCase("male")) {
-//                        CameraAct.this.poseimage.setImageResource(R.drawable.maletightfitside);
+//                interval--;
+//                count1isrunning = true;
+//                if (interval == 5) {
+//                    count5.start();
+//                    number.setText(String.valueOf(interval));
+//                } else if (interval == 4) {
+//                    count4.start();
+//                    number.setText(String.valueOf(interval));
+//                } else if (interval == 3) {
+//                    count3.start();
+//                    number.setText(String.valueOf(interval));
+//                } else if (interval == 2) {
+//                    count2.start();
+//                    number.setText(String.valueOf(interval));
+//                } else if (interval == 1) {
+//                    count1.start();
+//                    number.setText(String.valueOf(interval));
+//                } else if (interval == 0) {
+//                    imageName = "front";
+//                    captureImage();
+//                    if (gender.equalsIgnoreCase("male")) {
+//                        poseimage.setImageResource(R.drawable.maletightfitside);
 //                    } else {
-//                        CameraAct.this.poseimage.setImageResource(R.drawable.femalesidetightfit);
+//                        poseimage.setImageResource(R.drawable.femalesidetightfit);
 //                    }
-//                    CameraAct.this.number.setText("");
-//                    CameraAct.this.front.setText(R.string.side);
+//                    number.setText("");
+//                    front.setText(R.string.side);
 //                }
             }
 
             public void onFinish() {
-                CameraAct.this.count1isrunning = false;
-                CameraAct.this.interval = 6;
-                CameraAct.this.m1.reset();
-                CameraAct cameraAct = CameraAct.this;
-                cameraAct.m1 = MediaPlayer.create(cameraAct, R.raw.audio5);
-                CameraAct.this.m1.start();
-                CameraAct.this.m1.setVolume(100.0f, 100.0f);
-                CameraAct.this.m1.setOnCompletionListener(mOnCompleteListener);
+                count1isrunning = false;
+                interval = 6;
+//                m1.reset();
+//                m1 = MediaPlayer.create(cameraAct, R.raw.audio5);
+//                m1.start();
+                nextMesage(getString(R.string.voice_verticalystrait));
+//                m1.setVolume(100.0f, 100.0f);
+//                m1.setOnCompletionListener(mOnCompleteListener);
             }
 
             MediaPlayer.OnCompletionListener mOnCompleteListener = new MediaPlayer.OnCompletionListener() {
@@ -556,48 +580,125 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
             /* access modifiers changed from: package-private */
             /* renamed from: lambda$onFinish$0$com-ms-hht-ui-measure-CameraAct$1  reason: not valid java name */
             public void onFinish(MediaPlayer mediaPlayer) {
-                CameraAct.this.cameraCount = new CountDownTimer(5100, 1000) {
+                cameraCount = new CountDownTimer(5100, 1000) {
                     public void onTick(long j) {
-                        CameraAct.this.count1isrunning = true;
-                        CameraAct.this.interval--;
-                        if (CameraAct.this.interval == 5) {
-                            CameraAct.this.count5.start();
-                            CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                        } else if (CameraAct.this.interval == 4) {
-                            CameraAct.this.count4.start();
-                            CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                        } else if (CameraAct.this.interval == 3) {
-                            CameraAct.this.count3.start();
-                            CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                        } else if (CameraAct.this.interval == 2) {
-                            CameraAct.this.count2.start();
-                            CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
-                        } else if (CameraAct.this.interval == 1) {
-                            CameraAct.this.count1.start();
-                            CameraAct.this.number.setText(String.valueOf(CameraAct.this.interval));
+                        count1isrunning = true;
+                        interval--;
+                        if (interval == 5) {
+                            nextMesage(getString(R.string.voice_five));
+                            number.setText(String.valueOf(interval));
+                        } else if (interval == 4) {
+                            nextMesage(getString(R.string.voice_four));
+                            number.setText(String.valueOf(interval));
+                        } else if (interval == 3) {
+                            nextMesage(getString(R.string.voice_three));
+                            number.setText(String.valueOf(interval));
+                        } else if (interval == 2) {
+                            nextMesage(getString(R.string.voice_two));
+                            number.setText(String.valueOf(interval));
+                        } else if (interval == 1) {
+                            nextMesage(getString(R.string.voice_one));
+                            number.setText(String.valueOf(interval));
                         } else {
-                            CameraAct.this.imageName = "side";
-                            CameraAct.this.captureImage();
-                            CameraAct.this.delayCounter.cancel();
+                            imageName = "side";
+                            captureImage();
+                            delayCounter.cancel();
                         }
                     }
 
                     public void onFinish() {
                         CommFunc.ShowProgressbar(CameraAct.this);
-                        CameraAct.this.sound.release();
-                        CameraAct.this.count1.release();
-                        CameraAct.this.count2.release();
-                        CameraAct.this.count3.release();
-                        CameraAct.this.count4.release();
-                        CameraAct.this.count5.release();
-                        CameraAct.this.cameraCount.cancel();
-                        CameraAct.this.mSensorManager.unregisterListener(CameraAct.this, CameraAct.this.mSensorManager.getDefaultSensor(1));
-                        CameraAct.this.interval = 6;
+//                        sound.release();
+//                        count1.release();
+//                        count2.release();
+//                        count3.release();
+//                        count4.release();
+//                        count5.release();
+                        cameraCount.cancel();
+                        mSensorManager.unregisterListener(CameraAct.this, mSensorManager.getDefaultSensor(1));
+                        interval = 6;
                     }
                 }.start();
             }
         }.start();
     }
+    private void captureFrontCameraInitate(){
+        cameraCount = new CountDownTimer(5100, 1000) {
+            public void onTick(long j) {
+                count1isrunning = true;
+                interval--;
+                if (interval == 5) {
+                    nextMesage(getString(R.string.voice_five));
+                    number.setText(String.valueOf(interval));
+                } else if (interval == 4) {
+                    nextMesage(getString(R.string.voice_four));
+                    number.setText(String.valueOf(interval));
+                } else if (interval == 3) {
+                    nextMesage(getString(R.string.voice_three));
+                    number.setText(String.valueOf(interval));
+                } else if (interval == 2) {
+                    nextMesage(getString(R.string.voice_two));
+                    number.setText(String.valueOf(interval));
+                } else if (interval == 1) {
+                    nextMesage(getString(R.string.voice_one));
+                    number.setText(String.valueOf(interval));
+//                } else {
+//                    imageName = "side";
+                    captureImage();
+                    delayCounter.cancel();
+                }
+            }
+
+            public void onFinish() {
+                CommFunc.ShowProgressbar(CameraAct.this);
+                cameraCount.cancel();
+                mSensorManager.unregisterListener(CameraAct.this, mSensorManager.getDefaultSensor(1));
+                interval = 6;
+                count1isrunning = false;
+                imageName = "side";
+                nextMesage(getString(R.string.voice_turn_right));
+            }
+        }.start();
+    }
+    private void captureSideCameraInitate(){
+        cameraCount = new CountDownTimer(5100, 1000) {
+            public void onTick(long j) {
+                counter2isrunning = true;
+                interval--;
+                if (interval == 5) {
+                    nextMesage(getString(R.string.voice_five));
+                    number.setText(String.valueOf(interval));
+                } else if (interval == 4) {
+                    nextMesage(getString(R.string.voice_four));
+                    number.setText(String.valueOf(interval));
+                } else if (interval == 3) {
+                    nextMesage(getString(R.string.voice_three));
+                    number.setText(String.valueOf(interval));
+                } else if (interval == 2) {
+                    nextMesage(getString(R.string.voice_two));
+                    number.setText(String.valueOf(interval));
+                } else if (interval == 1) {
+                    nextMesage(getString(R.string.voice_one));
+                    number.setText(String.valueOf(interval));
+//                } else {
+                    imageName = "side";
+                    captureImage();
+                    delayCounter.cancel();
+                }
+            }
+
+            public void onFinish() {
+                CommFunc.ShowProgressbar(CameraAct.this);
+                cameraCount.cancel();
+                mSensorManager.unregisterListener(CameraAct.this, mSensorManager.getDefaultSensor(1));
+                interval = 6;
+                counter2isrunning = false;
+                imageName = "side";
+                nextMesage(getString(R.string.voice_verticalystrait));
+            }
+        }.start();
+    }
+
 
     public void captureImage() {
         Log.d("keyss...", "Capture Image()==>");
@@ -650,7 +751,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
 
         //@TODO For Developer Debug purpose added this below line @Developertest
 //        Bitmap bitmap = ImageUtils.compressImage(BitmapFactory.decodeResource(getResources(),
-//                (CameraAct.this.imageName == "side" ? R.drawable.img_side : R.drawable.img_front)));
+//                (imageName == "side" ? R.drawable.img_side : R.drawable.img_front)));
 //        Matrix matrix = new Matrix();
 //        matrix.postRotate((float) (-bitmapPhoto.rotationDegrees));
 
@@ -708,12 +809,12 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
 
     /* access modifiers changed from: package-private */
     public void delayOperation1() {
-        this.m1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                delayOperation1(mediaPlayer);
-            }
-        });
+//        this.m1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+        delayOperation1(null);
+//            }
+//        });
     }
 
     /* access modifiers changed from: package-private */
@@ -721,78 +822,113 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     public void delayOperation1(MediaPlayer mediaPlayer) {
         this.delayCounter = new CountDownTimer(800000, 1000) {
             public void onTick(long j) {
-                CameraAct.this.counter2isrunning = true;
-                if (!CameraAct.this.Correct_angle_status) {
-                    CameraAct.this.s1 = 1;
-                    CameraAct.this.imageName = "front";
-                    CameraAct.this.d = 0;
-                    CameraAct.this.frontPoseStatus = false;
-                    CameraAct.this.sidePoseStatus = false;
-                    CameraAct.this.front.setText(R.string.front);
-                    if (CameraAct.this.gender.equalsIgnoreCase("female")) {
-                        CameraAct.this.poseimage.setImageResource(R.drawable.femalefronttightfit);
+                counter2isrunning = true;
+                if(imageName==null){
+                    if (!Correct_angle_status) {
+                        s1 = 1;
+                        imageName = "front";
+                        d = 0;
+                        frontPoseStatus = false;
+                        sidePoseStatus = false;
+                        front.setText(R.string.front);
+                        if (gender.equalsIgnoreCase("female")) {
+                            poseimage.setImageResource(R.drawable.femalefronttightfit);
+                        } else {
+                            poseimage.setImageResource(R.drawable.maletightfitfront);
+                        }
+                        if (count1isrunning.booleanValue()) {
+                            cameraCount.cancel();
+                            interval = 6;
+                            number.setText(" ");
+                        }
+                        nextMesage(getString(R.string.voice_not_positioned_correctly),true);
+                    } else if (s1 != 1) {
                     } else {
-                        CameraAct.this.poseimage.setImageResource(R.drawable.maletightfitfront);
-                    }
-                    if (CameraAct.this.count1isrunning.booleanValue()) {
-                        CameraAct.this.cameraCount.cancel();
-                        CameraAct.this.interval = 6;
-                        CameraAct.this.number.setText(" ");
-                    }
-                    if (CameraAct.this.m1.isPlaying()) {
-                        CameraAct.this.m1.stop();
-                    }
-                    if (CameraAct.this.m2.isPlaying()) {
-                        Log.d("player2", "playing");
-                    } else if (CameraAct.this.m3.isPlaying()) {
-                        CameraAct.this.m3.stop();
-                    } else {
-                        CameraAct cameraAct = CameraAct.this;
-                        cameraAct.m2 = MediaPlayer.create(cameraAct, R.raw.audio2);
-                        CameraAct.this.m2.start();
-                    }
-                } else if (CameraAct.this.s1 != 1) {
-                } else {
-                    if (CameraAct.this.m3.isPlaying()) {
-                        CameraAct.this.m3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                onTick(mp);
+                        if(validationField!=null){
+                            if(validationField.objDistanceCamera>= 4 && validationField.objDistanceCamera<=8){
+                                if(validationField.objDistanceLegs<11){
+                                    nextMesage(getString(R.string.voice_please_keep_leg_distance),true);
+                                }else {
+                                    if ((validationField.armsAngle >= 30 && validationField.armsAngle <= 50)
+                                            && (validationField.rDegree >= 30 && validationField.rDegree <= 50)) {
+                                        nextMesage(getString(R.string.voice_please_wait_capture),true);
+                                        imageName = "front";
+//                                        mainfunc();
+                                        captureFrontCameraInitate();
+                                    } else {
+                                        nextMesage(getString(R.string.voice_please_keep_angle),true);
+                                    }
+                                }
+                            }else{
+                                nextMesage(getString(R.string.voice_please_stand_distance_camera),true);
                             }
-                        });
-                    } else if (CameraAct.this.m2.isPlaying()) {
-                        CameraAct.this.m2.stop();
-                    } else {
-                        CameraAct cameraAct2 = CameraAct.this;
-                        cameraAct2.m3 = MediaPlayer.create(cameraAct2, R.raw.audio3);
-                        CameraAct.this.m3.start();
-//                        CameraAct.this.m3.setOnCompletionListener(new CameraAct$2$$ExternalSyntheticLambda1(this));
-                        CameraAct.this.m3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                //**************************You are set to get Measured******************
-                                startCheckingMeasurement= true;
-
-
-//                                onTick(mp);
-                            }
-                        });
+                        }else{
+                            nextMesage(getString(R.string.voice_we_are_not_able_to_identify),true);
+                        }
                     }
+                }
+                else if(imageName!=null && imageName.equals("front")){
+                    if (!Correct_angle_status) {
+                        s1 = 1;
+                        imageName = "front";
+                        d = 0;
+                        frontPoseStatus = false;
+                        sidePoseStatus = false;
+                        front.setText(R.string.front);
+                        if (gender.equalsIgnoreCase("female")) {
+                            poseimage.setImageResource(R.drawable.femalefronttightfit);
+                        } else {
+                            poseimage.setImageResource(R.drawable.maletightfitfront);
+                        }
+                        if (count1isrunning.booleanValue()) {
+                            cameraCount.cancel();
+                            interval = 6;
+                            number.setText(" ");
+                        }
+                        nextMesage(getString(R.string.voice_not_positioned_correctly),true);
+//                        m2.start();
+//                    }
+                    } else if (s1 != 1) {
+                    } else {
+                        if(validationField!=null){
+                            if(validationField.objDistanceCamera>= 4 && validationField.objDistanceCamera<=8){
+                                if(validationField.objDistanceLegs<11){
+                                    nextMesage(getString(R.string.voice_please_keep_leg_distance),true);
+                                }else {
+                                    if ((validationField.armsAngle >= 30 && validationField.armsAngle <= 50)
+                                            && (validationField.rDegree >= 30 && validationField.rDegree <= 50)) {
+                                        nextMesage(getString(R.string.voice_please_wait_capture),true);
+                                        imageName = "front";
+                                        captureFrontCameraInitate();
+                                    } else {
+                                        nextMesage(getString(R.string.voice_please_keep_angle),true);
+                                    }
+                                }
+                            }else{
+                                nextMesage(getString(R.string.voice_please_stand_distance_camera),true);
+                            }
+                        }else{
+                            nextMesage(getString(R.string.voice_we_are_not_able_to_identify),true);
+                        }
+                    }
+                }else if(imageName.equals("side")){
+
                 }
             }
 
             /* access modifiers changed from: package-private */
             /* renamed from: lambda$onTick$0$com-ms-hht-ui-measure-CameraAct$2  reason: not valid java name */
             public /* synthetic */ void onTick(MediaPlayer mediaPlayer) {
-                CameraAct.this.s1 = 2;
-                CameraAct.this.mainfunc();
+                s1 = 2;
+                mainfunc();
             }
 
             public void onFinish() {
-                CameraAct.this.counter2isrunning = false;
+                counter2isrunning = false;
             }
         }.start();
     }
+
     private void ShowPopup() {
         this.dialog.setContentView(R.layout.status_popup);
         this.dialog.show();
@@ -821,11 +957,12 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
         PosePreviewAct.imageUrl1 = getBase64Encode_Bitmap(bitmap);
         this.frontPoseStatus = true;
         HHLogger.getINSTANCE(CameraAct.this).LOG("CameraAct", PosePreviewAct.imageUrl1, "FrontImage");
+        captureSideCameraInitate();
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$uploadImageFront$5$com-ms-hht-ui-measure-CameraAct  reason: not valid java name */
-    public /* synthetic */ void uploadImageFront(NetworkResponse networkResponse) {
+    public void uploadImageFront(NetworkResponse networkResponse) {
         Log.d("LOGNew", "Front Image Uploading Completed");
         this.rQueue.getCache().clear();
         try {
@@ -847,9 +984,9 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     public void uploadImageFront(VolleyError volleyError) {
         Log.d("LogNew", volleyError.toString());
         this.cameraCount.cancel();
-        if (this.m1.isPlaying()) {
-            this.m1.stop();
-        }
+//        if (this.m1.isPlaying()) {
+//            this.m1.stop();
+//        }
         if (this.counter2isrunning.booleanValue()) {
             this.delayCounter.cancel();
         }
@@ -863,7 +1000,7 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
         this.sidePoseStatus = true;
         this.ImageStatustimerstatus = true;
         HHLogger.getINSTANCE(CameraAct.this).LOG("CameraAct", PosePreviewAct.imageUrl2, "SidImage");
-        CameraAct.this.checkImageStatus();
+        checkImageStatus();
     }
 
     private String getBase64Encode_Bitmap(Bitmap bitmap) {
@@ -878,10 +1015,21 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
 
     }
 
+
     @Override
     public void nextMesage(String mesage) {
-        if(startCheckingMeasurement)
-        textToSpeech.speak(mesage, TextToSpeech.QUEUE_FLUSH, null, null);
+//        if (!isTextPlaying)
+//            textToSpeech.speak(mesage, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    @Override
+    public void nextMesage(String mesage, boolean forstStop) {
+        /*if (forstStop) {
+            textToSpeech.stop();
+            textToSpeech.speak(mesage, TextToSpeech.QUEUE_FLUSH, null, null);
+        } else */
+        if (!isTextPlaying)
+            textToSpeech.speak(mesage, forstStop?TextToSpeech.QUEUE_FLUSH:TextToSpeech.QUEUE_ADD, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
     }
 
     @Override
@@ -890,12 +1038,14 @@ public class CameraAct extends AppCompatActivity implements SensorEventListener,
     }
 
     @Override
-    public void setBodyValidationField(PoseDetectorProcessor.BodyValidationFields validationField) {
-
+    public void setBodyValidationField(BodyValidationFields validationField) {
+        this.validationField = validationField;
     }
 
+    BodyValidationFields validationField;
+
     @Override
-    public PoseDetectorProcessor.BodyValidationFields getBodyValidationField() {
-        return null;
+    public BodyValidationFields getBodyValidationField() {
+        return validationField;
     }
 }

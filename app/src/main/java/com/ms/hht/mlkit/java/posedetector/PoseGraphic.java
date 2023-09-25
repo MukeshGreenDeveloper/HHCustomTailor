@@ -30,9 +30,9 @@ import com.ms.hht.data.BodyValidationFields;
 import com.ms.hht.mlkit.GraphicOverlay;
 import com.ms.hht.mlkit.GraphicOverlay.Graphic;
 import com.ms.hht.mlkit.PoseDetectionNotifier;
-import com.ms.hht.mlkit.java.LivePreviewActivity;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseLandmark;
+import com.ms.hht.ui.measure.CameraAct;
 
 import java.util.List;
 import java.util.Locale;
@@ -257,15 +257,15 @@ public class PoseGraphic extends Graphic {
     double distance = 0;
   //  3.74    5.1839957    3.8880026
    // 2.785    3.6556828    2.7417579
-   // LivePreviewActivity.width = 1024;
-   // LivePreviewActivity.height = 1024;
-   // LivePreviewActivity.FLX = 2.785f;
-   // LivePreviewActivity.horizontalAngle = 3.6556828;
-   // LivePreviewActivity.verticalAngle =  2.7417579;
+   // CameraAct.width = 1024;
+   // CameraAct.height = 1024;
+   // CameraAct.FLX = 2.785f;
+   // CameraAct.horizontalAngle = 3.6556828;
+   // CameraAct.verticalAngle =  2.7417579;
     if (deltaX >= deltaY) {
-      distance = LivePreviewActivity.FLX * (63 / LivePreviewActivity.horizontalAngle) * (LivePreviewActivity.width / deltaX);
+      distance = CameraAct.FLX * (63 / CameraAct.horizontalAngle) * (CameraAct.width / deltaX);
     } else {
-      distance = LivePreviewActivity.FLX * (63 / LivePreviewActivity.verticalAngle) * (LivePreviewActivity.height / deltaY);
+      distance = CameraAct.FLX * (63 / CameraAct.verticalAngle) * (CameraAct.height / deltaY);
     }
 
     angleDegrees = 180-angleDegrees;
@@ -292,7 +292,8 @@ public class PoseGraphic extends Graphic {
 
 // Now, you can calculate the distance between the feet in feet using the camera-to-person distance
     double actualDistanceBetweenFeet = distanceBetweenFeet * (cameraToPersonDistanceFeet/pixelsPerFoot);
-    BodyValidationFields bodyValidationFields =  new BodyValidationFields();
+    BodyValidationFields bodyValidationFields =  new BodyValidationFields(angleDegrees,pose.getAllPoseLandmarks(),
+            distance,actualDistanceBetweenFeet,rangleDegrees);
     poseDetectionNotifier.setBodyValidationField(bodyValidationFields);
     if(distance>= 4 && distance<=6){
       if(actualDistanceBetweenFeet<11){
@@ -301,22 +302,22 @@ public class PoseGraphic extends Graphic {
                 xPos,
                 translateY2(),
                 msgPaint);
-        poseDetectionNotifier.nextMesage("Distance between your feet's should be grater than 1 feet");
+//        poseDetectionNotifier.nextMesage("Distance between your feet's should be grater than 1 feet");
       }else {
         if ((angleDegrees >= 40 && angleDegrees <= 50) && (rangleDegrees >= 40 && rangleDegrees <= 50)) {
           canvas.drawText(
-                  "        Pose Complete                  ",
+                  "Pose Complete",
                   0,
                   translateY2(),
                   distancePaint);
-          poseDetectionNotifier.readyToCapture("Pose Complete");
+//          poseDetectionNotifier.readyToCapture("Pose Complete");
         } else {
           canvas.drawText(
                   "Angle between your legs and arms should 45",
                   xPos,
                   translateY2(),
                   msgPaint);
-          poseDetectionNotifier.nextMesage("Angle between your legs and arms should 45");
+//          poseDetectionNotifier.nextMesage("Angle between your legs and arms should 45");
         }
       }
     }else{
@@ -325,10 +326,10 @@ public class PoseGraphic extends Graphic {
               xPos,
               translateY2(),
               msgPaint);
-      poseDetectionNotifier.nextMesage("Please stand from 4 to 6 feet's away from camera");
+//      poseDetectionNotifier.nextMesage("Please stand from 4 to 6 feet's away from camera");
     }
 
-    Log.d("tryDistance","d="+LivePreviewActivity.FLX+"    "+LivePreviewActivity.horizontalAngle+"    "+LivePreviewActivity.verticalAngle+"   "+LivePreviewActivity.width);
+    Log.d("tryDistance","d="+CameraAct.FLX+"    "+CameraAct.horizontalAngle+"    "+CameraAct.verticalAngle+"   "+CameraAct.width);
 
     Log.d("tryDistance","d="+distance);
 //    double landmarkX = leftEyeOuter.getPosition3D().getX();// X-coordinate;
@@ -342,10 +343,10 @@ public class PoseGraphic extends Graphic {
 //    double landmarkZPixel = landmarkZ;// Z-coordinate in pixels;
 //
 //// Camera intrinsic parameters
-//    double focalLengthX = LivePreviewActivity.FLX;// Focal length along X-axis in pixels;
-//    double focalLengthY = LivePreviewActivity.FLY;// Focal length along Y-axis in pixels;
-//    double principalPointX = LivePreviewActivity.FLPX;// Principal point X-coordinate in pixels;
-//    double principalPointY = LivePreviewActivity.FLPY;// Principal point Y-coordinate in pixels;
+//    double focalLengthX = CameraAct.FLX;// Focal length along X-axis in pixels;
+//    double focalLengthY = CameraAct.FLY;// Focal length along Y-axis in pixels;
+//    double principalPointX = CameraAct.FLPX;// Principal point X-coordinate in pixels;
+//    double principalPointY = CameraAct.FLPY;// Principal point Y-coordinate in pixels;
 //
 //// Convert pixel coordinates to meters
 //    double landmarkXMeters = (landmarkXPixel - principalPointX) * (landmarkZPixel / focalLengthX);
@@ -356,7 +357,7 @@ public class PoseGraphic extends Graphic {
 //
 //
 //// Focal length of the camera (in pixels)
-//    double focalLength = LivePreviewActivity.FLX;// Focal length value;
+//    double focalLength = CameraAct.FLX;// Focal length value;
 //
 //// Calculate the projected position of the landmark onto the image plane
 //    double imageX = (focalLength * landmarkX) / landmarkZ;

@@ -11,6 +11,7 @@ import java.util.List;
 public interface PoseDetectionNotifier {
     void humanDetected(List<PoseLandmark> landmarks, Pose pose, Canvas canvas);
     void nextMesage(String mesage);
+    void nextMesage(String mesage,boolean forstStop);
 
     void readyToCapture(String pose_complete);
     BodyValidationFields getBodyValidationField();

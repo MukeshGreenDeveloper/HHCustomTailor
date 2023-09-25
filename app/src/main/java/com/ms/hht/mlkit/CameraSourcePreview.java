@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.common.images.Size;
 import com.ms.hht.mlkit.java.LivePreviewActivity;
 import com.ms.hht.mlkit.preference.PreferenceUtils;
+import com.ms.hht.ui.measure.CameraAct;
 
 import java.io.IOException;
 
@@ -102,8 +103,8 @@ public class CameraSourcePreview extends ViewGroup {
           overlay.setImageSourceInfo(max, min, isImageFlipped);
         }
         overlay.clear();
-        LivePreviewActivity.width = cameraSource.getPreviewSize().getWidth();
-        LivePreviewActivity.height = cameraSource.getPreviewSize().getHeight();
+        CameraAct.width = cameraSource.getPreviewSize().getWidth();
+        CameraAct.height = cameraSource.getPreviewSize().getHeight();
       }
       startRequested = false;
     }
